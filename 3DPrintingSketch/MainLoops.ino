@@ -1,15 +1,19 @@
 // SETUP LOOP
 void setup() {
-  // BEGIN SERIAL COMMUNICATION
+  ////////////////////////////////
+  // BEGIN SERIAL COMMUNICATION //
+  ////////////////////////////////
   Serial.begin(115200);
 
-  // DELAY 10 MILLISECONDS
+  ///////////////////////////
+  // DELAY 10 MILLISECONDS //
+  ///////////////////////////
   delay(10);
+  Serial.println(F("start"));
 
-  // SEND STARTING OVER SERIAL BUS TO CONTROLLER
-  Serial.println(F("STARTING"));
-
-  // START LCD DISPLAY
+  ///////////////////////
+  // START LCD DISPLAY //
+  ///////////////////////
   lcd.begin(20, 4);
   lcd.setCursor(0, 0);
   lcd.print("starting...");
@@ -18,7 +22,7 @@ void setup() {
   //////////////////////////
   /// SETUP I2C PROTOCOL ///
   //////////////////////////
-  Wire.begin(MASTERADDRESS);  // BEGIN I2C PROTOCOL
+  Wire.begin(MASTERADDRESS);
   Wire.onReceive(i2creceive);
 
 
@@ -26,7 +30,7 @@ void setup() {
   /////////////////////////////////////
   /// ALLOCATE MEMORY GCODE CACHING ///
   /////////////////////////////////////
-  inputString.reserve(200);  // 200 bytes of data
+  inputString.reserve(200);
   gcodestack0.reserve(200);
   gcodestack1.reserve(200);
   gcodestack2.reserve(200);
@@ -61,92 +65,51 @@ void setup() {
   //////////////////////////////////
   // SET DIGITAL PINMODE OUTPUTS ///
   //////////////////////////////////
-  pinMode(ledpin, OUTPUT);
-
-  // SET X-AXIS MOTOR PINMODE OUTPUTS
-  pinMode(X_STEP_PIN, OUTPUT);
-  pinMode(X_DIR_PIN, OUTPUT);
-  pinMode(X_ENABLE_PIN, OUTPUT);
-
-  // SET Y-AXIS MOTOR PINMODE OUTPUTS
-  pinMode(Y_STEP_PIN, OUTPUT);
-  pinMode(Y_DIR_PIN, OUTPUT);
-  pinMode(Y_ENABLE_PIN, OUTPUT);
-
-  // SET Z-AXIS MOTOR PINMODE OUTPUTS
-  pinMode(Z_STEP_PIN, OUTPUT);
-  pinMode(Z_DIR_PIN, OUTPUT);
-  pinMode(Z_ENABLE_PIN, OUTPUT);
-
-  // SET E0 MOTOR PINMODE OUTPUTS
-  pinMode(E_STEP_PIN, OUTPUT);
-  pinMode(E_DIR_PIN, OUTPUT);
-  pinMode(E_ENABLE_PIN, OUTPUT);
-
-  // SET E1 MOTOR PINMODE OUTPUTS
-  pinMode(E1_STEP_PIN, OUTPUT);
-  pinMode(E1_DIR_PIN, OUTPUT);
-  pinMode(E1_ENABLE_PIN, OUTPUT);
-
-  // SET HEATER MOTOR PINMODE OUTPUTS
-  pinMode(HEATER_0_PIN, OUTPUT);
-  pinMode(HEATER_1_PIN, OUTPUT);
-
-  // ENDSTOPS PINMODE INPUT
-  pinMode(X_MIN_PIN, INPUT);
-  pinMode(Y_MIN_PIN, INPUT);
-  pinMode(Z_MIN_PIN, INPUT);
-
-  // ANALOG TEMPERATURE INPUTS
-  pinMode(TEMP_0_PIN, INPUT);
-  pinMode(TEMP_1_PIN, INPUT);
-
-  // SETUP FAN ON EXTRUDER
-  pinMode(FAN_PIN, OUTPUT);
-
-  // SETUP PINMODE FOR POWER SUPPLY
-  pinMode(PS_ON_PIN, OUTPUT);
+  pinMode(ledpin, OUTPUT);         // PIN MODE FOR LEDPIN
+  pinMode(X_STEP_PIN, OUTPUT);     // SET X-AXIS MOTOR PINMODE OUTPUTS
+  pinMode(X_DIR_PIN, OUTPUT);      // SET X-AXIS MOTOR PINMODE OUTPUTS
+  pinMode(X_ENABLE_PIN, OUTPUT);   // SET X-AXIS MOTOR PINMODE OUTPUTS
+  pinMode(Y_STEP_PIN, OUTPUT);     // SET Y-AXIS MOTOR PINMODE OUTPUTS
+  pinMode(Y_DIR_PIN, OUTPUT);      // SET Y-AXIS MOTOR PINMODE OUTPUTS
+  pinMode(Y_ENABLE_PIN, OUTPUT);   // SET Y-AXIS MOTOR PINMODE OUTPUTS
+  pinMode(Z_STEP_PIN, OUTPUT);     // SET Z-AXIS MOTOR PINMODE OUTPUTS
+  pinMode(Z_DIR_PIN, OUTPUT);      // SET Z-AXIS MOTOR PINMODE OUTPUTS
+  pinMode(Z_ENABLE_PIN, OUTPUT);   // SET Z-AXIS MOTOR PINMODE OUTPUTS
+  pinMode(E_STEP_PIN, OUTPUT);     // SET E0 MOTOR PINMODE OUTPUTS
+  pinMode(E_DIR_PIN, OUTPUT);      // SET E0 MOTOR PINMODE OUTPUTS
+  pinMode(E_ENABLE_PIN, OUTPUT);   // SET E0 MOTOR PINMODE OUTPUTS
+  pinMode(E1_STEP_PIN, OUTPUT);    // SET E1 MOTOR PINMODE OUTPUTS
+  pinMode(E1_DIR_PIN, OUTPUT);     // SET E1 MOTOR PINMODE OUTPUTS
+  pinMode(E1_ENABLE_PIN, OUTPUT);  // SET E1 MOTOR PINMODE OUTPUTS
+  pinMode(HEATER_0_PIN, OUTPUT);   // SET HEATER MOTOR PINMODE OUTPUTS
+  pinMode(HEATER_1_PIN, OUTPUT);   // SET HEATER MOTOR PINMODE OUTPUTS
+  pinMode(X_MIN_PIN, INPUT);       // ENDSTOPS PINMODE INPUT
+  pinMode(Y_MIN_PIN, INPUT);       // ENDSTOPS PINMODE INPUT
+  pinMode(Z_MIN_PIN, INPUT);       // ENDSTOPS PINMODE INPUT
+  pinMode(TEMP_0_PIN, INPUT);      // ANALOG TEMPERATURE INPUTS
+  pinMode(TEMP_1_PIN, INPUT);      // ANALOG TEMPERATURE INPUTS
+  pinMode(FAN_PIN, OUTPUT);        // SETUP FAN ON EXTRUDER
+  pinMode(PS_ON_PIN, OUTPUT);      // SETUP PINMODE FOR POWER SUPPLY
 
 
 
   ///////////////////////////////////////
   //// GCODE/SERIAL STARTUP COMMANDS ////
   ///////////////////////////////////////
-  Serial.println(F("start"));                                                                             // start communication over serial bus
-  Serial.println(F("0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000"));  // start home all
-  Serial.println(F("SD init fail"));                                                                      // SD not supported
-  Serial.println(F("ok"));                                                                                // ok 0
-
-
-
-  //////////////////////////////////////////////////////////////
-  //// READ THE INITIAL STATE OF THE ENDSTOPS AND EXTRUDERS ////
-  //////////////////////////////////////////////////////////////
-  delay(500);
-  xendsetup = digitalRead(X_MIN_PIN);
-  yendsetup = digitalRead(Y_MIN_PIN);
-  zendsetup = digitalRead(Z_MIN_PIN);
-  anae0read = analogRead(TEMP_0_PIN);
-  anahbread = analogRead(TEMP_HB_PIN);
+  Serial.println(F("0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000"));
+  Serial.println(F("SD init fail"));
+  Serial.println(F("ok"));
 
 
 
   //////////////////////////////////
   // SET ALL PINS TO LOW AT START //
   //////////////////////////////////
-  if (steppermotorsdisabled == true) {
-    digitalWrite(X_ENABLE_PIN, HIGH);
-    digitalWrite(Y_ENABLE_PIN, HIGH);
-    digitalWrite(Z_ENABLE_PIN, HIGH);
-    digitalWrite(E_ENABLE_PIN, HIGH);
-    digitalWrite(E1_ENABLE_PIN, HIGH);
-  } else {
-    digitalWrite(X_ENABLE_PIN, LOW);
-    digitalWrite(Y_ENABLE_PIN, LOW);
-    digitalWrite(Z_ENABLE_PIN, LOW);
-    digitalWrite(E_ENABLE_PIN, LOW);
-    digitalWrite(E1_ENABLE_PIN, LOW);
-  }
+  digitalWrite(X_ENABLE_PIN, HIGH);
+  digitalWrite(Y_ENABLE_PIN, HIGH);
+  digitalWrite(Z_ENABLE_PIN, HIGH);
+  digitalWrite(E_ENABLE_PIN, HIGH);
+  digitalWrite(E1_ENABLE_PIN, HIGH);
   digitalWrite(ledpin, LOW);
   digitalWrite(X_STEP_PIN, LOW);
   digitalWrite(X_DIR_PIN, LOW);
@@ -162,6 +125,18 @@ void setup() {
   digitalWrite(HEATER_1_PIN, LOW);
   digitalWrite(FAN_PIN, LOW);
   digitalWrite(PS_ON_PIN, LOW);
+
+
+
+  //////////////////////////////////////////////////////////////
+  //// READ THE INITIAL STATE OF THE ENDSTOPS AND EXTRUDERS ////
+  //////////////////////////////////////////////////////////////
+  delay(500);
+  xendsetup = digitalRead(X_MIN_PIN);
+  yendsetup = digitalRead(Y_MIN_PIN);
+  zendsetup = digitalRead(Z_MIN_PIN);
+  anae0read = analogRead(TEMP_0_PIN);
+  anahbread = analogRead(TEMP_HB_PIN);
 
 
 
@@ -203,9 +178,6 @@ void setup() {
   //////////////////////////////
   // FINISH LCD STARTUP TASKS //
   //////////////////////////////
-
-
-  // START CUSTOM CHARACTERS SETUP
   {
     byte smiley[8] = {
       B00000,
@@ -355,12 +327,11 @@ void loop() {
 
   // LOOPS TO FIRE
   serialReceiver();  // SERIAL RECEIVE LOOP
-  realtimeclock();
+  realtimeclock();   // REAL TIME CLOCK IN MILLIS
 
   // ONLY CALL MOVEMENT/TEMPERATURE LOOP IF PRINTER IS ACTIVE AND SITTING IDLE
   if (printingactive == true && currentlylocked != true) {
     movement();  // STEPPER MOTOR MICROSTEP LOOP
-//    delayMicroseconds(1);
   } else {
     delay(1);
   }
@@ -368,13 +339,10 @@ void loop() {
   // TEMP SENSING EVERY ONE-HUNDRED LOOPS
   if (tempsensingruntime == 250) {
     tempsensingruntime = 0;
-    maintenance();  // MAINTENANCE LOOP
-    litetempsensing();     // TEMPERATURE SENSING LOOP
+    maintenance();      // MAINTENANCE LOOP
+    litetempsensing();  // TEMPERATURE SENSING LOOP
+    alerttimeclock();   // ALERT TIME CLOCK
   }
-
-  // TIMING VARIABLES
-  timesincestartup = timesincestartup + 1;
-  tempsensingruntime = tempsensingruntime + 1;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
