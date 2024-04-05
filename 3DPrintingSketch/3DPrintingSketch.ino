@@ -153,7 +153,7 @@ bool e0on = false;
 bool e0max = false;
 unsigned long long int timesincelastmotorcurrent = 0;
 unsigned long int clocktimers[10] = {0,0,0,0,0,0,0,0,0,0};
-unsigned long int targettimers[10] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+unsigned long int targettime[10] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 unsigned long int currenttimer = 0;
 unsigned long int startseconds = 0;
 
