@@ -69,38 +69,107 @@ int alerttimeclock() {
       targettime[0] = -1;
       digitalWrite(TEMP_0_PIN, LOW);
       targettimeclock(0, -1, false, true);
+
+      // CALL TO SERVICE END
     }
 
   }
   if (targettime[1] != -1) {
+    if (targettime <= (currenttimer - currenttimer)) {
+      // TIME HAS EXCEEDED
+      targettime[1] = -1;
+      targettimeclock(1, -1, false, true);
+
+      // CALL TO SERVICE END
+    }
     
   }
   if (targettime[2] != -1) {
-    
+    if (targettime <= (currenttimer - currenttimer)) {
+      // TIME HAS EXCEEDED
+      targettime[2] = -1;
+      digitalWrite(TEMP_1_PIN, LOW);
+      targettimeclock(2, -1, false, true);
+
+      // CALL TO SERVICE END
+    }
   }
   if (targettime[3] != -1) {
-    
+    if (targettime <= (currenttimer - currenttimer)) {
+      // TIME HAS EXCEEDED
+      targettime[3] = -1;
+      digitalWrite(TEMP_1_PIN, LOW);
+      targettimeclock(3, -1, false, true);
+
+      // CALL TO SERVICE END
+    }
   }
   if (targettime[4] != -1) {
-    
+    if (targettime <= (currenttimer - currenttimer)) {
+      // TIME HAS EXCEEDED
+      targettime[4] = -1;
+      digitalWrite(TEMP_1_PIN, LOW);
+      targettimeclock(4, -1, false, true);
+
+      // CALL TO SERVICE END
+    }
   }
   if (targettime[5] != -1) {
-    
+    if (targettime <= (currenttimer - currenttimer)) {
+      // TIME HAS EXCEEDED
+      targettime[5] = -1;
+      digitalWrite(TEMP_1_PIN, LOW);
+      targettimeclock(5, -1, false, true);
+
+      // CALL TO SERVICE END
+    }
   }
   if (targettime[6] != -1) {
+    if (targettime <= (currenttimer - currenttimer)) {
+      // TIME HAS EXCEEDED
+      targettime[6] = -1;
+      digitalWrite(TEMP_1_PIN, LOW);
+      targettimeclock(6, -1, false, true);
+
+      // CALL TO SERVICE END
+    }
     
   }
   if (targettime[7] != -1) {
+    if (targettime <= (currenttimer - currenttimer)) {
+      // TIME HAS EXCEEDED
+      targettime[7] = -1;
+      digitalWrite(TEMP_1_PIN, LOW);
+      targettimeclock(7, -1, false, true);
+
+      // CALL TO SERVICE END
+    }
     
   }
   if (targettime[8] != -1) {
+    if (targettime <= (currenttimer - currenttimer)) {
+      // TIME HAS EXCEEDED
+      targettime[8] = -1;
+      digitalWrite(TEMP_1_PIN, LOW);
+      targettimeclock(8, -1, false, true);
+
+      // CALL TO SERVICE END
+    }
     
   }
   if (targettime[9] != -1) {
-    
+    if (targettime <= (currenttimer - currenttimer)) {
+      // TIME HAS EXCEEDED
+      targettime[9] = -1;
+      digitalWrite(TEMP_1_PIN, LOW);
+      targettimeclock(9, -1, false, true);
+
+      // CALL TO SERVICE END
+    }
   }
 
 }
+
 
 
 ///////////////////////////////
@@ -110,13 +179,16 @@ int alerttimeclock() {
 // 0      - tempchange()        - THERMAL PROTECTION - EXTRUDER ON TIME
 // 1      - startup()           - STARTUP TIME
 // 2      - hbtempchange()      - HEATED BED THERMAL PROTECTION - HEATED BED ON TIME
-// 3      -  
+// 3      - 
 // 4      - 
 // 5      - 
 // 6      - 
 // 7      - 
 // 8      - 
 // 9      - 
+
+
+// CLOCK MANAGER
 int targettimeclock(int clocknumber, int targettime2, bool start, bool stop) {
     switch (clocknumber) {
       case 0:
