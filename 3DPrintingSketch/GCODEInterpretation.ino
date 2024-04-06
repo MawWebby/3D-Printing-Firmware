@@ -1249,6 +1249,7 @@ int interpretation(String commanding) {
       }
     }
 
+    // G2*
     if (firstletter == "2") {
 
       // DETERINE THE THIRD LETTER OF THE SCRIPT
@@ -1295,7 +1296,6 @@ int interpretation(String commanding) {
       // G27 - PARK TOOLHEAD
       if (firstletter == "7") {
         xhome();
-        yhome();
         Serial.println(F("ok"));
         interpretedcompleted = true;
         return (0);
@@ -1334,25 +1334,124 @@ int interpretation(String commanding) {
       }
     }
 
+    // G3*
     if (firstletter == "3") {
     }
 
+    // G4*
     if (firstletter == "4") {
     }
 
+    // G5*
     if (firstletter == "5") {
     }
 
+    // G6*
     if (firstletter == "6") {
     }
 
+    // G7*
     if (firstletter == "7") {
     }
 
+    // G8*
     if (firstletter == "8") {
     }
 
+    // G9*
     if (firstletter == "9") {
+
+      firstletter = commanding.substring(2, 3);
+
+      // G92 - SET CURRENT MOTOR POSITIONS
+      if (firstletter == "2") {
+
+        // INITIAL TIMING VARIABLES
+        int inittimingx92 = 5;
+        int inittimingy92 = 5;
+        int inittimingz92 = 5;
+        int inittiminge92 = 5;
+
+        // FIRSTLETTER DETERMINATION
+        firstletter = commanding.substring(4, 5);
+
+        // WHILE VARIABLES
+        bool completionx92 = false;
+        bool completiony92 = false;
+        bool completionz92 = false;
+        bool completione92 = false;
+
+        // TIMING VARIABLES
+        int timingx92 = 0;
+        int timingy92 = 0;
+        int timingz92 = 0;
+        int timinge92 = 0;
+
+
+        // SET X POSITION
+        if (firstletter == "X") {
+
+          while (completionx92 == false && timingx92 <= 20) {
+            firstletter = commanding.substring(inittimingx92 + timingx92, inittimingx92 + 1 + timingx92);
+
+            if (firstletter == " " || firstletter == "" || timingx92 == 19) {
+              String currentx = commanding.substring(inittimingx92, inittimingx92 + timingx92);
+              currentxdimension = currentx.toFloat();
+              completionx92 = true;
+              timingy92 = inittimingx92 + timingx92 + 1;
+            }
+          }
+          firstletter = commanding.substring(timingy92, timingy92 + 1);
+        }
+
+        // SET Y POSITION
+        if (firstletter == "Y") {
+
+          while (completiony92 == false && timingy92 <= 20) {
+            firstletter = commanding.substring(inittimingy92 + timingy92, inittimingy92 + 1 + timingy92);
+
+            if (firstletter == " " || firstletter == "" || timingy92 == 19) {
+              String currenty = commanding.substring(inittimingy92, inittimingy92 + timingy92);
+              currentydimension = currenty.toFloat();
+              completiony92 = true;
+              timingz92 = inittimingy92 + timingy92 + 1;
+            }
+          }
+          firstletter = commanding.substring(timingz92, timingz92 + 1);
+        }
+
+        // SET Z POSITION
+        if (firstletter == "Z") {
+
+          while (completionz92 == false && timingz92 <= 20) {
+            firstletter = commanding.substring(inittimingz92 + timingz92, inittimingz92 + 1 + timingz92);
+
+            if (firstletter == " " || firstletter == "" || timingz92 == 19) {
+              String currentz = commanding.substring(inittimingz92, inittimingz92 + timingz92);
+              currentzdimension = currentz.toFloat();
+              completionz92 = true;
+              timinge92 = inittimingz92 + timingz92 + 1;
+            }
+          }
+          firstletter = commanding.substring(timinge92, timinge92 + 1);
+        }
+
+        // SET E POSITION
+        if (firstletter == "E") {
+
+          while (completione92 == false && timinge92 <= 20) {
+            firstletter = commanding.substring(inittiminge92 + timinge92, inittiminge92 + 1 + timinge92);
+
+            if (firstletter == " " || firstletter == "" || timinge92 == 19) {
+              String currente = commanding.substring(inittiminge92, inittiminge92 + timinge92);
+              currente0motordimension = currente.toFloat();
+              completione92 = true;
+            }
+          }
+        }
+
+        Serial.println(F("ok"));
+      }
     }
   }
 
