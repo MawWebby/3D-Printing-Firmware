@@ -1,92 +1,101 @@
-// GCODE COMMANDS AND DEBUGGING SCRIPTS
+GCODE COMMANDS AND DEBUGGING SCRIPTS
 
 
 
-// E - EMERGENCY COMMANDS
-  // E0 - DISABLE ALL MOTORS (ePARSER)
+3D Printer GCODE List
+Created by Matthew Whitworth
+Last Updated 4/6/24
 
 
 
-// Z - COMMANDS
-  // Z0	 - LOAD FILAMENT AND UNLOAD FILAMENT
-  // Z1  - TURN PRINTER ACTIVE STATE FROM OFF TO ON
-  // Z2  - READ THE ENTIRE DATA ARRAY TO SERIAL BUS
-  // Z3  - TURN DEBUGGING FEATURE OVER SERIAL ON OR OFF
-  // Z4  - READ THE UNCACHED DATA ARRAY TO SERIAL BUS
-  // Z5  - READ VARIABLES RELATING TO CACHING ARRAY
-  // Z6  - READ INFORMATION REGARDING CURRENT POSITIONS
-  // Z7  - READ INFORMATION REGARDING ENDSTOP POSITION
-  // Z8  - READ INFORMATION ABOUT EXTRUDER TEMPERATURE
-  // Z9  - READ INFORMATION ABOUT CURRENT MODIFIERS
-  // Z10 - EMERGENCY SHUTDOWN MODE
-  // Z12 - FULL DEBUG OF ANALOG READINGS OF TEMP PROBE; BOTH RAW 
-           AND PERCEIVED VALUES
-  // Z13 - CHANGE MODIFIER FOR TEMPERATURE PROBE &&&&&&
-  // Z14 - READ ALL VARIABLES RELATING TO CACHING (INITIAL)
-  // Z15 - READ ALL VARIABLES RELATING TO CACHING FINAL
-  // Z200 - MOVE X AXIS TO CERTAIN POSITION (xxx.xx)
-  // Z201 - MOVE Y AXIS TO CERTAIN POSITION (yyy.yy)
-  // Z202 - MOVE Z AXIS TO CERTAIN POSITION (zzz.zz)
-  // Z203 - MOVE E AXIS TO CERTAIN POSITION (eee.ee)
-  // Z204 - HOME ALL AXIS
-  // Z205 - MOVE ALL DIMENSIONS TO A CERTAIN POSITION (xyze)
-  // Z900 - RUN A FULL SYSTEM TEST
-  // Z901 - RUN A FULL TEST OF THE UNCACHED STRINGS ARRAY
-  // Z902 - RUN A FULL TEST OF THE CACHED DATABASE ARRAY
-  // Z903 - RUN A FULL TEST OF THE TEMPERATURE PROBES
-  // Z904 - RUN A FULL TEST OF THE MOTOR MOVEMENTS (STANDING)
-  // Z905 - RUN A FULL TEST OF THE MOTOR MOVEMENTS (RUNNING)
-  // Z906 - RUN A FULL TEST OF VARIABLES
-  // Z907 - RUN A FULL TEST OF THE ERROR ARRAY
-  // Z908 - RUN A FULL TEST OF EXTRUDER UNDER NORMAL CONDITIONS
-  // Z909 - RUN A FULL TEST OF THE I2C PROTOCOL
-  // Z910 - RUN A FULL TEST OF THE ePARSER
-  // Z930 - TEST SPECIFIC - DISABLE ALL MOTOR/EXTRUDER PINS
-  // Z931 - TEST SPECIFIC - ENABLE ALL MOTOR/EXTRUDER PINS
-  // Z932 - TEST SPECIFIC - HOME ALL AXIS
-  // Z933 - TEST SPECIFIC - RESTART PRINTER THROUGH SETUP LOOP
-  // Z934 - TEST SPECIFIC - RESET ALL AND RESTART TO SETUP LOOP
-  // Z999 - PRINT ENTIRE DATABASE TO SERIAL BUS
-  // Z999.1 - CLEAR ENTIRE DATABASE AND RESET NECESSARY VARIABLES
+
+E - Emergency Commands
+___________________________________________________________________________________________________________________________________________________
+| Command | Availability                 | Purpose                                                          | Supported Arguments                 |
+|_________|______________________________|__________________________________________________________________|_____________________________________|
+| E0      | Supported			 | Disable all Stepper Motors                                       | N/A                                 |
+|_________|______________________________|__________________________________________________________________|_____________________________________|
 
 
 
-TEST GCODE COMMANDS!!!!!
-CONSTANT SWITCHING MEMORY LEAK IN BACKGROUND
+
+
+Z - Debug Commands
+___________________________________________________________________________________________________________________________________________________
+| Command | Availability                 | Purpose                                                          | Supported Arguments                 |
+|_________|______________________________|__________________________________________________________________|_____________________________________|
+| Z0      | Supported			 | Load/Unload Filament                                             | N/A                                 |
+| Z1      | Supported			 | Turn Printer Active/Inactive                                     | State: (0 / 1)                      |
+| Z2      | Removed (Z999 Replaced)	 | Read Database to Serial Bus                                      | N/A                                 |
+| Z3      | Supported			 | Turn Debugging over Serial On/Off                                | State: (0 / 1)                      |
+| Z6      | Supported			 | Read Information about Current Dimension Positions               | N/A                                 |
+| Z7      | Supported			 | Read Information about Endstop States                            | N/A                                 |
+| Z8      | Supported			 | Read Information about Extruder States                           | N/A                                 |
+| Z9      | Supported			 | Read Information about Current Modifiers                         | N/A                                 |
+| Z10     | Deprecated		         | Emergency Shutdown Mode                                          | N/A                                 |
+| Z12     | Supported			 | Raw Sensor Readings and Perceived Real Temperature               | N/A				  |
+| Z13     | Not Supported		 | Change Modifier for Temperature Probe                            | Modifier: (INT)                     |
+| Z200    | Supported			 | Move X-Axis to Certain Position                                  | Position: (XXX.XX)                  |
+| Z201    | Supported			 | Move Y-Axis to Certain Position                                  | Position: (YYY.YY)                  |
+| Z202    | Supported			 | Move Z-Axis to Certain Position                                  | Position: (ZZZ.ZZ)                  |
+| Z203    | Supported			 | Move E-Axis to Certain Position                                  | Position: (EEE.EE)                  |
+| Z204    | Supported			 | Home All Axis                                                    | N/A                                 |
+| Z900*   | BETA			 | Run Full System Test                                             | N/A                                 |
+| Z999    | Supported			 | Print Cached Database to Serial                                  | N/A                                 |
+| Z999.1  | Supported			 | Clean Database and Restart Printer                               | N/A                                 |
+|_________|______________________________|__________________________________________________________________|_____________________________________|
 
 
 
-// G - COMMANDS
-  // G0  - MOVE RAPID
-  // G1  - MOVE LINEAR
-  // G2  - CONTROLLED ARC MOVE CLOCKWISE
-  // G3  - CONTROLLED ARC MOVE COUNTER-CLOCKWISE
-  // G10 - RETRACT
-  // G11 - UNRETRACT
-  // G12 - CLEAN TOOL
-  // G20 - SET UNITS TO INCHES
-  // G21 - SET UNITS TO MILLIMETERS
-  // G22 - DO A RETRACT MOVE AUTOMATICALLY
-  // G23 - FIRMWARE RECOVER MOVE
-  // G27 - PARK TOOLHEAD
-  // G28 - MOVE TO HOME
-  // G29 - MAYBE -  MANUAL Z-AXIS PROBING
-  // G30 - MAYBE - SINGLE Z-PROBE
-  // G32 - MAYBE - PROBE AND CALCULATE Z PLANE
-  // G82 - MAYBE - CURRENT Z-PROBE AT CURRENT LOCATION
-  // G90 - SET TO ABSOLUTE POSITIONING
-  // G91 - SET TO RELATIVE POSITIONING
-  // G92 - SET CURRENT MOTOR POSITIONS
+
+
+G - Standard Operation Commands
+_________________________________________________________________________________________________________________________________________________________
+| Command | Availability                 | Purpose                                                          | Supported Arguments                 	|
+|_________|______________________________|__________________________________________________________________|___________________________________________|
+| G0      | Supported			 | Move Dimensions (Non-Extrude)                                    | X(XXX.XX) Y(YYY.YY) Z(ZZZ.ZZ)       	|
+| G1      | Supported			 | Move Dimensions (Extrude)                                        | X(XXX.XX) Y(YYY.YY) Z(ZZZ.ZZ) E(EEE.EE)	|
+| G2	  | Not Supported		 | Controlled Arc Move Clockwise	                            | N/A                                 	|
+| G3	  | Not Supported		 | Controlled Arc Move Counter-Clockwise                            | N/A                                 	|
+| G10	  | Not Supported		 | Printer Controlled Retraction	                            | N/A                                 	|
+| G11	  | Not Supported		 | Printer Controlled Extrusion		                            | N/A                                 	|
+| G12	  | Not Supported		 | Clean Tool				                            | N/A                                 	|
+| G20	  | Supported			 | Set Units to Inches			                            | N/A                                 	|
+| G21	  | Supported			 | Set Units to Millimeters		                            | N/A                                 	|
+| G22	  | Not Supported		 | Retract Moves Automatically		                            | N/A                                 	|
+| G23	  | Not Supported		 | Recover Firmware			                            | N/A                                 	|
+| G27	  | Supported			 | Park Toolhead			                            | N/A                                 	|
+| G28	  | Supported			 | Home Axis				                            | (None / X / Y / Z)                  	|
+| G29	  | Not Supported		 | Manual Z-Axis Probing		                            | N/A		                  	|
+| G30	  | Not Supported		 | Single Z-Probe			                            | N/A		                  	|
+| G32	  | Not Supported		 | Probe and Calculate Z Plane		                            | N/A		                  	|
+| G82	  | Not Supported		 | Current Z-Probe at Current Location	                            | N/A		                  	|
+| G90	  | Not Supported		 | Set to Absolute Positioning		                            | N/A		                  	|
+| G91	  | Not Supported		 | Set to Relative Positioning		                            | N/A		                  	|
+| G92	  | Supported			 | Set Current Motor Positions		                            | X(XXX.XX) Y(YYY.YY) Z(ZZZ.ZZ) E(EEE.EE)	|
+|_________|______________________________|__________________________________________________________________|___________________________________________|
 
 
 
-// M - COMMANDS
-  // M0   - STOP OR UNCONDITIONAL STOP
-  // M1   - SLEEP OR CONDITIONAL STOP
-  // M2   - PROGRAM END
-  // M16  - EXPECTED PRINTER CHECK
-  // M17  - ENABLE/POWER ALL STEPPER MOTORS
-  // M18  - DISABLE ALL STEPPER MOTORS
+
+
+M - COMMANDS
+_________________________________________________________________________________________________________________________________________________________
+| Command | Availability                 | Purpose                                                          | Supported Arguments                 	|
+|_________|______________________________|__________________________________________________________________|___________________________________________|
+| M0      | Supported			 | Unconditional Stop		                                    | N/A				       	|
+| M1      | Supported			 | Conditional Stop		                                    | N/A				       	|
+| M2      | Supported			 | Program End			                                    | N/A				       	|
+| M16     | Supported			 | Verify Printer Connected by Hostname                             | "HOSTNAME_OF_PRINTER"		       	|
+| M17     | Supported			 | Disable/Enable Stepper Motors	                            | N/A				       	|
+| M18     | Supported			 | Disable Stepper Motors		                            | N/A				       	|
+
+
+
+
+
+
+
   // M20  - LIST SD CARD
   // M21  - INITIALIZE SD CARD
   // M22  - RELEASE SD CARD
