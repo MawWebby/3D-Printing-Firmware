@@ -84,6 +84,8 @@ bool encoder1 = false;
 bool encoder2 = false;
 bool encoder3 = false;
 int numbertoshow = 0;
+float millimeterstoinches = 0.0393701;
+float currentunits = 0; // 0 FOR MM, 1 FOR INCHES
 
 
 
@@ -212,8 +214,13 @@ bool softwareendstops = true;
 float currentxdimension = 0;
 float currentydimension = 0;
 float currentzdimension = 0;
+float currentxdimensionLCD = 0;
+float currentydimensionLCD = 0;
+float currentzdimensionLCD = 0;
 float currente0motordimension = 0;
 float currente1motordimension = 0;
+float currente0motordimensionLCD = 0;
+float currente1motordimensionLCD = 0;
 float currente0temp = 000.0001;
 float currente1temp = 000.0001;
 float currenthbtemp = 000.0001;

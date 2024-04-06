@@ -23,13 +23,13 @@ void lcdEngine() {
           lcd.clear();
           lcd.setCursor(0, 0);
           lcd.print("X");
-          lcd.print(currentxdimension);
+          lcd.print(currentxdimensionLCD);
           lcd.setCursor(0, 1);
           lcd.print("Y");
-          lcd.print(currentydimension);
+          lcd.print(currentydimensionLCD);
           lcd.setCursor(0, 2);
           lcd.print("Z");
-          lcd.print(currentzdimension);
+          lcd.print(currentzdimensionLCD);
 
           if (currentlylocked == true) {
             if (steppermotorsdisabled == true) {

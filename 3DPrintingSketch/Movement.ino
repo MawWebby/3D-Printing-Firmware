@@ -288,6 +288,22 @@ void movetonewgcodeformovement(bool runchecks) {
   bool conditionsmetZ = false;
   bool conditionsmetE = false;
 
+  // if current units equals 1, then change LCD to Inches instead of MM
+  if (currentunits == 1) {
+    currentxdimensionLCD = currentxdimension * millimeterstoinches;
+    currentydimensionLCD = currentxdimension * millimeterstoinches;
+    currentzdimensionLCD = currentxdimension * millimeterstoinches;
+    currente0motordimensionLCD = currentxdimension * millimeterstoinches;
+    currente1motordimensionLCD = currentxdimension * millimeterstoinches;
+  } else {
+    currentxdimensionLCD = currentxdimension;
+    currentydimensionLCD = currentydimension;
+    currentzdimensionLCD = currentzdimension;
+    currente0motordimensionLCD = currente0motordimension;
+    currente1motordimensionLCD = currente1motordimension;
+  }
+
+
   // IF RUN CHECKS DOES NOT EQUAL TRUE, IT MUST BE CALLED BY TEST COMMAND (NOT CURENTLY SUPPORTED!)
   if (runchecks == false) {
     Serial.println(F("RUNNING NEW GCODE COMMAND WITHOUT CHECKS IS NOT RECOMMENDED!"));

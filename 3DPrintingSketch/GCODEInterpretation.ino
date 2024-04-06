@@ -91,7 +91,7 @@ int interpretation(String commanding) {
   if (firstletter == "E") {
     eShell(commanding);
   }
-  
+
 
   // IF COMMAND STARTS WITH Q, EVALUATE WHAT IT ACTUALLY MEANS
   if (firstletter == "Z") {
@@ -730,7 +730,7 @@ int interpretation(String commanding) {
         int gcodenumber = 3;
         int executionnumber = 0;
 
-      // analyzedCURRENTLYANALYZINGNUMBER FLIP
+        // analyzedCURRENTLYANALYZINGNUMBER FLIP
         while (readfromarray(analyzedCURRENTLYANALYZINGNUMBER, 10) == 1) {
           analyzedCURRENTLYANALYZINGNUMBER = analyzedCURRENTLYANALYZINGNUMBER + 1;
           if (analyzedCURRENTLYANALYZINGNUMBER == 11) {
@@ -778,12 +778,22 @@ int interpretation(String commanding) {
 
               // WAIT UNTIL CHARACTER RECEIVED IS A " ", THEN END THIS WHILE LOOP
               if (firstletter == " " || firstletter == "") {
-                String xvalues = commanding.substring(startxdigit, gcodenumber);
-                float xvaluestoinsert = xvalues.toFloat();
-                sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, xvaluestoinsert, 0);
-                xfinished = true;
-                xstatement = true;
-                //                targetxdimension = xvaluestoinsert;
+
+                // CONVERT FROM INCHES TO MM
+                if (currentunits == 0) {
+                  String xvalues = commanding.substring(startxdigit, gcodenumber);
+                  float xvaluestoinsert = xvalues.toFloat();
+                  sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, xvaluestoinsert, 0);
+                  xfinished = true;
+                  xstatement = true;
+                } else {
+                  String xvalues = commanding.substring(startxdigit, gcodenumber);
+                  float xvaluestoinsert = xvalues.toFloat();
+                  xvaluestoinsert = xvaluestoinsert / millimeterstoinches;
+                  sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, xvaluestoinsert, 0);
+                  xfinished = true;
+                  xstatement = true;
+                }
               }
 
               gcodenumber = gcodenumber + 1;
@@ -806,11 +816,20 @@ int interpretation(String commanding) {
 
               // WAIT UNTIL CHARACTER RECEIVED IS A " ", THEN END THIS WHILE LOOP
               if (firstletter == " " || firstletter == "") {
-                String yvalues = commanding.substring(startydigit, gcodenumber);
-                float yvaluestoinsert = yvalues.toFloat();
-                sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, yvaluestoinsert, 1);
-                yfinished = true;
-                ystatement = true;
+                if (currentunits == 0) {
+                  String yvalues = commanding.substring(startydigit, gcodenumber);
+                  float yvaluestoinsert = yvalues.toFloat();
+                  sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, yvaluestoinsert, 1);
+                  yfinished = true;
+                  ystatement = true;
+                } else {
+                  String yvalues = commanding.substring(startydigit, gcodenumber);
+                  float yvaluestoinsert = yvalues.toFloat();
+                  yvaluestoinsert = yvaluestoinsert / millimeterstoinches;
+                  sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, yvaluestoinsert, 1);
+                  yfinished = true;
+                  ystatement = true;
+                }
               }
 
               gcodenumber = gcodenumber + 1;
@@ -833,11 +852,20 @@ int interpretation(String commanding) {
 
               // WAIT UNTIL CHARACTER RECEIVED IS A " ", THEN END THIS WHILE LOOP
               if (firstletter == " " || firstletter == "") {
-                String zvalues = commanding.substring(startzdigit, gcodenumber);
-                float zvaluestoinsert = zvalues.toFloat();
-                sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, zvaluestoinsert, 2);
-                zfinished = true;
-                zstatement = true;
+                if (currentunits == 0) {
+                  String zvalues = commanding.substring(startzdigit, gcodenumber);
+                  float zvaluestoinsert = zvalues.toFloat();
+                  sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, zvaluestoinsert, 2);
+                  zfinished = true;
+                  zstatement = true;
+                } else {
+                  String zvalues = commanding.substring(startzdigit, gcodenumber);
+                  float zvaluestoinsert = zvalues.toFloat();
+                  zvaluestoinsert = zvaluestoinsert / millimeterstoinches;
+                  sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, zvaluestoinsert, 2);
+                  zfinished = true;
+                  zstatement = true;
+                }
               }
 
               gcodenumber = gcodenumber + 1;
@@ -861,11 +889,20 @@ int interpretation(String commanding) {
 
               // WAIT UNTIL CHARACTER RECEIVED IS A " ", THEN END THIS WHILE LOOP
               if (firstletter == " " || firstletter == "") {
-                String evalues = commanding.substring(startedigit, gcodenumber);
-                float evaluestoinsert = evalues.toFloat();
-                sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, evaluestoinsert, 3);
-                efinished = true;
-                estatement = true;
+                if (currentunits == 0) {
+                  String evalues = commanding.substring(startedigit, gcodenumber);
+                  float evaluestoinsert = evalues.toFloat();
+                  sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, evaluestoinsert, 3);
+                  efinished = true;
+                  estatement = true;
+                } else {
+                  String evalues = commanding.substring(startedigit, gcodenumber);
+                  float evaluestoinsert = evalues.toFloat();
+                  evaluestoinsert = evaluestoinsert / millimeterstoinches;
+                  sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, evaluestoinsert, 3);
+                  efinished = true;
+                  estatement = true;
+                }
               }
 
               gcodenumber = gcodenumber + 1;
@@ -915,7 +952,7 @@ int interpretation(String commanding) {
           }
         }
 
-        
+
 
         // SEND CURRENT GCODE COMMAND TO BE OK IF THERE ARE LESS THAN 8 CURRENTLY CACHED GCODE COMMANDS
         if (currentlycachedgcodes <= 8) {
@@ -978,6 +1015,11 @@ int interpretation(String commanding) {
             }
           }
 
+          bool xstatement = false;
+          bool ystatement = false;
+          bool zstatement = false;
+          bool estatement = false;
+
           while (gcodecomplete != true && executionnumber <= 25) {
 
             // EMERGENCY LOOP
@@ -1012,11 +1054,22 @@ int interpretation(String commanding) {
 
                 // WAIT UNTIL CHARACTER RECEIVED IS A " ", THEN END THIS WHILE LOOP
                 if (firstletter == " " || firstletter == "") {
-                  String xvalues = commanding.substring(startxdigit, gcodenumber);
-                  float xvaluestoinsert = xvalues.toFloat();
-                  sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, xvaluestoinsert, 0);
-                  xfinished = true;
-                  //                targetxdimension = xvaluestoinsert;
+
+                  // CONVERT FROM INCHES TO MM
+                  if (currentunits == 0) {
+                    String xvalues = commanding.substring(startxdigit, gcodenumber);
+                    float xvaluestoinsert = xvalues.toFloat();
+                    sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, xvaluestoinsert, 0);
+                    xfinished = true;
+                    xstatement = true;
+                  } else {
+                    String xvalues = commanding.substring(startxdigit, gcodenumber);
+                    float xvaluestoinsert = xvalues.toFloat();
+                    xvaluestoinsert = xvaluestoinsert / millimeterstoinches;
+                    sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, xvaluestoinsert, 0);
+                    xfinished = true;
+                    xstatement = true;
+                  }
                 }
 
                 gcodenumber = gcodenumber + 1;
@@ -1038,11 +1091,22 @@ int interpretation(String commanding) {
                 firstletter = commanding.substring(gcodenumber, gcodenumber + 1);
 
                 // WAIT UNTIL CHARACTER RECEIVED IS A " ", THEN END THIS WHILE LOOP
+
                 if (firstletter == " " || firstletter == "") {
-                  String yvalues = commanding.substring(startydigit, gcodenumber);
-                  float yvaluestoinsert = yvalues.toFloat();
-                  sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, yvaluestoinsert, 1);
-                  yfinished = true;
+                  if (currentunits == 0) {
+                    String yvalues = commanding.substring(startydigit, gcodenumber);
+                    float yvaluestoinsert = yvalues.toFloat();
+                    sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, yvaluestoinsert, 1);
+                    yfinished = true;
+                    ystatement = true;
+                  } else {
+                    String yvalues = commanding.substring(startydigit, gcodenumber);
+                    float yvaluestoinsert = yvalues.toFloat();
+                    yvaluestoinsert = yvaluestoinsert / millimeterstoinches;
+                    sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, yvaluestoinsert, 1);
+                    yfinished = true;
+                    ystatement = true;
+                  }
                 }
 
                 gcodenumber = gcodenumber + 1;
@@ -1065,10 +1129,20 @@ int interpretation(String commanding) {
 
                 // WAIT UNTIL CHARACTER RECEIVED IS A " ", THEN END THIS WHILE LOOP
                 if (firstletter == " " || firstletter == "") {
-                  String zvalues = commanding.substring(startzdigit, gcodenumber);
-                  float zvaluestoinsert = zvalues.toFloat();
-                  sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, zvaluestoinsert, 2);
-                  zfinished = true;
+                  if (currentunits == 0) {
+                    String zvalues = commanding.substring(startzdigit, gcodenumber);
+                    float zvaluestoinsert = zvalues.toFloat();
+                    sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, zvaluestoinsert, 2);
+                    zfinished = true;
+                    zstatement = true;
+                  } else {
+                    String zvalues = commanding.substring(startzdigit, gcodenumber);
+                    float zvaluestoinsert = zvalues.toFloat();
+                    zvaluestoinsert = zvaluestoinsert / millimeterstoinches;
+                    sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, zvaluestoinsert, 2);
+                    zfinished = true;
+                    zstatement = true;
+                  }
                 }
 
                 gcodenumber = gcodenumber + 1;
@@ -1091,10 +1165,20 @@ int interpretation(String commanding) {
 
                 // WAIT UNTIL CHARACTER RECEIVED IS A " ", THEN END THIS WHILE LOOP
                 if (firstletter == " " || firstletter == "") {
-                  String evalues = commanding.substring(startedigit, gcodenumber);
-                  float evaluestoinsert = evalues.toFloat();
-                  sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, evaluestoinsert, 3);
-                  efinished = true;
+                  if (currentunits == 0) {
+                    String evalues = commanding.substring(startedigit, gcodenumber);
+                    float evaluestoinsert = evalues.toFloat();
+                    sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, evaluestoinsert, 3);
+                    efinished = true;
+                    estatement = true;
+                  } else {
+                    String evalues = commanding.substring(startedigit, gcodenumber);
+                    float evaluestoinsert = evalues.toFloat();
+                    evaluestoinsert = evaluestoinsert / millimeterstoinches;
+                    sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, evaluestoinsert, 3);
+                    efinished = true;
+                    estatement = true;
+                  }
                 }
 
                 gcodenumber = gcodenumber + 1;
@@ -1115,8 +1199,51 @@ int interpretation(String commanding) {
             executionnumber = executionnumber + 1;
           }
 
+          // DECLARE PREVIOUS INFORMATION IN NEW SCRIPT IF NO INFORMATION WAS GIVEN PREVIOUSLY!
+          if (xstatement == false) {
+            if (analyzedCURRENTLYANALYZINGNUMBER == 0) {
+              sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(10, 0), 0);
+            } else {
+              sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(analyzedCURRENTLYANALYZINGNUMBER - 1, 0), 0);
+            }
+          }
+          if (ystatement == false) {
+            if (analyzedCURRENTLYANALYZINGNUMBER == 0) {
+              sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(10, 1), 1);
+            } else {
+              sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(analyzedCURRENTLYANALYZINGNUMBER - 1, 1), 1);
+            }
+          }
+          if (zstatement == false) {
+            if (analyzedCURRENTLYANALYZINGNUMBER == 0) {
+              sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(10, 2), 2);
+            } else {
+              sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(analyzedCURRENTLYANALYZINGNUMBER - 1, 2), 2);
+            }
+          }
+          if (estatement == false) {
+            if (analyzedCURRENTLYANALYZINGNUMBER == 0) {
+              sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(10, 3), 3);
+            } else {
+              sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(analyzedCURRENTLYANALYZINGNUMBER - 1, 3), 3);
+            }
+          }
+
+          // SEND CURRENT GCODE COMMAND TO BE OK IF THERE ARE LESS THAN 8 CURRENTLY CACHED GCODE COMMANDS
+          if (currentlycachedgcodes <= 8) {
+            Serial.println(F("ok"));
+            sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, 1, 9);
+          } else {
+            sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, 0, 9);
+          }
+
+          // CURRENTLY CACHED GCODES!
+          currentlycachedgcodes = currentlycachedgcodes + 1;
+
+          // SEND LOCK TO ARRAY TO FINISH GCODE ANALYZING
           sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, 1, 10);
 
+          // GCODE COMPLETE
           interpretedcompleted = true;
         }
       }
@@ -1133,16 +1260,18 @@ int interpretation(String commanding) {
         Serial.println(F("CONTROLLED ARC MOVE NOT SUPPORTED"));
       }
 
-      // G20 - SET UNITS TO INCHES (NOT SUPPORTED)
+      // G20 - SET UNITS TO INCHES
       if (firstletter == "0") {
         Serial.println(F("ok"));
+        currentunits = 1;
         interpretedcompleted = true;
         return (0);
       }
 
-      // G21 - SET UNITS TO MM (NOT SUPPORTED)
+      // G21 - SET UNITS TO MM
       if (firstletter == "1") {
         Serial.println(F("ok"));
+        currentunits = 0;
         interpretedcompleted = true;
         return (0);
       }
