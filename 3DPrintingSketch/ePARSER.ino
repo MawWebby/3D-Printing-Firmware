@@ -243,7 +243,11 @@ int mShell(String commanding) {
             // CONTINUE ON SETTING TEMPERATURE
             String extemp = commanding.substring(5, 100);
             if (currentactiveextruder == 0) {
-              targete0temp = extemp.toFloat();
+              if (simulationmode == false) {
+                targete0temp = extemp.toFloat();
+              } else {
+                Serial.println(F("SKIPPING"));
+              }
               Serial.println(F("ok"));
               return;
               return;
@@ -337,7 +341,11 @@ int mShell(String commanding) {
             // CONTINUE ON SETTING TEMPERATURE
             String extemp = commanding.substring(6, 100);
             if (currentactiveextruder == 0) {
-              targete0temp = extemp.toFloat();
+              if (simulationmode == false) {
+                targete0temp = extemp.toFloat();
+              } else {
+                Serial.println(F("SKIPPING"));
+              }
               Serial.println(F("ok"));
               return;
               return;
@@ -642,7 +650,11 @@ int mShell(String commanding) {
           }
           if (firstletter == " ") {
             String bedtemp = commanding.substring(5, 100);
-            targethbtemp = bedtemp.toFloat();
+            if (simulationmode == false) {
+              targethbtemp = bedtemp.toFloat();
+            } else {
+              Serial.println(F("SKIPPING"));
+            }
             Serial.println(F("ok"));
             return;
             return;
@@ -1433,12 +1445,16 @@ int mShell(String commanding) {
           firstletter = commanding.substring(4, 5);
           if (firstletter == "S") {
             firstletter = commanding.substring(5, 6);
-            simulationmode = firstletter.toInt();
+            if (firstletter == "0") {
+              simulationmode = false;
+            }
+            simulationmode = true;
             return;
             return;
             return;
           } else {
             Serial.println(F("NO ARGS PASSED! M37 - TYPE SIMULATION"));
+            simulationmode = true;
             return;
             return;
             return;
@@ -1446,6 +1462,7 @@ int mShell(String commanding) {
         } else {
           if (firstletter == "") {
             Serial.println(F("NO ARGS PASSED! M37 - TYPE SIMULATION"));
+            simulationmode = true;
             return;
             return;
             return;
@@ -1973,7 +1990,7 @@ int mShell(String commanding) {
 int eShell(String commanding) {
 
   bool interpretedcompleted = false;
-  
+
   // DETERMINE THE FIRST LETTER
   String firstletter = commanding.substring(0, 1);
 

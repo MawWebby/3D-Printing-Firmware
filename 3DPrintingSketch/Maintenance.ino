@@ -9,6 +9,17 @@ int maintenance() {
     digitalWrite(FAN_PIN, LOW);
   }
 
+  if (simulationmode == true) {
+    targete0temp = 0;
+    targete1temp = 0;
+    targethbtemp = 0;
+    digitalWrite(HEATER_0_PIN, LOW);
+    digitalWrite(HEATER_1_PIN, LOW);
+    digitalWrite(HEATER_HB_PIN, LOW);
+    digitalWrite(E_ENABLE_PIN, LOW);
+    edisabled = true;
+  }
+
   e0max = false;
   ledpinblink = ledpinblink + 1;
 

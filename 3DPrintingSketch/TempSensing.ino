@@ -8,9 +8,9 @@
 // TEMP SENSING LOOP
 void litetempsensing() {
 
-    currente0temp = analogRead(TEMP_0_PIN);
-    currente1temp = analogRead(TEMP_1_PIN);
-    currenthbtemp = analogRead(TEMP_HB_PIN);
+  currente0temp = analogRead(TEMP_0_PIN);
+  currente1temp = analogRead(TEMP_1_PIN);
+  currenthbtemp = analogRead(TEMP_HB_PIN);
 
   // DEGREES CELSIUS
   currente0temp = e0tempmodifier * (1023 - currente0temp);
@@ -18,8 +18,8 @@ void litetempsensing() {
   currenthbtemp = hbtempmodifier * (1023 - currenthbtemp);
   currenthbtemp = currente1temp;
 
-//  tempchange();
-//  hbtempchange();
+  //  tempchange();
+  //  hbtempchange();
 
   if (currente0temp >= targete0temp - 10) {
     digitalWrite(HEATER_0_PIN, LOW);
@@ -54,8 +54,14 @@ void tempsensing() {
   currenthbtemp = hbtempmodifier * (1023 - rawsensorhb);
   currenthbtemp = currente1temp;
 
-  tempchange();
-  hbtempchange();
+  if (simulationmode == false) {
+    tempchange();
+    hbtempchange();
+  } else {
+    digitalWrite(HEATER_0_PIN, LOW);
+    digitalWrite(HEATER_1_PIN, LOW);
+    digitalWrite(HEATER_HB_PIN, LOW);
+  }
 }
 
 // TEMP CHANGING EXTRUDER LOOP
@@ -214,7 +220,7 @@ void extruderemergencyretraction() {
   }
 
   digitalWrite(HEATER_0_PIN, LOW);
-  
+
   while (t <= 1000) {
     digitalWrite(E_ENABLE_PIN, LOW);
     digitalWrite(E_STEP_PIN, HIGH);
