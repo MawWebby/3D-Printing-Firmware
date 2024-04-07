@@ -321,8 +321,7 @@ float readvaluefromarray = 00.001;
 int lastnoncachedstring = 0;
 int totalnoncachedstrings = 0;
 String stringfromstack = "";
-bool absolutepositioning = true;
-bool relativepositioning = false;
+int absoluterelative = 0; // 0 = ABSOLUTE; 1 = RELATIVE
 
 // CURRENT GCODE CHARACTERS
 unsigned long int gcodenumber0 = 0;

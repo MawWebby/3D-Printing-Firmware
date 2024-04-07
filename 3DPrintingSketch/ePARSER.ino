@@ -1771,8 +1771,7 @@ int mShell(String commanding) {
 
         // M82 - SET EXTRUDER MODE TO ABSOLUTE POSITIONING
         if (firstletter == "" || firstletter == " ") {
-          absolutepositioning = true;
-          relativepositioning = false;
+          absoluterelative = 0;
           Serial.println(F("ok"));
           return;
           return;
@@ -1788,8 +1787,7 @@ int mShell(String commanding) {
 
         // M83 - SET EXTRUDER TO RELATIVE POSITIONING
         if (firstletter == "" || firstletter == " ") {
-          absolutepositioning = false;
-          relativepositioning = true;
+          absoluterelative = 1;
           Serial.println(F("ok"));
           return;
           return;
