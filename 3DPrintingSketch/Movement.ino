@@ -14,6 +14,7 @@ void movement() {
   digitalWrite(X_STEP_PIN, LOW);
   digitalWrite(Y_STEP_PIN, LOW);
   digitalWrite(Z_STEP_PIN, LOW);
+  digitalWrite(E_STEP_PIN, LOW);
 
   // MOVE TO NEW GCODE COMMAND IF CONDITIONS ARE MET
   if (xstepstaken >= xstepsrequired && ystepstaken >= ystepsrequired && zstepstaken >= zstepsrequired && estepstaken >= estepsrequired && checklockstatus(currentgcodecommand) == 1) {
@@ -29,170 +30,174 @@ void movement() {
 
   // TAKE CARE OF DIRECTIONAL INPUTS HERE
   {
-    if (xmovingnegative == true) {
-      digitalWrite(X_DIR_PIN, LOW);
-      digitalWrite(X_ENABLE_PIN, LOW);
-      steppermotorsdisabled = false;
-      xdisabled = false;
-      if (currentxdimension >= targetxdimension || xstepstaken <= xstepsrequired) {
-        if (xcurrentstep >= xsteptimer) {
-          if (xendstopminactive != true || xendstopmaxactive != true) {
-            digitalWrite(X_STEP_PIN, HIGH);
-            xstepstaken = xstepstaken + 1;
-            xcurrentstep = 0;
-            currentxdimension = currentxdimension - xmodifier;
+    if (xdisabled == false) {
+      if (xmovingnegative == true) {
+        digitalWrite(X_DIR_PIN, LOW);
+        digitalWrite(X_ENABLE_PIN, LOW);
+        steppermotorsdisabled = false;
+        xdisabled = false;
+        if (currentxdimension >= targetxdimension || xstepstaken <= xstepsrequired) {
+          if (xcurrentstep >= xsteptimer) {
+            if (xendstopminactive != true || xendstopmaxactive != true) {
+              digitalWrite(X_STEP_PIN, HIGH);
+              xstepstaken = xstepstaken + 1;
+              xcurrentstep = 0;
+              currentxdimension = currentxdimension - xmodifier;
+            }
           }
         }
       }
-    }
 
-    if (xmovingpositive == true) {
-      digitalWrite(X_DIR_PIN, HIGH);
-      digitalWrite(X_ENABLE_PIN, LOW);
-      steppermotorsdisabled = false;
-      xdisabled = false;
-      if (currentxdimension <= targetxdimension || xstepstaken <= xstepsrequired) {
-        if (xcurrentstep >= xsteptimer) {
-          if (xendstopminactive != true || xendstopmaxactive != true) {
-            digitalWrite(X_STEP_PIN, HIGH);
-            xstepstaken = xstepstaken + 1;
-            xcurrentstep = 0;
-            currentxdimension = currentxdimension + xmodifier;
+      if (xmovingpositive == true) {
+        digitalWrite(X_DIR_PIN, HIGH);
+        digitalWrite(X_ENABLE_PIN, LOW);
+        steppermotorsdisabled = false;
+        xdisabled = false;
+        if (currentxdimension <= targetxdimension || xstepstaken <= xstepsrequired) {
+          if (xcurrentstep >= xsteptimer) {
+            if (xendstopminactive != true || xendstopmaxactive != true) {
+              digitalWrite(X_STEP_PIN, HIGH);
+              xstepstaken = xstepstaken + 1;
+              xcurrentstep = 0;
+              currentxdimension = currentxdimension + xmodifier;
+            }
           }
+        } else {
+          xmovingpositive = false;
         }
-      } else {
-        xmovingpositive = false;
+      }
+
+      if (xmovingnegative == false && xmovingpositive == false) {
+        digitalWrite(X_DIR_PIN, LOW);
+        digitalWrite(X_ENABLE_PIN, LOW);
+        steppermotorsdisabled = false;
+        xdisabled = false;
       }
     }
 
-    if (ymovingnegative == true) {
-      digitalWrite(Y_DIR_PIN, HIGH);
-      digitalWrite(Y_ENABLE_PIN, LOW);
-      steppermotorsdisabled = false;
-      ydisabled = false;
-      if (currentydimension >= targetydimension && ystepstaken <= ystepsrequired) {
-        if (ycurrentstep >= ysteptimer) {
-          if (yendstopminactive != true || yendstopmaxactive != true) {
-            digitalWrite(Y_STEP_PIN, HIGH);
-            ystepstaken = ystepstaken + 1;
-            ycurrentstep = 0;
-            currentydimension = currentydimension - ymodifier;
-          }
-        }
-      }
-    }
-
-    if (ymovingpositive == true) {
-      digitalWrite(Y_DIR_PIN, LOW);
-      digitalWrite(Y_ENABLE_PIN, LOW);
-      steppermotorsdisabled = false;
-      ydisabled = false;
-      if (currentydimension <= targetydimension && ystepstaken <= ystepsrequired) {
-        if (ycurrentstep >= ysteptimer) {
-          if (yendstopminactive != true || yendstopmaxactive != true) {
-            digitalWrite(Y_STEP_PIN, HIGH);
-            ystepstaken = ystepstaken + 1;
-            ycurrentstep = 0;
-            currentydimension = currentydimension + ymodifier;
+    if (ydisabled == false) {
+      if (ymovingnegative == true) {
+        digitalWrite(Y_DIR_PIN, HIGH);
+        digitalWrite(Y_ENABLE_PIN, LOW);
+        steppermotorsdisabled = false;
+        ydisabled = false;
+        if (currentydimension >= targetydimension && ystepstaken <= ystepsrequired) {
+          if (ycurrentstep >= ysteptimer) {
+            if (yendstopminactive != true || yendstopmaxactive != true) {
+              digitalWrite(Y_STEP_PIN, HIGH);
+              ystepstaken = ystepstaken + 1;
+              ycurrentstep = 0;
+              currentydimension = currentydimension - ymodifier;
+            }
           }
         }
       }
-    }
 
-    if (zmovingnegative == true) {
-      digitalWrite(Z_DIR_PIN, HIGH);
-      digitalWrite(Z_ENABLE_PIN, LOW);
-      steppermotorsdisabled = false;
-      zdisabled = false;
-      if (currentzdimension >= targetzdimension && zstepstaken <= zstepsrequired) {
-        if (zcurrentstep >= zsteptimer) {
-          if (zendstopminactive != true || zendstopmaxactive != true) {
-            digitalWrite(Z_STEP_PIN, HIGH);
-            zstepstaken = zstepstaken + 1;
-            zcurrentstep = 0;
-            currentzdimension = currentzdimension - zmodifier;
+      if (ymovingpositive == true) {
+        digitalWrite(Y_DIR_PIN, LOW);
+        digitalWrite(Y_ENABLE_PIN, LOW);
+        steppermotorsdisabled = false;
+        ydisabled = false;
+        if (currentydimension <= targetydimension && ystepstaken <= ystepsrequired) {
+          if (ycurrentstep >= ysteptimer) {
+            if (yendstopminactive != true || yendstopmaxactive != true) {
+              digitalWrite(Y_STEP_PIN, HIGH);
+              ystepstaken = ystepstaken + 1;
+              ycurrentstep = 0;
+              currentydimension = currentydimension + ymodifier;
+            }
           }
         }
       }
+
+      if (ymovingnegative == false && ymovingpositive == false) {
+        digitalWrite(Y_DIR_PIN, LOW);
+        digitalWrite(Y_ENABLE_PIN, LOW);
+        steppermotorsdisabled = false;
+        ydisabled = false;
+      }
     }
 
-    if (zmovingpositive == true) {
-      digitalWrite(Z_DIR_PIN, LOW);
-      digitalWrite(Z_ENABLE_PIN, LOW);
-      steppermotorsdisabled = false;
-      zdisabled = false;
-      if (currentzdimension <= targetzdimension && zstepstaken <= zstepsrequired) {
-        if (zcurrentstep >= zsteptimer) {
-          if (zendstopminactive != true || zendstopmaxactive != true) {
-            digitalWrite(Z_STEP_PIN, HIGH);
-            zstepstaken = zstepstaken + 1;
-            zcurrentstep = 0;
-            currentzdimension = currentzdimension + zmodifier;
+    if (zdisabled == false) {
+      if (zmovingnegative == true) {
+        digitalWrite(Z_DIR_PIN, HIGH);
+        digitalWrite(Z_ENABLE_PIN, LOW);
+        steppermotorsdisabled = false;
+        zdisabled = false;
+        if (currentzdimension >= targetzdimension && zstepstaken <= zstepsrequired) {
+          if (zcurrentstep >= zsteptimer) {
+            if (zendstopminactive != true || zendstopmaxactive != true) {
+              digitalWrite(Z_STEP_PIN, HIGH);
+              zstepstaken = zstepstaken + 1;
+              zcurrentstep = 0;
+              currentzdimension = currentzdimension - zmodifier;
+            }
           }
         }
       }
-    }
 
-    if (e0movingnegative == true) {
-      digitalWrite(E_DIR_PIN, LOW);
-      digitalWrite(E_ENABLE_PIN, LOW);
-      steppermotorsdisabled = false;
-      edisabled = false;
-      if (currente0motordimension >= targete0motordimension && estepstaken <= estepsrequired) {
-        if (ecurrentstep >= esteptimer) {
-          digitalWrite(E_STEP_PIN, HIGH);
-          estepstaken = estepstaken + 1;
-          ecurrentstep = 0;
-          currente0motordimension = currente0motordimension - e0motormodifier;
+      if (zmovingpositive == true) {
+        digitalWrite(Z_DIR_PIN, LOW);
+        digitalWrite(Z_ENABLE_PIN, LOW);
+        steppermotorsdisabled = false;
+        zdisabled = false;
+        if (currentzdimension <= targetzdimension && zstepstaken <= zstepsrequired) {
+          if (zcurrentstep >= zsteptimer) {
+            if (zendstopminactive != true || zendstopmaxactive != true) {
+              digitalWrite(Z_STEP_PIN, HIGH);
+              zstepstaken = zstepstaken + 1;
+              zcurrentstep = 0;
+              currentzdimension = currentzdimension + zmodifier;
+            }
+          }
         }
+      }
+
+      if (zmovingnegative == false && zmovingpositive == false) {
+        digitalWrite(Z_DIR_PIN, LOW);
+        digitalWrite(Z_ENABLE_PIN, LOW);
+        steppermotorsdisabled = false;
+        zdisabled = false;
       }
     }
 
-    if (e0movingpositive == true) {
-      digitalWrite(E_DIR_PIN, HIGH);
-      digitalWrite(E_ENABLE_PIN, LOW);
-      steppermotorsdisabled = false;
-      edisabled = false;
-      if (currente0motordimension <= targete0motordimension && estepstaken <= estepsrequired) {
-        if (ecurrentstep >= esteptimer) {
-          digitalWrite(E_STEP_PIN, HIGH);
-          estepstaken = estepstaken + 1;
-          ecurrentstep = 0;
-          currente0motordimension = currente0motordimension + e0motormodifier;
+    if (edisabled == false && simulationmode == false) {
+      if (e0movingnegative == true) {
+        digitalWrite(E_DIR_PIN, LOW);
+        digitalWrite(E_ENABLE_PIN, LOW);
+        steppermotorsdisabled = false;
+        edisabled = false;
+        if (currente0motordimension >= targete0motordimension && estepstaken <= estepsrequired) {
+          if (ecurrentstep >= esteptimer) {
+            digitalWrite(E_STEP_PIN, HIGH);
+            estepstaken = estepstaken + 1;
+            ecurrentstep = 0;
+            currente0motordimension = currente0motordimension - e0motormodifier;
+          }
         }
       }
-    }
 
-    if (xmovingnegative == false && xmovingpositive == false) {
-      digitalWrite(X_DIR_PIN, LOW);
-      digitalWrite(X_ENABLE_PIN, LOW);
-      steppermotorsdisabled = false;
-      xdisabled = false;
-      digitalWrite(E_STEP_PIN, LOW);
-    }
+      if (e0movingpositive == true) {
+        digitalWrite(E_DIR_PIN, HIGH);
+        digitalWrite(E_ENABLE_PIN, LOW);
+        steppermotorsdisabled = false;
+        edisabled = false;
+        if (currente0motordimension <= targete0motordimension && estepstaken <= estepsrequired) {
+          if (ecurrentstep >= esteptimer) {
+            digitalWrite(E_STEP_PIN, HIGH);
+            estepstaken = estepstaken + 1;
+            ecurrentstep = 0;
+            currente0motordimension = currente0motordimension + e0motormodifier;
+          }
+        }
+      }
 
-    if (ymovingnegative == false && ymovingpositive == false) {
-      digitalWrite(Y_DIR_PIN, LOW);
-      digitalWrite(Y_ENABLE_PIN, LOW);
-      steppermotorsdisabled = false;
-      ydisabled = false;
-      digitalWrite(E_STEP_PIN, LOW);
-    }
-
-    if (zmovingnegative == false && zmovingpositive == false) {
-      digitalWrite(Z_DIR_PIN, LOW);
-      digitalWrite(Z_ENABLE_PIN, LOW);
-      steppermotorsdisabled = false;
-      zdisabled = false;
-      digitalWrite(E_STEP_PIN, LOW);
-    }
-
-    if (e0movingnegative == false && e0movingpositive == false) {
-      digitalWrite(E_DIR_PIN, LOW);
-      digitalWrite(E_ENABLE_PIN, LOW);
-      steppermotorsdisabled = false;
-      edisabled = false;
-      digitalWrite(E_STEP_PIN, LOW);
+      if (e0movingnegative == false && e0movingpositive == false) {
+        digitalWrite(E_DIR_PIN, LOW);
+        digitalWrite(E_ENABLE_PIN, LOW);
+        steppermotorsdisabled = false;
+        edisabled = false;
+      }
     }
   }
 
@@ -277,7 +282,6 @@ void movement() {
   digitalWrite(Y_STEP_PIN, LOW);
   digitalWrite(Z_STEP_PIN, LOW);
   digitalWrite(E_STEP_PIN, LOW);
-  digitalWrite(E1_STEP_PIN, LOW);
 }
 
 
@@ -321,181 +325,9 @@ void movetonewgcodeformovement(bool runchecks) {
     Serial.println(F("RUNNING NEW GCODE COMMAND WITHOUT CHECKS IS NOT RECOMMENDED!"));
     Serial.println(F("RUNNING CHECKS ANYWAY"));
     movetonewgcodeformovement(true);
-    /*
-    // MOVE TO NEW GCODE
-    clearrowinarray(currentgcodecommand, true);
 
-    if (currentgcodecommand != 10) {
-      currentgcodecommand = currentgcodecommand + 1;
-    } else {
-      currentgcodecommand = 0;
-    }
+    // REMOVED FOR SAFETY REASONS
 
-
-    // SET NEW TARGET POSITIONS
-    targetxdimension = readfromarray(currentgcodecommand, 0);
-    targetydimension = readfromarray(currentgcodecommand, 1);
-    targetzdimension = readfromarray(currentgcodecommand, 2);
-    targete0motordimension = readfromarray(currentgcodecommand, 3);
-
-
-
-    // DECLARE DIFFERENCE VARIABLES
-    float xdifference = 0;
-    float ydifference = 0;
-    float zdifference = 0;
-    float edifference = 0;
-
-
-    // RESET ALL VARIABLES BACK TO 0
-    xsteptimer = 0;
-    ysteptimer = 0;
-    zsteptimer = 0;
-    esteptimer = 0;
-    xcurrentstep = 0;
-    ycurrentstep = 0;
-    zcurrentstep = 0;
-    ecurrentstep = 0;
-    xstepsrequired = 0;
-    ystepsrequired = 0;
-    zstepsrequired = 0;
-    estepsrequired = 0;
-    xstepstaken = 0;
-    ystepstaken = 0;
-    zstepstaken = 0;
-    estepstaken = 0;
-
-
-    // XYZE DIMENSION ANALYSIS AND STEP COUNTS
-    {
-      if (targetxdimension > currentxdimension) {
-        xdifference = targetxdimension - currentxdimension;
-        xmovingpositive = true;
-        xmovingnegative = false;
-        xstepsrequired = xdifference / xmodifier;
-      }
-      if (targetxdimension == currentxdimension) {
-        xdifference = 0;
-        xstepsrequired = 0;
-        xmovingpositive = false;
-        xmovingnegative = false;
-      }
-      if (targetxdimension < currentxdimension) {
-        xdifference = currentxdimension - targetxdimension;
-        xmovingpositive = false;
-        xmovingnegative = true;
-        xstepsrequired = xdifference / xmodifier;
-      }
-
-
-      // Y DIMENSION ANALYSIS AND STEP COUNTS
-      {
-        if (targetydimension > currentydimension) {
-          ydifference = targetydimension - currentydimension;
-          ymovingpositive = true;
-          ymovingnegative = false;
-          ystepsrequired = ydifference / ymodifier;
-        }
-        if (targetydimension == currentydimension) {
-          ydifference = 0;
-          ystepsrequired = 0;
-          ymovingpositive = false;
-          ymovingnegative = false;
-        }
-        if (targetydimension < currentydimension) {
-          ydifference = currentydimension - targetydimension;
-          ymovingpositive = false;
-          ymovingnegative = true;
-          ystepsrequired = ydifference / ymodifier;
-        }
-      }
-
-      // Z DIMENSION ANALYSIS AND STEP COUNTS
-      {
-        if (targetzdimension > currentzdimension) {
-          zdifference = targetzdimension - currentzdimension;
-          zmovingpositive = true;
-          zmovingnegative = false;
-          zstepsrequired = zdifference / zmodifier;
-        }
-        if (targetzdimension == currentzdimension) {
-          zdifference = 0;
-          zstepsrequired = 0;
-          zmovingpositive = false;
-          zmovingnegative = false;
-        }
-        if (targetzdimension < currentzdimension) {
-          zdifference = currentzdimension - targetzdimension;
-          zmovingpositive = false;
-          zmovingnegative = true;
-          zstepsrequired = zdifference / zmodifier;
-        }
-      }
-
-      // E0 DIMENSION ANALYSIS AND STEP COUNTS
-      {
-        if (targete0motordimension > currente0motordimension) {
-          edifference = targete0motordimension - currente0motordimension;
-          e0movingpositive = true;
-          e0movingnegative = false;
-          estepsrequired = edifference / e0motormodifier;
-        }
-        if (targete0motordimension == currente0motordimension) {
-          edifference = 0;
-          estepsrequired = 0;
-          e0movingpositive = false;
-          e0movingnegative = false;
-        }
-        if (targete0motordimension < currente0motordimension) {
-          edifference = currente0motordimension - targete0motordimension;
-          e0movingpositive = false;
-          e0movingnegative = true;
-          estepsrequired = edifference / e0motormodifier;
-        }
-      }
-    }
-
-    Serial.println(xstepsrequired);
-
-    // DETERMINE WHICH OF THE FOLLOWING HAS THE GREATEST STEP COUNT REQUIRED AND BASE EVERYTHING ON THAT ONE AND DETERMINE X/Y/Z/ESTEPTIMERs
-    {
-      // IF X IS THE LARGEST, CONTINUE WITH THAT
-      if (xstepsrequired >= ystepsrequired && xstepsrequired >= zstepsrequired && xstepsrequired >= estepsrequired) {
-        xsteptimer = 1;
-        ysteptimer = xstepsrequired / ystepsrequired;
-        zsteptimer = xstepsrequired / zstepsrequired;
-        esteptimer = xstepsrequired / estepsrequired;
-      } else {
-        // IF IT IS NOT X, IS IT Y
-        if (ystepsrequired >= xstepsrequired && ystepsrequired >= zstepsrequired && ystepsrequired >= estepsrequired) {
-          ysteptimer = 1;
-          xsteptimer = ystepsrequired / xstepsrequired;
-          zsteptimer = ystepsrequired / zstepsrequired;
-          esteptimer = ystepsrequired / estepsrequired;
-        } else {
-          // IF IT IS NOT Y, IS IT Z
-          if (zstepsrequired >= xstepsrequired && zstepsrequired >= ystepsrequired && zstepsrequired >= estepsrequired) {
-            zsteptimer = 1;
-            xsteptimer = zstepsrequired / xstepsrequired;
-            ysteptimer = zstepsrequired / ystepsrequired;
-            esteptimer = zstepsrequired / estepsrequired;
-          } else {
-            // IF IT IS NOT Z, IS IT E
-            if (zstepsrequired >= xstepsrequired && zstepsrequired >= ystepsrequired && zstepsrequired >= estepsrequired) {
-              esteptimer = 1;
-              xsteptimer = estepsrequired / xstepsrequired;
-              ysteptimer = estepsrequired / ystepsrequired;
-              zsteptimer = estepsrequired / zstepsrequired;
-              // IF IT IS NONE OF THE ABOVE, ERROR OUT
-            } else {
-              Serial.println(F("NEW COMMAND FOUND BUT COULD NOT BE SET!"));
-              writeerrorsstackloop("E-M102: G FOUND BUT COULD NOT BE SET", 3, true, 0, true, true);
-            }
-          }
-        }
-      }
-    }
-    */
   } else {
     {
       // X MOVING VERIFICATION CODE
@@ -590,6 +422,9 @@ void movetonewgcodeformovement(bool runchecks) {
           if (e0movingpositive == false && e0movingnegative == false) {
             conditionsmetE = true;
           }
+        }
+        if (simulationmode == true) {
+          conditionsmetE = true;
         }
       }
       conditionsmetE = true;
@@ -742,23 +577,25 @@ void movetonewgcodeformovement(bool runchecks) {
 
         // E0 DIMENSION ANALYSIS AND STEP COUNTS
         {
-          if (targete0motordimension > currente0motordimension) {
-            edifference = targete0motordimension - currente0motordimension;
-            e0movingpositive = true;
-            e0movingnegative = false;
-            estepsrequired = edifference / e0motormodifier;
-          }
-          if (targete0motordimension == currente0motordimension) {
-            edifference = 0;
-            estepsrequired = 0;
-            e0movingpositive = false;
-            e0movingnegative = false;
-          }
-          if (targete0motordimension < currente0motordimension) {
-            edifference = currente0motordimension - targete0motordimension;
-            e0movingpositive = false;
-            e0movingnegative = true;
-            estepsrequired = edifference / e0motormodifier;
+          if (simulationmode == false) {
+            if (targete0motordimension > currente0motordimension) {
+              edifference = targete0motordimension - currente0motordimension;
+              e0movingpositive = true;
+              e0movingnegative = false;
+              estepsrequired = edifference / e0motormodifier;
+            }
+            if (targete0motordimension == currente0motordimension) {
+              edifference = 0;
+              estepsrequired = 0;
+              e0movingpositive = false;
+              e0movingnegative = false;
+            }
+            if (targete0motordimension < currente0motordimension) {
+              edifference = currente0motordimension - targete0motordimension;
+              e0movingpositive = false;
+              e0movingnegative = true;
+              estepsrequired = edifference / e0motormodifier;
+            }
           }
         }
       }
