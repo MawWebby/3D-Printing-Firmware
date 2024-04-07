@@ -27,11 +27,18 @@ int maintenance() {
 
     // MAKE SURE STEPPER MOTORS ARE DISABLED IF STEPPER MOTORS ARE DISABLED
     if (steppermotorsdisabled == true) {
-      digitalWrite(X_ENABLE_PIN, HIGH);
-      digitalWrite(Y_ENABLE_PIN, HIGH);
-      digitalWrite(Z_ENABLE_PIN, HIGH);
-      digitalWrite(E_ENABLE_PIN, HIGH);
-      digitalWrite(E1_ENABLE_PIN, HIGH);
+      if (xdisabled == true) {
+        digitalWrite(X_ENABLE_PIN, HIGH);
+      }
+      if (ydisabled == true) {
+        digitalWrite(Y_ENABLE_PIN, HIGH);
+      }
+      if (zdisabled == true) {
+        digitalWrite(Z_ENABLE_PIN, HIGH);
+      }
+      if (edisabled == true) {
+        digitalWrite(E_ENABLE_PIN, HIGH);
+      }
     }
 
     // MAKE SURE IT IS DISABLED IF CURRENTLY LOCKED

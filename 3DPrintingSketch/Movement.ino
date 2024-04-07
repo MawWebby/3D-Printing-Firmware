@@ -33,6 +33,7 @@ void movement() {
       digitalWrite(X_DIR_PIN, LOW);
       digitalWrite(X_ENABLE_PIN, LOW);
       steppermotorsdisabled = false;
+      xdisabled = false;
       if (currentxdimension >= targetxdimension || xstepstaken <= xstepsrequired) {
         if (xcurrentstep >= xsteptimer) {
           if (xendstopminactive != true || xendstopmaxactive != true) {
@@ -49,6 +50,7 @@ void movement() {
       digitalWrite(X_DIR_PIN, HIGH);
       digitalWrite(X_ENABLE_PIN, LOW);
       steppermotorsdisabled = false;
+      xdisabled = false;
       if (currentxdimension <= targetxdimension || xstepstaken <= xstepsrequired) {
         if (xcurrentstep >= xsteptimer) {
           if (xendstopminactive != true || xendstopmaxactive != true) {
@@ -67,6 +69,7 @@ void movement() {
       digitalWrite(Y_DIR_PIN, HIGH);
       digitalWrite(Y_ENABLE_PIN, LOW);
       steppermotorsdisabled = false;
+      ydisabled = false;
       if (currentydimension >= targetydimension && ystepstaken <= ystepsrequired) {
         if (ycurrentstep >= ysteptimer) {
           if (yendstopminactive != true || yendstopmaxactive != true) {
@@ -83,6 +86,7 @@ void movement() {
       digitalWrite(Y_DIR_PIN, LOW);
       digitalWrite(Y_ENABLE_PIN, LOW);
       steppermotorsdisabled = false;
+      ydisabled = false;
       if (currentydimension <= targetydimension && ystepstaken <= ystepsrequired) {
         if (ycurrentstep >= ysteptimer) {
           if (yendstopminactive != true || yendstopmaxactive != true) {
@@ -99,6 +103,7 @@ void movement() {
       digitalWrite(Z_DIR_PIN, HIGH);
       digitalWrite(Z_ENABLE_PIN, LOW);
       steppermotorsdisabled = false;
+      zdisabled = false;
       if (currentzdimension >= targetzdimension && zstepstaken <= zstepsrequired) {
         if (zcurrentstep >= zsteptimer) {
           if (zendstopminactive != true || zendstopmaxactive != true) {
@@ -115,6 +120,7 @@ void movement() {
       digitalWrite(Z_DIR_PIN, LOW);
       digitalWrite(Z_ENABLE_PIN, LOW);
       steppermotorsdisabled = false;
+      zdisabled = false;
       if (currentzdimension <= targetzdimension && zstepstaken <= zstepsrequired) {
         if (zcurrentstep >= zsteptimer) {
           if (zendstopminactive != true || zendstopmaxactive != true) {
@@ -131,6 +137,7 @@ void movement() {
       digitalWrite(E_DIR_PIN, LOW);
       digitalWrite(E_ENABLE_PIN, LOW);
       steppermotorsdisabled = false;
+      edisabled = false;
       if (currente0motordimension >= targete0motordimension && estepstaken <= estepsrequired) {
         if (ecurrentstep >= esteptimer) {
           digitalWrite(E_STEP_PIN, HIGH);
@@ -145,6 +152,7 @@ void movement() {
       digitalWrite(E_DIR_PIN, HIGH);
       digitalWrite(E_ENABLE_PIN, LOW);
       steppermotorsdisabled = false;
+      edisabled = false;
       if (currente0motordimension <= targete0motordimension && estepstaken <= estepsrequired) {
         if (ecurrentstep >= esteptimer) {
           digitalWrite(E_STEP_PIN, HIGH);
@@ -159,6 +167,7 @@ void movement() {
       digitalWrite(X_DIR_PIN, LOW);
       digitalWrite(X_ENABLE_PIN, LOW);
       steppermotorsdisabled = false;
+      xdisabled = false;
       digitalWrite(E_STEP_PIN, LOW);
     }
 
@@ -166,6 +175,7 @@ void movement() {
       digitalWrite(Y_DIR_PIN, LOW);
       digitalWrite(Y_ENABLE_PIN, LOW);
       steppermotorsdisabled = false;
+      ydisabled = false;
       digitalWrite(E_STEP_PIN, LOW);
     }
 
@@ -173,6 +183,7 @@ void movement() {
       digitalWrite(Z_DIR_PIN, LOW);
       digitalWrite(Z_ENABLE_PIN, LOW);
       steppermotorsdisabled = false;
+      zdisabled = false;
       digitalWrite(E_STEP_PIN, LOW);
     }
 
@@ -180,6 +191,7 @@ void movement() {
       digitalWrite(E_DIR_PIN, LOW);
       digitalWrite(E_ENABLE_PIN, LOW);
       steppermotorsdisabled = false;
+      edisabled = false;
       digitalWrite(E_STEP_PIN, LOW);
     }
   }
@@ -912,6 +924,7 @@ void xhome() {
   targetxdimension = 0;
   printingactive = true;
   steppermotorsdisabled = false;
+  xdisabled = false;
 
   // DECLARE VARIABLES
   bool finishedhomingx = false;
@@ -1027,6 +1040,9 @@ void yhome() {
   targetydimension = 200;
   printingactive = true;
 
+  steppermotorsdisabled = false;
+  ydisabled = false;
+
   // DECLARE VARIABLES
   bool finishedhomingx = false;
   bool finishedhomingy = false;
@@ -1128,6 +1144,9 @@ void zhome() {
   currentzdimension = 0;
   targetzdimension = 0;
   printingactive = true;
+
+  steppermotorsdisabled = false;
+  zdisabled = false;
 
   // DECLARE VARIABLES
   bool finishedhomingx = false;

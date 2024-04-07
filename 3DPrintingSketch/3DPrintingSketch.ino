@@ -234,6 +234,10 @@ float filamentdiam = 1.75;         // FILAMENT DIMATER IN MM
 float maxacceleration = 3600.001;  // MAX ACCELERATION OF STEPPER MOTORS
 float maxtravelspeed = 3600.001;
 bool steppermotorsdisabled = true;
+bool xdisabled = true;
+bool ydisabled = true;
+bool zdisabled = true;
+bool edisabled = true;
 
 
 
