@@ -274,31 +274,9 @@ int mShell(String commanding) {
 
         // M105 - GET EXTRUDER TEMPERATURE
         if (firstletter == "5") {
-          /* - `T:` - Hotend (actual / target)
-        - `B:` - Bed (actual / target)
-        - `Tx:` - x Tool (actual / target)
-        - `@:` - Hotend power
-        - `B@:` - Bed power
-        - `P:` - PINDAv2 actual (only MK2.5/s and MK3/s)
-        - `A:` - Ambient actual (only MK3/s)
-        
-        _Example:_
-        
-        ok T:20.2 /0.0 B:19.1 /0.0 T0:20.2 /0.0 @:0 B@:0 P:19.8 A:26.4
-        */
-          Serial.print(F("T:"));
-          Serial.print(currente0temp);
-          Serial.print(F(" /"));
-          Serial.print(targete0temp);
-          Serial.print(F(" B:"));
-          Serial.print(currenthbtemp);
-          Serial.print(F(" /"));
-          Serial.print(targethbtemp);
-          Serial.println(F(" @:0 B@:0"));
+          tempreporting();
           Serial.println(F("ok"));
           interpretedcompleted = true;
-          return;
-          return;
           return;
         }
 
@@ -1545,7 +1523,7 @@ int mShell(String commanding) {
 
         // M43 - PIN REPORT AND DEBUG
         Serial.println(F("REPORT GENERATING..."));
-        Serial.println(F("COMMAND NOT CURRENTLY SUPPORTED"));
+        Serial.println(F("COMMAND NOT CURRENTLY SUPPORTED!"));
         Serial.println(F("ok"));
         return;
         return;
@@ -1623,7 +1601,7 @@ int mShell(String commanding) {
           return;
         }
         if (firstletter == " ") {
-          timetodisplaylcdinseconds = 60;
+          timetodisplaylcdinseconds = 15;
           messagetodisplay = commanding.substring(5, 100);
           Serial.println(F("ok"));
           return;

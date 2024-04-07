@@ -153,6 +153,7 @@ int tempsensingruntime = 0;
 int e0ontime = 0;
 bool e0on = false;
 bool e0max = false;
+bool hbon = false;
 unsigned long long int timesincelastmotorcurrent = 0;
 unsigned long int clocktimers[10] = {0,0,0,0,0,0,0,0,0,0};
 unsigned long int targettime[10] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};

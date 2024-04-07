@@ -31,30 +31,37 @@ void lcdEngine() {
           lcd.print("Z");
           lcd.print(currentzdimensionLCD);
 
-          if (currentlylocked == true) {
-            if (steppermotorsdisabled == true) {
-              lcd.setCursor(4, 3);
-              lcd.print(F("DISABLED"));
-            }
-          } else {
-            if (steppermotorsdisabled == true) {
-              lcd.setCursor(2, 3);
-              lcd.print(F("STEPPER DISABLED"));
+          if (messagetodisplay == "") {
+            if (currentlylocked == true) {
+              if (steppermotorsdisabled == true) {
+                lcd.setCursor(4, 3);
+                lcd.print(F("DISABLED"));
+              }
             } else {
-              if (simulationmode == true) {
-                lcd.setCursor(5,3);
-                lcd.print(F("SIMULATION"));
-              } else [
-              if (printingactive == false) {
-                lcd.setCursor(8, 3);
-                lcd.print(F("IDLE"));
+              if (steppermotorsdisabled == true) {
+                lcd.setCursor(2, 3);
+                lcd.print(F("STEPPER DISABLED"));
               } else {
-                lcd.setCursor(6, 3);
-                lcd.print(F("PRINTING"));
+                if (simulationmode == true) {
+                  lcd.setCursor(5, 3);
+                  lcd.print(F("SIMULATION"));
+                } else {
+                  if (printingactive == false) {
+                    lcd.setCursor(8, 3);
+                    lcd.print(F("IDLE"));
+                  } else {
+                    lcd.setCursor(6, 3);
+                    lcd.print(F("PRINTING"));
+                  }
+                }
               }
             }
-            }
+          } else {
+            lcd.setCursor(0,3);
+            lcd.print(messagetodisplay);
           }
+
+
 
           lcd.setCursor(12, 0);
           if (currente0temp >= 50) {
@@ -95,11 +102,6 @@ void lcdEngine() {
           lcd.print(currente0temp);
           lcd.setCursor(13, 1);
           lcd.print(currenthbtemp);
-          //          Serial.print(currente0temp);
-          //         Serial.print(F(" "));
-          //        Serial.println(currenthbtemp);
-          //       lcd.setCursor(13, 3);
-          //          lcd.print();
           break;
         case 1:
           lcd.clear();
