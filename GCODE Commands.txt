@@ -70,8 +70,8 @@ ________________________________________________________________________________
 | G30	  | Not Supported		 | Single Z-Probe			                            | N/A		                  	|
 | G32	  | Not Supported		 | Probe and Calculate Z Plane		                            | N/A		                  	|
 | G82	  | Not Supported		 | Current Z-Probe at Current Location	                            | N/A		                  	|
-| G90	  | Not Supported		 | Set to Absolute Positioning		                            | N/A		                  	|
-| G91	  | Not Supported		 | Set to Relative Positioning		                            | N/A		                  	|
+| G90	  | Supported			 | Set to Absolute Positioning		                            | N/A		                  	|
+| G91	  | Supported			 | Set to Relative Positioning		                            | N/A		                  	|
 | G92	  | Supported			 | Set Current Motor Positions		                            | X(XXX.XX) Y(YYY.YY) Z(ZZZ.ZZ) E(EEE.EE)	|
 |_________|______________________________|__________________________________________________________________|___________________________________________|
 
@@ -89,6 +89,16 @@ ________________________________________________________________________________
 | M16     | Supported			 | Verify Printer Connected by Hostname                             | "HOSTNAME_OF_PRINTER"		       	|
 | M17     | Supported			 | Disable/Enable Stepper Motors	                            | N/A				       	|
 | M18     | Supported			 | Disable Stepper Motors		                            | N/A				       	|
+| M20     | Not Supported		 | List SD Card				                            | N/A				       	|
+| M21     | Not Supported		 | Initialize SD Card			                            | N/A				       	|
+| M22     | Not Supported		 | Release/Eject SD Card		                            | N/A				       	|
+| M23     | Not Supported		 | Select SD File			                            | N/A				       	|
+| M24     | Not Supported		 | Start/Resume SD Print		                            | N/A				       	|
+| M25     | Not Supported		 | Pause SD Print			                            | N/A				       	|
+| M26     | Not Supported		 | Set SD Position			                            | N/A				       	|
+| M27     | Not Supported		 | Report SD Print Status		                            | N/A				       	|
+| M28     | Not Supported		 | Begin Write to SD Card		                            | N/A				       	|
+| M29     | Not Supported		 | Stop Writing to SD Card		                            | N/A				       	|
 
 
 
@@ -96,16 +106,7 @@ ________________________________________________________________________________
 
 
 
-  // M20  - LIST SD CARD
-  // M21  - INITIALIZE SD CARD
-  // M22  - RELEASE SD CARD
-  // M23  - SELECT SD FILE
-  // M24  - START/RESUME SD PRINT
-  // M25  - PAUSE SD PRINT
-  // M26  - SET SD POSITION 
-  // M27  - REPORT SD PRINT STATUS
-  // M28  - BEGIN WRITE TO SD CARD
-  // M29  - STOP WRITING TO SD CARD
+
   // M31  - OUTPUT TIME SINCE LAST M109 OR SD CARD TO SERIAL
   // M32  - SELECT FILE AND START SD PRINT
   // M33  - GET THE LONG NAME FOR AN SD CARD FILE OR FOLDER
