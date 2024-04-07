@@ -41,14 +41,18 @@ void lcdEngine() {
               lcd.setCursor(2, 3);
               lcd.print(F("STEPPER DISABLED"));
             } else {
+              if (simulationmode == true) {
+                lcd.setCursor(5,3);
+                lcd.print(F("SIMULATION"));
+              } else [
               if (printingactive == false) {
                 lcd.setCursor(8, 3);
                 lcd.print(F("IDLE"));
-              }
-              if (printingactive == true) {
+              } else {
                 lcd.setCursor(6, 3);
                 lcd.print(F("PRINTING"));
               }
+            }
             }
           }
 
