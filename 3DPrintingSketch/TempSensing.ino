@@ -20,6 +20,14 @@ void litetempsensing() {
 
 //  tempchange();
 //  hbtempchange();
+
+  if (currente0temp >= targete0temp - 10) {
+    digitalWrite(HEATER_0_PIN, LOW);
+  }
+
+  if (currenthbtemp >= targethbtemp - 4) {
+    digitalWrite(HEATER_HB_PIN, LOW);
+  }
 }
 
 void tempsensing() {
