@@ -7,7 +7,7 @@
 // CONTROL + SPACE
 
 
-// CURRENT NUMBER OF LINES OF CODE: 7509
+// CURRENT NUMBER OF LINES OF CODE: 7856
 
 
 ///////////////////////////////
@@ -173,6 +173,7 @@ int maxfeedratespeed;
 int defaultaccelerationspeed;
 int retractionlength;
 int extrusionlength;
+
 
 
 ////////////////////////////////////////
@@ -397,6 +398,7 @@ boolean newData = false;
 const byte numChars = 128;  // EXTENDED TO 128
 char receivedChars[numChars];
 String receivedSerial3000 = "";
+int serialBAUDRATE = 115200;
 
 
 

@@ -79,7 +79,7 @@ ________________________________________________________________________________
 
 
 
-M - COMMANDS
+M - Modifier Commands
 _________________________________________________________________________________________________________________________________________________________
 | Command | Availability                 | Purpose                                                          | Supported Arguments                 	|
 |_________|______________________________|__________________________________________________________________|___________________________________________|
@@ -89,6 +89,48 @@ ________________________________________________________________________________
 | M16     | Supported			 | Verify Printer Connected by Hostname                             | "HOSTNAME_OF_PRINTER"		       	|
 | M17     | Supported			 | Disable/Enable Stepper Motors	                            | N/A				       	|
 | M18     | Supported			 | Disable Stepper Motors		                            | N/A				       	|
+| M37     | Supported			 | Simulation Mode (Extruder Off)	                            | S( 0 / 1 )			       	|
+| M43     | BETA			 | Pin Report and Debugging		                            | N/A				       	|
+| M70     | Supported			 | Display Message on LCD		                            | "STRING_TO_DISPLAY"		       	|
+| M73     | Not Supported		 | Set Print Percentage			                            | S(PERCENT)			       	|
+| M75     | Not Supported		 | Start Print Job Timer		                            | N/A				       	|
+| M76     | Not Supported		 | Pause Print Job Timer		                            | N/A				       	|
+| M77     | Not Supported		 | Stop Print Job Timer			                            | N/A				       	|
+| M78     | Not Supported		 | Show Information about Historic Print Jobs                       | N/A				       	|
+| M80     | Not Supported		 | ATX Power On					                    | N/A				       	|
+| M81     | Not Supported		 | ATX Power Off				                    | N/A				       	|
+| M82     | Not Supported		 | Set Extruder to Absolute Mode            			    | N/A				       	|
+| M83     | Not Supported		 | Set Extruder to Relative Mode		                    | N/A				       	|
+| M84     | Not Supported		 | Idle Stepper Motor Timeout			                    | N/A				       	|
+
+
+
+| M701    | Supported			 | Load Filament		                                    | N/A				       	|
+| M702    | Supported			 | Unload Filament		                                    | N/A				       	|
+|_________|______________________________|__________________________________________________________________|___________________________________________|
+
+
+
+  // M510 - LOCK MACHINE
+  // M511 - UNLOCK MACHINE WITH PASSCODE
+  // M512 - SET PASSCODE
+  // M513 - REMOVE PASSWORD
+  // M524 - ABORT SD PRINTING
+  // M530 - ENABLE PRINTING MODE
+  // M531 - SET PRINT NAME
+  // M532 - SET PRINT PROGRESS
+  // M540 - SET MAC ADDRESS
+  // M550 - SET MACHINE NAME
+  // M551 - SET PASSWORD
+  // M555 - VIRTUALIZATION OF ANOTHER FIRMWARE
+  // M575 - SET SERIAL COMMS PARAMETERS
+
+
+
+M - SD Commands
+_________________________________________________________________________________________________________________________________________________________
+| Command | Availability                 | Purpose                                                          | Supported Arguments                 	|
+|_________|______________________________|__________________________________________________________________|___________________________________________|
 | M20     | Not Supported		 | List SD Card				                            | N/A				       	|
 | M21     | Not Supported		 | Initialize SD Card			                            | N/A				       	|
 | M22     | Not Supported		 | Release/Eject SD Card		                            | N/A				       	|
@@ -107,26 +149,12 @@ ________________________________________________________________________________
 | M38     | Not Supported		 | Compute SHA1 Hash of Target File	                            | N/A				       	|
 | M39     | Not Supported		 | Report SD Card Information		                            | N/A				       	|
 | M40     | Not Supported		 | Eject SD Card			                            | N/A				       	|
-| M37     | Supported			 | Simulation Mode (Extruder Off)	                            | S( 0 / 1 )			       	|
-| M43     | BETA			 | Pin Report and Debugging		                            | N/A				       	|
-| M70     | Supported			 | Display Message on LCD		                            | "STRING_TO_DISPLAY"		       	|
-| M73     | Not Supported		 | Set Print Percentage			                            | S(PERCENT)			       	|
-| M75     | Not Supported		 | Start Print Job Timer		                            | N/A				       	|
-| M76     | Not Supported		 | Pause Print Job Timer		                            | N/A				       	|
-| M77     | Not Supported		 | Stop Print Job Timer			                            | N/A				       	|
-| M701    | Supported			 | Load Filament		                                    | N/A				       	|
-| M702    | Supported			 | Unload Filament		                                    | N/A				       	|
+|_________|______________________________|__________________________________________________________________|___________________________________________|
 
 
 
 
 
-  // M78. - SHOW STATISTICAL INFORMATION ABOUT THE PRINT JOBS
-  // M80. - ATX POWER ON
-  // M81. - ATX POWER OFF
-  // M82. - SET EXTRUDER TO ABSOLUTE MODE
-  // M83. - SET EXTRUDER TO RELATIVE MODE
-  // M84. - IDLE STEPPER MOTOR TIMOUT
   // M85  - SET INACTIVITY SHUTDOWN TIMER
   // M86  - SET SAFETY TIMEOUT
   // M87. - CANCEL SAFETY TIMER
@@ -198,19 +226,6 @@ ________________________________________________________________________________
   // M471 - RENAME
   // M472 - DELETE FILE
   // M503 - REPORT CURRENT SETTINGS
-  // M510 - LOCK MACHINE
-  // M511 - UNLOCK MACHINE WITH PASSCODE
-  // M512 - SET PASSCODE
-  // M513 - REMOVE PASSWORD
-  // M524 - ABORT SD PRINTING
-  // M530 - ENABLE PRINTING MODE
-  // M531 - SET PRINT NAME
-  // M532 - SET PRINT PROGRESS
-  // M540 - SET MAC ADDRESS
-  // M550 - SET MACHINE NAME
-  // M551 - SET PASSWORD
-  // M555 - VIRTUALIZATION OF ANOTHER FIRMWARE
-  // M575 - SET SERIAL COMMS PARAMETERS
   // M600 - FILAMENT CHANGE PARAMETERS
   // M601 - PAUSE PRINT
   // M602 - RESUME PRINT

@@ -3,7 +3,7 @@ void setup() {
   ////////////////////////////////
   // BEGIN SERIAL COMMUNICATION //
   ////////////////////////////////
-  Serial.begin(115200);
+  Serial.begin(serialBAUDRATE);
 
   ///////////////////////////
   // DELAY 10 MILLISECONDS //

@@ -721,6 +721,17 @@ int mShell(String commanding) {
 
         // M155 - AUTO REPORT TEMPERATURE
         if (firstletter == "5") {
+          firstletter = commanding.substring(4,5);
+
+          // DETERMINE IF ARGS ARE PASSED
+          if (firstletter == " ") {
+
+          } else {
+            // NO ARGS PASSED, SET TO -1
+            Serial.println(F("ok"));
+            targettimeclock(3, -1, false, true);
+            tempreporting();
+          }
         }
       }
 
