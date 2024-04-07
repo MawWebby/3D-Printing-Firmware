@@ -233,3 +233,29 @@ void extruderemergencyretraction() {
     digitalWrite(E_STEP_PIN, LOW);
   }
 }
+
+void tempreporting() {
+  Serial.print(F("T:"));
+  Serial.print(currente0temp);
+  Serial.print(F(" /"));
+  Serial.print(targete0temp);
+  Serial.print(F(" B:"));
+  Serial.print(currenthbtemp);
+  Serial.print(F(" /"));
+  Serial.print(targethbtemp);
+  Serial.println(F(" @:"));
+  if (e0on == true) {
+    Serial.print(F("255"));
+  } else {
+    Serial.print(F("0"));
+  }
+  Serial.print(F(" B@:"));
+  if (hbon == true) {
+    Serial.print(F("255"));
+  } else {
+    Serial.print(F("0"));
+  }
+  Serial.print(F(" A:"));
+  Serial.println(currente1temp);
+  return;
+}
