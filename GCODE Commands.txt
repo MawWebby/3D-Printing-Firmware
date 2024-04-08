@@ -26,15 +26,13 @@ ________________________________________________________________________________
 |_________|______________________________|__________________________________________________________________|_____________________________________|
 | Z0      | Supported			 | Load/Unload Filament                                             | N/A                                 |
 | Z1      | Supported			 | Turn Printer Active/Inactive                                     | State: (0 / 1)                      |
-| Z2      | Removed (Z999 Replaced)	 | Read Database to Serial Bus                                      | N/A                                 |
 | Z3      | Supported			 | Turn Debugging over Serial On/Off                                | State: (0 / 1)                      |
 | Z6      | Supported			 | Read Information about Current Dimension Positions               | N/A                                 |
 | Z7      | Supported			 | Read Information about Endstop States                            | N/A                                 |
 | Z8      | Supported			 | Read Information about Extruder States                           | N/A                                 |
 | Z9      | Supported			 | Read Information about Current Modifiers                         | N/A                                 |
-| Z10     | Deprecated		         | Emergency Shutdown Mode                                          | N/A                                 |
 | Z12     | Supported			 | Raw Sensor Readings and Perceived Real Temperature               | N/A				  |
-| Z13     | Not Supported		 | Change Modifier for Temperature Probe                            | Modifier: (INT)                     |
+| Z13     | BETA			 | Change Modifier for Temperature Probe                            | Modifier: (INT)                     |
 | Z200    | Supported			 | Move X-Axis to Certain Position                                  | Position: (XXX.XX)                  |
 | Z201    | Supported			 | Move Y-Axis to Certain Position                                  | Position: (YYY.YY)                  |
 | Z202    | Supported			 | Move Z-Axis to Certain Position                                  | Position: (ZZZ.ZZ)                  |
@@ -43,6 +41,9 @@ ________________________________________________________________________________
 | Z900*   | BETA			 | Run Full System Test                                             | N/A                                 |
 | Z999    | Supported			 | Print Cached Database to Serial                                  | N/A                                 |
 | Z999.1  | Supported			 | Clean Database and Restart Printer                               | N/A                                 |
+|_________|______________________________|__________________________________________________________________|_____________________________________|
+| Z2      | Removed (Z999 Replaced)	 | Read Database to Serial Bus                                      | N/A                                 |
+| Z10     | Removed (M0 Replaced)        | Emergency Shutdown Mode                                          | N/A                                 |
 |_________|______________________________|__________________________________________________________________|_____________________________________|
 
 
@@ -105,17 +106,19 @@ ________________________________________________________________________________
 
 
 
-| M701    | Supported			 | Load Filament		                                    | N/A				       	|
-| M702    | Supported			 | Unload Filament		                                    | N/A				       	|
+| M510    | Supported			 | Lock Machine			                                    | "PASSWORD"			       	|
+| M511    | Supported			 | Unlock Machine with Password	                                    | "PASSWORD"			       	|
+| M512    | Supported			 | Set Password			                                    | "PASSWORD"				       	|
+| M513    | Supported			 | Remove Password		                                    | "PASSWORD"				       	|
+| M575    | Supported			 | Set Serial Communications/Baudrates                              | B(BAUDRATE)			       	|
+| M701    | Not Supported		 | Load Filament		                                    | N/A				       	|
+| M702    | Not Supported		 | Unload Filament		                                    | N/A				       	|
 |_________|______________________________|__________________________________________________________________|___________________________________________|
 
 
 
-  // M510 - LOCK MACHINE
-  // M511 - UNLOCK MACHINE WITH PASSCODE
-  // M512 - SET PASSCODE
-  // M513 - REMOVE PASSWORD
-  // M524 - ABORT SD PRINTING
+ 
+
   // M530 - ENABLE PRINTING MODE
   // M531 - SET PRINT NAME
   // M532 - SET PRINT PROGRESS
@@ -123,7 +126,6 @@ ________________________________________________________________________________
   // M550 - SET MACHINE NAME
   // M551 - SET PASSWORD
   // M555 - VIRTUALIZATION OF ANOTHER FIRMWARE
-  // M575 - SET SERIAL COMMS PARAMETERS
 
 
 
@@ -149,6 +151,7 @@ ________________________________________________________________________________
 | M38     | Not Supported		 | Compute SHA1 Hash of Target File	                            | N/A				       	|
 | M39     | Not Supported		 | Report SD Card Information		                            | N/A				       	|
 | M40     | Not Supported		 | Eject SD Card			                            | N/A				       	|
+| M524    | Not Supported		 | Abort SD Printing		                                    | N/A				       	|
 |_________|______________________________|__________________________________________________________________|___________________________________________|
 
 
@@ -232,6 +235,7 @@ ________________________________________________________________________________
   // M603 - FILAMENT CHANGE CONFIGURATION
   // M710 - CONTROLLER FAN SETTINGS
   // M905 - LOCAL TIME AND DATE
+
   // M916
   // M928
   // M929

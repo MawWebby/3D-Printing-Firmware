@@ -1584,8 +1584,41 @@ int mShell(String commanding) {
       }
     }
 
-    // IF IT IS A "5", CONTINUE ON EVALUATING
+    // IF IT IS A "M5", CONTINUE ON EVALUATING
     if (firstletter == "5") {
+
+      firstletter = commanding.substring(2,3);
+
+      // M57*
+      if (firstletter == "7") {
+
+        firstletter = commanding.substring(3,4);
+
+        // M575 - SET SERIAL BAUD COMMUNICATIONS
+        if (firstletter == "5") {
+
+          firstletter == commanding.substring(4,5);
+
+          // DETERMINE ARGUMENTS
+          if (firstletter == " ") {
+
+            firstletter == commanding.substring (5,6);
+            if (firstletter == "B") {
+              firstletter == commanding.substring(6,15);
+              int serialnew = firstletter.toInt();
+              serialBAUDRATE = serialnew;
+              Serial.println(F("RESTARTING!"));
+              Serial.end();
+              delay(1000);
+              setup();
+            } else {
+              Serial.println(F("UNABLE TO SET SERIAL BAUDRATE!"));
+            }
+          } else {
+            Serial.println(F("NO ARGS PASSED FOR SERIAL BAUDRATE!"));
+          }
+        }
+      }
     }
 
     // IF IT IS A "6", CONTINUE ON EVALUATING
