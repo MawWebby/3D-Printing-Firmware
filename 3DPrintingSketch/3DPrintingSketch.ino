@@ -77,6 +77,7 @@ int timetodisplaylcdinseconds = 300;
 String messagetodisplay = "";
 int lcddisplaytoshow = 0;
 String printerhostname = "MATTHEWS_3DPRINTER";
+String printerMACaddress = "33-B0-J0-G3-P2-2K";
 int type = 2;  // (0 - NO CHECK; 1 - DEBUG CHECK; 2 - STRICT CHECK)
 bool settingsactivated = false;
 int timetolcd = 0;
@@ -86,6 +87,7 @@ bool encoder3 = false;
 int numbertoshow = 0;
 float millimeterstoinches = 0.0393701;
 float currentunits = 0; // 0 FOR MM, 1 FOR INCHES
+float printpercentage = 0.000;
 
 
 

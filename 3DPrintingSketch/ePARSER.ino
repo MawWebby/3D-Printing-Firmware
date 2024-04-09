@@ -386,7 +386,7 @@ int mShell(String commanding) {
           }
         }
 
-        // M111 - SET CURRENT DEBUG LEVEL
+        // M111 - SET CURRENT DEBUG LEVEL (NOT SUPPORTED)
         if (firstletter == "1") {
           firstletter = commanding.substring(4, 5);
 
@@ -1617,14 +1617,181 @@ int mShell(String commanding) {
       }
     }
 
-    // IF IT IS A "M5", CONTINUE ON EVALUATING
+    // IF IT IS "M5*", CONTINUE ON EVALUATING
     if (firstletter == "5") {
 
+      // DETERMINE THE THIRD LETTER OF THE STRING
       firstletter = commanding.substring(2, 3);
+
+      // M51*
+      if (firstletter == "1") {
+
+        // DETERMINE THE FIFTH LETTER OF THE STRING
+        firstletter = commanding.substring(4,5);
+
+        // M510 - LOCK MACHINE
+        if (firstletter == "0") {
+          currentlylocked = true;
+          Serial.println(F("ok"));
+          Serial.println(F("lock"));
+          Serial.println(F("locked"));
+        }
+
+        // M512 - SET PASSWORD
+        if (firstletter == "2") {
+
+          // DETERMINE THE FIFTH LETTER OF THE STRING
+          firstletter = commanding.substring(4,5);
+
+          // MAKE SURE THAT ARGS ARE PASSED
+          if (firstletter == " ") {
+            cpswd = commanding.substring(5,125);
+            Serial.println(F("ok"));
+          } else {
+            Serial.println(F("NO ARGS PASSED! - IGNORING"));
+            Serial.println(F("ok"));
+          }
+        }
+
+        // M513 - REMOVE PASSWORD
+        if (firstletter == "3") {
+          cpswd = "";
+          dpswd = "";
+          currentlylocked = false;
+          Serial.println(F("ok"));
+        }
+      }
+
+      // M53*
+      if (firstletter == "3") {
+
+        // DETERMINE THE FOURTH LETTER OF THE STRING
+        firstletter = commanding.substring(3, 4);
+
+        // M530 - ENABLE PRINTING MODE
+        if (firstletter == "0") {
+          printingactive = 1;
+          xdisabled = false;
+          ydisabled = false;
+          zdisabled = false;
+          edisabled = false;
+          steppermotorsdisabled = false;
+          simulationmode = false;
+          Serial.println(F("ok"));
+        }
+
+        // M531 - SET PRINTER HOSTNAME
+        if (firstletter == "1") {
+
+          // DETERMINE THE FIFTH LETTER OF THE STRING
+          firstletter = commanding.substring(4, 5);
+
+          // MAKE SURE ARGUMENT IS ATTACHED
+          if (firstletter == " ") {
+
+            // DETERMINE THE HOSTNAME
+            printerhostname = commanding.substring(5, 125);
+            Serial.println(F("ok"));
+          } else {
+            Serial.println(F("NO ARGS RECEIVED! - IGNORING"));
+            Serial.println(F("ok"));
+          }
+        }
+
+        // M532 - SET PRINT PERCENTAGE
+        if (firstletter == "2") {
+
+          // DETERMINE THE FIFTH LETTER OF THE STRING
+          firstletter = commanding.substring(4, 5);
+
+          // MAKE SURE THAT AN ARGUMENT IS ATTACHED
+          if (firstletter == " ") {
+
+            // CONVERT STRING TO PERCENTAGE AND SAVE
+            String percentage = commanding.substring(5, 20);
+            printpercentage = percentage.toFloat();
+            Serial.println(F("ok"));
+          } else {
+            Serial.println(F("NO ARGS RECEIVED! - IGNORING"));
+            Serial.println(F("ok"));
+          }
+        }
+      }
+
+      // M54*
+      if (firstletter == "4") {
+
+        // DETERMINE THE FOURTH LETTER OF THE STRING
+        firstletter = commanding.substring(3, 4);
+
+        // M540 - SET MAC ADDRESS
+        if (firstletter == "0") {
+
+          // DETERMINE THE FIFTH LETTER OF THE STRING
+          firstletter = commanding.substring(4, 5);
+
+          if (firstletter == " ") {
+            printerMACaddress = commanding.substring(5, 20);
+            Serial.println(F("ok"));
+          } else {
+            Serial.println(F("NO ARGS PASSED! - IGNORING!"));
+            Serial.println(F("ok"));
+          }
+        }
+      }
+
+      // M55*
+      if (firstletter == "5") {
+
+        // DETERMINE THE FOURTH LETTER OF THE STRING
+        firstletter = commanding.substring(3, 4);
+
+        // M550 - SET PRINTER NAME (SAME AS HOSTNAME)(SAME AS M531)
+        if (firstletter == "0") {
+
+          // DETERMINE THE FIFTH LETTER OF THE STRING
+          firstletter = commanding.substring(4, 5);
+
+          // MAKE SURE ARGUMENT IS ATTACHED
+          if (firstletter == " ") {
+
+            // DETERMINE THE HOSTNAME
+            printerhostname = commanding.substring(5, 125);
+            Serial.println(F("ok"));
+          } else {
+            Serial.println(F("NO ARGS RECEIVED! - IGNORING"));
+            Serial.println(F("ok"));
+          }
+        }
+
+        // M551 - SET PASSWORD
+        if (firstletter == "1") {
+
+          // DETERMINE THE FIFTH LETTER OF THE STRING
+          firstletter = commanding.substring(4,5);
+
+          // MAKE SURE THAT ARGS ARE PASSED
+          if (firstletter == " ") {
+            cpswd = commanding.substring(5,125);
+            Serial.println(F("ok"));
+          } else {
+            Serial.println(F("NO ARGS PASSED! - IGNORING"));
+            Serial.println(F("ok"));
+          }
+        }
+
+        // M555 - VIRTUALIZATION OF ANOTHER FIRMWARE (NOT SUPPORTED);
+        if (firstletter == "5") {
+          Serial.println(F("VIRTUALIZATIOIN NOT CURRENTLY SUPPORTED!"));
+          Serial.println(F("THIS CODE ACTS AUTOMATICALLY LIKE REPETIER!"));
+          Serial.println(F("ok"));
+        }
+      }
 
       // M57*
       if (firstletter == "7") {
 
+        // DETERMINE THE FOURTH LETTER OF THE STRING
         firstletter = commanding.substring(3, 4);
 
         // M575 - SET SERIAL BAUD COMMUNICATIONS

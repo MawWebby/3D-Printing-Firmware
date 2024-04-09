@@ -103,7 +103,16 @@ ________________________________________________________________________________
 | M82     | Not Supported		 | Set Extruder to Absolute Mode            			    | N/A				       	|
 | M83     | Not Supported		 | Set Extruder to Relative Mode		                    | N/A				       	|
 | M84     | Not Supported		 | Idle Stepper Motor Timeout			                    | N/A				       	|
+| M110    | Supported			 | Set Current Line Number	                                    | N(NUMBER)				       	|
+| M111    | Not Supported		 | Set Debug Level		                                    | (P = DEBUG MODULE)(S = DEBUG ON/OFF)     	|
+| M112    | Supported			 | Full Emergency Stop		                                    | N/A				       	|
+
+
+
 | M115    | Supported			 | Get Firmware Versions	                                    | N/A				       	|
+
+
+| M116    | Supported			 | Wait Command			                                    | N/A				       	|
 | M200    | Supported			 | Set Filament Diameter	                                    | FF.FFF				       	|
 
 
@@ -117,6 +126,18 @@ ________________________________________________________________________________
 | M511    | Supported			 | Unlock Machine with Password	                                    | "PASSWORD"			       	|
 | M512    | Supported			 | Set Password			                                    | "PASSWORD"			       	|
 | M513    | Supported			 | Remove Password		                                    | "PASSWORD"			   	|
+| M530    | Supported			 | Enable Printing Mode		                                    | N/A				   	|
+| M531    | Supported			 | Set Printer Hostname		                                    | "PRINTER_HOSTNAME"		   	|
+| M532    | Supported			 | Set Printer Percentage (Print Progress)                          | %%.%%%				   	|
+| M540    | Supported			 | Set MAC Address		                                    | N/A				   	|
+| M550    | Supported			 | Set Printer Hostname		                                    | "PRINTER_HOSTNAME"		   	|
+| M551    | Supported			 | Set Password			                                    | "PASSWORD"			   	|
+| M555    | Not Supported		 | Virtualization of Another Firmware                               | N/A				   	|
+
+
+
+
+
 | M575    | Supported			 | Set Serial Communications/Baudrate                               | B(BAUDRATE)			       	|
 | M701    | Not Supported		 | Load Filament		                                    | N/A				       	|
 | M702    | Not Supported		 | Unload Filament		                                    | N/A				       	|
@@ -124,16 +145,16 @@ ________________________________________________________________________________
 
 
 
+  
 
- 
+  // M113 - HOST KEEPALIVE
+  // M114 - GET CURRENT POSITION
 
-  // M530 - ENABLE PRINTING MODE
-  // M531 - SET PRINT NAME
-  // M532 - SET PRINT PROGRESS
-  // M540 - SET MAC ADDRESS
-  // M550 - SET MACHINE NAME
-  // M551 - SET PASSWORD
-  // M555 - VIRTUALIZATION OF ANOTHER FIRMWARE
+
+  // M116 - WAIT
+  // M117 - DISPLAY MESSAGE
+  // M118 - ECHO MESSAGE ON HOST
+  // M119 - GET ENDSTOP STATUS
 
 
 
@@ -180,17 +201,7 @@ ________________________________________________________________________________
   // M107 - FAN OFF
   // M108 - CANCEL HEATING (CREATE EMERGENCY_PARSER)
   // M109 - SET EXTRUDER TEMPERATURE AND WAIT
-  // M110 - SET CURRENT LINE NUMBER
-  // M111 - SET DEBUG LEVEL (P = DEBUG MODULE)(S = DEBUG ON/OFF)
-  // M112 - FULL EMERGENCY STOP
-  // M113 - HOST KEEPALIVE
-  // M114 - GET CURRENT POSITION
 
-
-  // M116 - WAIT
-  // M117 - DISPLAY MESSAGE
-  // M118 - ECHO MESSAGE ON HOST
-  // M119 - GET ENDSTOP STATUS
   // M120 - ENABLE ENDSTOP DESTECTION
   // M121 - DISABLE ENDSTOP DETECTION
   // M122 - SET SOFTWARE ENDSTOPS
