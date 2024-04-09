@@ -419,12 +419,14 @@ int mShell(String commanding) {
 
         // M114 - GET CURRENT POSITION
         if (firstletter == "4") {
+          Serial.print(F("X:"));
           Serial.print(currentxdimension);
-          Serial.print(F(" "));
+          Serial.print(F(" Y:"));
           Serial.print(currentydimension);
-          Serial.print(F(" "));
+          Serial.print(F(" Z:"));
           Serial.print(currentzdimension);
-          Serial.println(F(" "));
+          Serial.print(F(" E:"));
+          Serial.println(currente0motordimension);
           Serial.println(F("ok"));
           return;
           return;
@@ -474,6 +476,7 @@ int mShell(String commanding) {
 
         // M118 - ECHO MESSAGE ON HOST
         if (firstletter == "8") {
+          Serial.println(commanding);
           Serial.println(errorstack0);
           Serial.println(F("ok"));
           return;
@@ -484,34 +487,34 @@ int mShell(String commanding) {
         // M119 - GET ENDSTOP STATUS
         if (firstletter == "9") {
           if (xendstopminactive == true) {
-            Serial.print(F("1 "));
+            Serial.print(F("X:1 "));
           } else {
-            Serial.print(F("0 "));
+            Serial.print(F("X:0 "));
           }
           if (xendstopmaxactive == true) {
-            Serial.print(F("1 "));
+            Serial.print(F("XM:1 "));
           } else {
-            Serial.print(F("0 "));
+            Serial.print(F("XM:0 "));
           }
           if (yendstopminactive == true) {
-            Serial.print(F("1 "));
+            Serial.print(F("Y:1 "));
           } else {
-            Serial.print(F("0 "));
+            Serial.print(F("Y:0 "));
           }
           if (yendstopmaxvalue == true) {
-            Serial.print(F("1 "));
+            Serial.print(F("YM:1 "));
           } else {
-            Serial.print(F("0 "));
+            Serial.print(F("YM:0 "));
           }
           if (zendstopminactive == true) {
-            Serial.print(F("1 "));
+            Serial.print(F("Z:1 "));
           } else {
-            Serial.print(F("0 "));
+            Serial.print(F("Z:0 "));
           }
           if (zendstopmaxactive == true) {
-            Serial.println(F("1 "));
+            Serial.println(F("ZM:1 "));
           } else {
-            Serial.println(F("0 "));
+            Serial.println(F("ZM:0 "));
           }
           Serial.println(F("ok"));
           return;

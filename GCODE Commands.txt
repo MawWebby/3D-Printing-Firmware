@@ -103,16 +103,26 @@ ________________________________________________________________________________
 | M82     | Not Supported		 | Set Extruder to Absolute Mode            			    | N/A				       	|
 | M83     | Not Supported		 | Set Extruder to Relative Mode		                    | N/A				       	|
 | M84     | Not Supported		 | Idle Stepper Motor Timeout			                    | N/A				       	|
+
 | M110    | Supported			 | Set Current Line Number	                                    | N(NUMBER)				       	|
 | M111    | Not Supported		 | Set Debug Level		                                    | (P = DEBUG MODULE)(S = DEBUG ON/OFF)     	|
 | M112    | Supported			 | Full Emergency Stop		                                    | N/A				       	|
-
-
-
+| M113    | Supported			 | Host Keepalive		                                    | N/A				       	|
+| M114    | Supported			 | Get Current Motor Position	                                    | N/A				       	|
 | M115    | Supported			 | Get Firmware Versions	                                    | N/A				       	|
-
-
 | M116    | Supported			 | Wait Command			                                    | N/A				       	|
+| M117    | Supported			 | Display Message on LCD	                                    | "MESSAGE"				       	|
+| M118    | Supported			 | Echo Message on Host		                                    | "MESSAGE"				       	|
+| M119    | Supported			 | Get Endstop Status		                                    | N/A				       	|
+| M120    | Supported			 | Enable Endstop Detection	                                    | N/A				       	|
+| M121    | Supported			 | Disable Endstop Detection	                                    | N/A				       	|
+| M122    | Supported			 | Set Software Endstops	                                    | XXX.XXYYY.YYZZZ.ZZ		       	|
+| M124    | Supported			 | Immediate Motor Stop		                                    | N/A				       	|
+| M126    | Supported**			 | Set Fan Speed (Percentage)	                                    | S(SPEED)				       	|
+| M140    | Supported			 | Set Bed Temperature		                                    | (TEMPERATURE)			       	|
+
+
+
 | M200    | Supported			 | Set Filament Diameter	                                    | FF.FFF				       	|
 
 
@@ -147,14 +157,7 @@ ________________________________________________________________________________
 
   
 
-  // M113 - HOST KEEPALIVE
-  // M114 - GET CURRENT POSITION
 
-
-  // M116 - WAIT
-  // M117 - DISPLAY MESSAGE
-  // M118 - ECHO MESSAGE ON HOST
-  // M119 - GET ENDSTOP STATUS
 
 
 
@@ -202,11 +205,7 @@ ________________________________________________________________________________
   // M108 - CANCEL HEATING (CREATE EMERGENCY_PARSER)
   // M109 - SET EXTRUDER TEMPERATURE AND WAIT
 
-  // M120 - ENABLE ENDSTOP DESTECTION
-  // M121 - DISABLE ENDSTOP DETECTION
-  // M122 - SET SOFTWARE ENDSTOPS
-  // M124 - IMMEDIATE MOTOR STOP
-  // M140 - SET BED TEMPERATURE
+
   // M143 - MAXIMUM HEATER TEMPERATURE
   // M144 - BED STANDBY
   // M149 - SET TEMP UNITS
@@ -277,3 +276,5 @@ ________________________________________________________________________________
 
 KEYNOTES:
 *Z900 - Runs a Full System Test by Performing Commands that are NOT Accessible over Serial Communication and Provides a Full Detailed Report
+**M126 - Set Fan Speed Custom Percentage is Supported, however, this will only trigger a On/Off Signal instead of Resistance Values
+
