@@ -103,17 +103,25 @@ ________________________________________________________________________________
 | M82     | Not Supported		 | Set Extruder to Absolute Mode            			    | N/A				       	|
 | M83     | Not Supported		 | Set Extruder to Relative Mode		                    | N/A				       	|
 | M84     | Not Supported		 | Idle Stepper Motor Timeout			                    | N/A				       	|
+| M115    | Supported			 | Get Firmware Versions	                                    | N/A				       	|
+| M200    | Supported			 | Set Filament Diameter	                                    | FF.FFF				       	|
 
+
+| M404    | Supported			 | Set Filament Diameter	                                    | FF.FFF				       	|
+| M405    | Supported			 | Turn On Filament Sensor	                                    | N/A				       	|
+| M406    | Supported			 | Turn Off Filament Sensor	                                    | N/A				       	|
+| M407    | Supported			 | Show Filament Diameter	                                    | N/A				       	|
 
 
 | M510    | Supported			 | Lock Machine			                                    | "PASSWORD"			       	|
 | M511    | Supported			 | Unlock Machine with Password	                                    | "PASSWORD"			       	|
-| M512    | Supported			 | Set Password			                                    | "PASSWORD"				       	|
-| M513    | Supported			 | Remove Password		                                    | "PASSWORD"				       	|
-| M575    | Supported			 | Set Serial Communications/Baudrates                              | B(BAUDRATE)			       	|
+| M512    | Supported			 | Set Password			                                    | "PASSWORD"			       	|
+| M513    | Supported			 | Remove Password		                                    | "PASSWORD"			   	|
+| M575    | Supported			 | Set Serial Communications/Baudrate                               | B(BAUDRATE)			       	|
 | M701    | Not Supported		 | Load Filament		                                    | N/A				       	|
 | M702    | Not Supported		 | Unload Filament		                                    | N/A				       	|
 |_________|______________________________|__________________________________________________________________|___________________________________________|
+
 
 
 
@@ -177,7 +185,8 @@ ________________________________________________________________________________
   // M112 - FULL EMERGENCY STOP
   // M113 - HOST KEEPALIVE
   // M114 - GET CURRENT POSITION
-  // M115 - GET FIRMWARE VERSION AND CAPABILITIES
+
+
   // M116 - WAIT
   // M117 - DISPLAY MESSAGE
   // M118 - ECHO MESSAGE ON HOST
@@ -193,7 +202,6 @@ ________________________________________________________________________________
   // M154 - AUTO REPORT POSITION
   // M155 - AUTO REPORT TEMPS
   // M190 - WAIT FOR BED TEMPT TO REACH TARGET TEMP
-  // M200 - SET FILAMENT DIAMETER
   // M201 - MAX ACCELERATION
   // M202 - SET MAX TRAVEL ACCELERATION
   // M203 - SET MAXIMUM FEEDRATE
@@ -214,10 +222,10 @@ ________________________________________________________________________________
   // M302 - ALLOW COLD EXTRUDES
   // M360 - REPORT FIRMWARE CONFIGURATION
   // M400 - WAIT FOR CURRENT MOVES TO FINISH
-  // M404 - FILAMENT DIAMETER
-  // M405 - FILAMENT SENSOR ON
-  // M406 - FILAMENT SENSOR OFF
-  // M407 - DISPLAY FILAMENT DIAMETER
+
+
+ 
+
   // M413 - POWER LOSS RECOVERY
   // M415 - HOST RESCUE
   // M416 - POWER LOSS

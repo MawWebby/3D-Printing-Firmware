@@ -433,7 +433,8 @@ int mShell(String commanding) {
 
         // M115 - GET FIRMWARE EVRSION AND CAPABILITIES
         if (firstletter == "5") {
-          Serial.println(F("{firmware_version: 1.0.0; firmware_name: QUADSKETCH; other_firmware_information: G,M,Z,T COMMANDS; network_support: NO; sd_card_support: NO"));
+          Serial.println(F("{firmware_version: 1.0.0; firmware_name: QUADSKETCH; other_firmware_information: G,M,Z,T,E COMMANDS; network_support: NO; sd_card_support: NO"));
+          Serial.println(F("firmware_url: https://github.com/MawWebby/3D-Printing-Firmware}"));
           Serial.println(F("ok"));
           return;
           return;
@@ -721,7 +722,7 @@ int mShell(String commanding) {
 
         // M155 - AUTO REPORT TEMPERATURE
         if (firstletter == "5") {
-          firstletter = commanding.substring(4,5);
+          firstletter = commanding.substring(4, 5);
 
           // DETERMINE IF ARGS ARE PASSED
           if (firstletter == " ") {
@@ -899,7 +900,7 @@ int mShell(String commanding) {
 
             // DETERMINE FLOAT FILAMENT DIAMETER
             String fildim = commanding.substring(5, 125);
-            filamentdiam = fildim.toFloat();
+            filamentdiameter = fildim.toFloat();
             Serial.println(F("ok"));
             return;
             return;
@@ -1510,6 +1511,38 @@ int mShell(String commanding) {
           return;
           return;
         }
+
+        // M404 - SET FILAMENT DIAMETER
+        if (firstletter == "4") {
+
+          // DETERMINE THE FIFTH LETTER OF THE STRING
+          firstletter = commanding.substring(4, 5);
+
+          if (firstletter == "") {
+            Serial.println(F("NO ARGS PASSED! - UNABLE TO SET FILAMENT DIAMETER"));
+            Serial.println(F("ok"));
+            return;
+            return;
+            return;
+          }
+
+          if (firstletter == " ") {
+
+            // DETERMINE FLOAT FILAMENT DIAMETER
+            String fildim = commanding.substring(5, 125);
+            filamentdiameter = fildim.toFloat();
+            Serial.println(F("ok"));
+            return;
+            return;
+            return;
+          }
+        }
+
+        // M407 - SHOW FILAMENT DIAMETER
+        if (firstletter == "7") {
+          Serial.println(filamentdiameter);
+          Serial.println(F("ok"));
+        }
       }
 
       // IF IT IS M41*, CONTINUE
@@ -1587,24 +1620,24 @@ int mShell(String commanding) {
     // IF IT IS A "M5", CONTINUE ON EVALUATING
     if (firstletter == "5") {
 
-      firstletter = commanding.substring(2,3);
+      firstletter = commanding.substring(2, 3);
 
       // M57*
       if (firstletter == "7") {
 
-        firstletter = commanding.substring(3,4);
+        firstletter = commanding.substring(3, 4);
 
         // M575 - SET SERIAL BAUD COMMUNICATIONS
         if (firstletter == "5") {
 
-          firstletter == commanding.substring(4,5);
+          firstletter == commanding.substring(4, 5);
 
           // DETERMINE ARGUMENTS
           if (firstletter == " ") {
 
-            firstletter == commanding.substring (5,6);
+            firstletter == commanding.substring(5, 6);
             if (firstletter == "B") {
-              firstletter == commanding.substring(6,15);
+              firstletter == commanding.substring(6, 15);
               int serialnew = firstletter.toInt();
               serialBAUDRATE = serialnew;
               Serial.println(F("RESTARTING!"));
