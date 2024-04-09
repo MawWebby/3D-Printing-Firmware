@@ -227,6 +227,7 @@ int mShell(String commanding) {
           extruderemergencyretraction();
           targete0temp = 0.0;
           targete1temp = 0.0;
+          targethbtemp = 0.0;
           extrudersactive = false;
           Serial.println(F("ok"));
           return;
@@ -244,7 +245,19 @@ int mShell(String commanding) {
             String extemp = commanding.substring(5, 100);
             if (currentactiveextruder == 0) {
               if (simulationmode == false) {
-                targete0temp = extemp.toFloat();
+                if (currenttempunits == 0) {
+                  targete0temp = extemp.toFloat();
+                } else {
+                  if (currenttempunits == 1) {
+                    targete0temp = extemp.toFloat();
+                    targete0temp = targete0temp - 32;
+                    targete0temp = targete0temp * 5 / 9;
+                  } else {
+                    if (currenttempunits == 2) {
+                      targete0temp = targete0temp - 273;
+                    }
+                  }
+                }
               } else {
                 Serial.println(F("SKIPPING"));
               }
@@ -320,17 +333,23 @@ int mShell(String commanding) {
             String extemp = commanding.substring(6, 100);
             if (currentactiveextruder == 0) {
               if (simulationmode == false) {
-                targete0temp = extemp.toFloat();
+                if (currenttempunits == 0) {
+                  targete0temp = extemp.toFloat();
+                } else {
+                  if (currenttempunits == 1) {
+                    targete0temp = extemp.toFloat();
+                    targete0temp = targete0temp - 32;
+                    targete0temp = 5 / 9 * targete0temp;
+                  } else {
+                    if (currenttempunits == 2) {
+                      targete0temp = extemp.toFloat();
+                      targete0temp = targete0temp - 273;
+                    }
+                  }
+                }
               } else {
                 Serial.println(F("SKIPPING"));
               }
-              Serial.println(F("ok"));
-              return;
-              return;
-              return;
-            }
-            if (currentactiveextruder == 1) {
-              targete1temp = extemp.toFloat();
               Serial.println(F("ok"));
               return;
               return;
@@ -1351,8 +1370,10 @@ int mShell(String commanding) {
         // DETERMINE THE FOURTH LETTER OF THE STRING
         firstletter = commanding.substring(3, 4);
 
-        // M302
+        // M302 - ALLOW COLD EXTRUSIONS
         if (firstletter == "2") {
+          allowcoldextrusion = true;
+          Serial.println(F("ok"));
         }
       }
 
@@ -1630,7 +1651,7 @@ int mShell(String commanding) {
       if (firstletter == "1") {
 
         // DETERMINE THE FIFTH LETTER OF THE STRING
-        firstletter = commanding.substring(4,5);
+        firstletter = commanding.substring(4, 5);
 
         // M510 - LOCK MACHINE
         if (firstletter == "0") {
@@ -1644,11 +1665,11 @@ int mShell(String commanding) {
         if (firstletter == "2") {
 
           // DETERMINE THE FIFTH LETTER OF THE STRING
-          firstletter = commanding.substring(4,5);
+          firstletter = commanding.substring(4, 5);
 
           // MAKE SURE THAT ARGS ARE PASSED
           if (firstletter == " ") {
-            cpswd = commanding.substring(5,125);
+            cpswd = commanding.substring(5, 125);
             Serial.println(F("ok"));
           } else {
             Serial.println(F("NO ARGS PASSED! - IGNORING"));
@@ -1771,11 +1792,11 @@ int mShell(String commanding) {
         if (firstletter == "1") {
 
           // DETERMINE THE FIFTH LETTER OF THE STRING
-          firstletter = commanding.substring(4,5);
+          firstletter = commanding.substring(4, 5);
 
           // MAKE SURE THAT ARGS ARE PASSED
           if (firstletter == " ") {
-            cpswd = commanding.substring(5,125);
+            cpswd = commanding.substring(5, 125);
             Serial.println(F("ok"));
           } else {
             Serial.println(F("NO ARGS PASSED! - IGNORING"));

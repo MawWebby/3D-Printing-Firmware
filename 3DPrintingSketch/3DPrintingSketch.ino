@@ -228,12 +228,15 @@ float currente1motordimensionLCD = 0;
 float currente0temp = 000.0001;
 float currente1temp = 000.0001;
 float currenthbtemp = 000.0001;
+float currente0tempLCD = 000.0001;
+float currente1tempLCD = 000.0001;
+float currenthbtempLCD = 000.0001;
 int currentactiveextruder = 0;
 bool extrudersactive = false;
 float maxe0temp = 300.0001;
 float maxe1temp = 300.0001;
 float maxhbtemp = 300.0001;
-int currenttempunits = 1;          // 1 FOR CELSIUS, 2 FOR KELVIN, 3 FOR F
+int currenttempunits = 0;          // 0 FOR CELSIUS, 2 FOR KELVIN, 1 FOR F
 float filamentdiameter = 1.75;         // FILAMENT DIMATER IN MM
 float maxacceleration = 3600.001;  // MAX ACCELERATION OF STEPPER MOTORS
 float maxtravelspeed = 3600.001;
@@ -242,6 +245,13 @@ bool xdisabled = true;
 bool ydisabled = true;
 bool zdisabled = true;
 bool edisabled = true;
+
+
+
+////////////////////////
+/// SAFETY VARIABLES ///
+////////////////////////
+bool allowcoldextrusion = false;
 
 
 

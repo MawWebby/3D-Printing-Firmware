@@ -162,41 +162,46 @@ void movement() {
     }
 
     if (edisabled == false && simulationmode == false) {
-      if (e0movingnegative == true) {
-        digitalWrite(E_DIR_PIN, LOW);
-        digitalWrite(E_ENABLE_PIN, LOW);
-        steppermotorsdisabled = false;
-        edisabled = false;
-        if (currente0motordimension >= targete0motordimension && estepstaken <= estepsrequired) {
-          if (ecurrentstep >= esteptimer) {
-            digitalWrite(E_STEP_PIN, HIGH);
-            estepstaken = estepstaken + 1;
-            ecurrentstep = 0;
-            currente0motordimension = currente0motordimension - e0motormodifier;
+      if (allowcoldextrusion == true || currente0temp >= 170) {
+        if (e0movingnegative == true) {
+          digitalWrite(E_DIR_PIN, LOW);
+          digitalWrite(E_ENABLE_PIN, LOW);
+          steppermotorsdisabled = false;
+          edisabled = false;
+          if (currente0motordimension >= targete0motordimension && estepstaken <= estepsrequired) {
+            if (ecurrentstep >= esteptimer) {
+              digitalWrite(E_STEP_PIN, HIGH);
+              estepstaken = estepstaken + 1;
+              ecurrentstep = 0;
+              currente0motordimension = currente0motordimension - e0motormodifier;
+            }
           }
         }
-      }
 
-      if (e0movingpositive == true) {
-        digitalWrite(E_DIR_PIN, HIGH);
-        digitalWrite(E_ENABLE_PIN, LOW);
-        steppermotorsdisabled = false;
-        edisabled = false;
-        if (currente0motordimension <= targete0motordimension && estepstaken <= estepsrequired) {
-          if (ecurrentstep >= esteptimer) {
-            digitalWrite(E_STEP_PIN, HIGH);
-            estepstaken = estepstaken + 1;
-            ecurrentstep = 0;
-            currente0motordimension = currente0motordimension + e0motormodifier;
+        if (e0movingpositive == true) {
+          digitalWrite(E_DIR_PIN, HIGH);
+          digitalWrite(E_ENABLE_PIN, LOW);
+          steppermotorsdisabled = false;
+          edisabled = false;
+          if (currente0motordimension <= targete0motordimension && estepstaken <= estepsrequired) {
+            if (ecurrentstep >= esteptimer) {
+              digitalWrite(E_STEP_PIN, HIGH);
+              estepstaken = estepstaken + 1;
+              ecurrentstep = 0;
+              currente0motordimension = currente0motordimension + e0motormodifier;
+            }
           }
         }
-      }
 
-      if (e0movingnegative == false && e0movingpositive == false) {
-        digitalWrite(E_DIR_PIN, LOW);
-        digitalWrite(E_ENABLE_PIN, LOW);
-        steppermotorsdisabled = false;
-        edisabled = false;
+        if (e0movingnegative == false && e0movingpositive == false) {
+          digitalWrite(E_DIR_PIN, LOW);
+          digitalWrite(E_ENABLE_PIN, LOW);
+          steppermotorsdisabled = false;
+          edisabled = false;
+        }
+      } else {
+        Serial.println(F("EXTRUDER CONDITIION NOT MET; FORCE RUNNING EXTRUDER HEATING"));
+        tempsensing();
       }
     }
   }
@@ -304,20 +309,6 @@ void movetonewgcodeformovement(bool runchecks) {
   bool conditionsmetZ = false;
   bool conditionsmetE = false;
 
-  // if current units equals 1, then change LCD to Inches instead of MM
-  if (currentunits == 1) {
-    currentxdimensionLCD = currentxdimension * millimeterstoinches;
-    currentydimensionLCD = currentxdimension * millimeterstoinches;
-    currentzdimensionLCD = currentxdimension * millimeterstoinches;
-    currente0motordimensionLCD = currentxdimension * millimeterstoinches;
-    currente1motordimensionLCD = currentxdimension * millimeterstoinches;
-  } else {
-    currentxdimensionLCD = currentxdimension;
-    currentydimensionLCD = currentydimension;
-    currentzdimensionLCD = currentzdimension;
-    currente0motordimensionLCD = currente0motordimension;
-    currente1motordimensionLCD = currente1motordimension;
-  }
 
 
   // IF RUN CHECKS DOES NOT EQUAL TRUE, IT MUST BE CALLED BY TEST COMMAND (NOT CURENTLY SUPPORTED!)

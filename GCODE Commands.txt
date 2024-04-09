@@ -103,7 +103,20 @@ ________________________________________________________________________________
 | M82     | Not Supported		 | Set Extruder to Absolute Mode            			    | N/A				       	|
 | M83     | Not Supported		 | Set Extruder to Relative Mode		                    | N/A				       	|
 | M84     | Not Supported		 | Idle Stepper Motor Timeout			                    | N/A				       	|
-
+| M85     | Not Supported		 | Set Inactivity Shutdown Timer		                    | N/A				       	|
+| M86     | Not Supported		 | Set Safety Timer				                    | N/A				       	|
+| M87     | Not Supported		 | Cancel Safety Timer				                    | N/A				       	|
+| M92     | Not Supported		 | Set Axis_Steps_Per_Unit			                    | N/A				       	|
+| M93     | Not Supported		 | Send Axis_Steps_Per_Unit			                    | N/A				       	|
+| M98     | Not Supported		 | Call Macro / Subprogram			                    | N/A				       	|
+| M99     | Not Supported		 | Return Value from Macro / Subprogram		                    | N/A				       	|
+| M103    | Supported			 | Turn All Extruders Off / Extruder Retraction	                    | N/A				       	|
+| M104    | Supported			 | Set Extruder Temperature			                    | (TARGET_TEMPERATURE)		       	|
+| M105    | Supported			 | Get Extruder Temperature			                    | N/A				       	|
+| M106    | Supported			 | Turn Extruder Fan On				                    | N/A				       	|
+| M107    | Supported			 | Turn Extruder Fan Off			                    | N/A				       	|
+| M108    | Supported			 | Emergency Cancel Extruder Heating		                    | N/A				       	|
+| M109    | Not Supported		 | Idle Stepper Motor Timeout			                    | N/A				       	|
 | M110    | Supported			 | Set Current Line Number	                                    | N(NUMBER)				       	|
 | M111    | Not Supported		 | Set Debug Level		                                    | (P = DEBUG MODULE)(S = DEBUG ON/OFF)     	|
 | M112    | Supported			 | Full Emergency Stop		                                    | N/A				       	|
@@ -120,10 +133,24 @@ ________________________________________________________________________________
 | M124    | Supported			 | Immediate Motor Stop		                                    | N/A				       	|
 | M126    | Supported**			 | Set Fan Speed (Percentage)	                                    | S(SPEED)				       	|
 | M140    | Supported			 | Set Bed Temperature		                                    | (TEMPERATURE)			       	|
+| M143    | Supported***		 | Maximum Heater Temperature	                                    | 00000.0011111.11HHHHHH.HH		       	|
+| M144    | Supported			 | Bed Standby			                                    | N/A				       	|
+| M149    | Supported****		 | Set Temperature Units	                                    | (0 / 1 / 2)			       	|
+
+
+
+
+
+
+
+
 
 
 
 | M200    | Supported			 | Set Filament Diameter	                                    | FF.FFF				       	|
+
+
+| M302    | Supported			 | Allow Cold Extrusions	                                    | N/A				       	|
 
 
 | M404    | Supported			 | Set Filament Diameter	                                    | FF.FFF				       	|
@@ -161,6 +188,7 @@ ________________________________________________________________________________
 
 
 
+
 M - SD Commands
 _________________________________________________________________________________________________________________________________________________________
 | Command | Availability                 | Purpose                                                          | Supported Arguments                 	|
@@ -190,25 +218,9 @@ ________________________________________________________________________________
 
 
 
-  // M85  - SET INACTIVITY SHUTDOWN TIMER
-  // M86  - SET SAFETY TIMEOUT
-  // M87. - CANCEL SAFETY TIMER
-  // M92. - SET AXISSTEPSPERUNIT
-  // M93. - SEND AXISSTEPSPERUNIT
-  // M98  - CALL MACRO/SUBPROGRAM
-  // M99. - RETURN FROM MACRO/SUBPROGRAM
-  // M103 - TURN ALL EXTRUDERS OFF, EXTRUDER RETRACTION
-  // M104 - SET EXTRUDER TEMPERATURE
-  // M105 - GET EXTRUDER TEMPERATURE
-  // M106 - FAN ON
-  // M107 - FAN OFF
-  // M108 - CANCEL HEATING (CREATE EMERGENCY_PARSER)
-  // M109 - SET EXTRUDER TEMPERATURE AND WAIT
 
 
-  // M143 - MAXIMUM HEATER TEMPERATURE
-  // M144 - BED STANDBY
-  // M149 - SET TEMP UNITS
+
   // M154 - AUTO REPORT POSITION
   // M155 - AUTO REPORT TEMPS
   // M190 - WAIT FOR BED TEMPT TO REACH TARGET TEMP
@@ -229,7 +241,6 @@ ________________________________________________________________________________
   // M290 - BABYSTEPPING
   // M293 - BABYSTEP Z+
   // M294 - BABYSTEP Z-
-  // M302 - ALLOW COLD EXTRUDES
   // M360 - REPORT FIRMWARE CONFIGURATION
   // M400 - WAIT FOR CURRENT MOVES TO FINISH
 
@@ -277,4 +288,10 @@ ________________________________________________________________________________
 KEYNOTES:
 *Z900 - Runs a Full System Test by Performing Commands that are NOT Accessible over Serial Communication and Provides a Full Detailed Report
 **M126 - Set Fan Speed Custom Percentage is Supported, however, this will only trigger a On/Off Signal instead of Resistance Values
+
+***M143 - Reset Maximum Temperature Loop by Using Same Algorithm as G0/G1
+****M149 - Add Full Implementation of Temperature Units by Updating mSHELL loop.
+(5)
+
+
 
