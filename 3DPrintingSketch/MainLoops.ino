@@ -1,9 +1,12 @@
 // SETUP LOOP
 void setup() {
+
   ////////////////////////////////
   // BEGIN SERIAL COMMUNICATION //
   ////////////////////////////////
   Serial.begin(serialBAUDRATE);
+
+
 
   ///////////////////////////
   // DELAY 10 MILLISECONDS //
@@ -11,12 +14,15 @@ void setup() {
   delay(10);
   Serial.println(F("start"));
 
+
+
   ///////////////////////
   // START LCD DISPLAY //
   ///////////////////////
   lcd.begin(20, 4);
   lcd.setCursor(0, 0);
   lcd.print("starting...");
+
 
 
   //////////////////////////
@@ -174,7 +180,6 @@ void setup() {
 
 
 
-
   //////////////////////////////
   // FINISH LCD STARTUP TASKS //
   //////////////////////////////
@@ -263,6 +268,58 @@ void setup() {
     lcd.createChar(7, fan567);
   }
 
+
+
+  //////////////////////////////
+  // SETUP EEPROM WITH VALUES //
+  //////////////////////////////
+  {
+    // EEPROM-0 - WATCHDOG CONTINUING THROUGH REBOOT
+    if (EEPROM.read(0) == 1) {
+
+      // IF WATCHDOG EEPROM EQUAL 1, THEN SET WATCHDOG ACTIVATED EQUAL TO TRUE
+      watchdogactivated = true;
+      Serial.println(F("error"));
+      Serial.println(F("WATCHDOG LOCK! (EEPROM-0)"));
+    } else {
+      if (EEPROM.read(0) != 0) {
+
+        // WATCHDOG VARIABLE NOT SET, SETTING AND RESTARTING
+        Serial.println(F("SETTING EEPROM-0"));
+        delay(3000);
+        EEPROM.update(0, 0);
+        delay(3000);
+        Serial.println(F("restart"));
+        delay(500);
+        setup();
+      }
+    }
+
+    // EEPROM-1 - 
+
+    // EEPROM-2 - RESTART FROM POWER LOSS
+    if (EEPROM.read(2) == 1) {
+
+      // IF RESTART EEPROM EQUAL 1, THEN SET Printer Active EQUAL TO TRUE
+      printingactive = true;
+      Serial.println(F(""));
+      Serial.println(F("Printer Active (EEPROM-2)"));
+    } else {
+      if (EEPROM.read(2) != 0) {
+
+        // WATCHDOG VARIABLE NOT SET, SETTING AND RESTARTING
+        Serial.println(F("SETTING EEPROM-2"));
+        delay(3000);
+        EEPROM.update(2, 0);
+        delay(3000);
+        Serial.println(F("restart"));
+        delay(500);
+        setup();
+      }
+    }
+  }
+
+
   Serial.println(F("started"));
   lcd.clear();
   delay(1);
@@ -317,31 +374,37 @@ void loop() {
     digitalWrite(FAN_PIN, LOW);
     digitalWrite(PS_ON_PIN, LOW);
 
-    // DELAY FOR 60 SECONDS
-    delay(60000);
-    return;
-    return;
-    return;
-    return;
-  }
+    // SET UPDATED FLAG IN EEPROM FOR WATCHDOG!
+    if (EEPROM.read(0) != 1) {
+      EEPROM.update(0, 1);
+    }
 
-  // LOOPS TO FIRE
-  serialReceiver();  // SERIAL RECEIVE LOOP
-  realtimeclock();   // REAL TIME CLOCK IN MILLIS
+    // DELAY FOR 0.5 Seconds
+    delay(500);
 
-  // ONLY CALL MOVEMENT/TEMPERATURE LOOP IF PRINTER IS ACTIVE AND SITTING IDLE
-  if (printingactive == true && currentlylocked != true) {
-    movement();  // STEPPER MOTOR MICROSTEP LOOP
+    // START 3RD SERIAL RECEIVER
+    watchdogserialReceiver();
+
   } else {
-    delay(1);
-  }
 
-  // TEMP SENSING EVERY ONE-HUNDRED LOOPS
-  if (tempsensingruntime == 250) {
-    tempsensingruntime = 0;
-    maintenance();      // MAINTENANCE LOOP
-    litetempsensing();  // TEMPERATURE SENSING LOOP
-    alerttimeclock();   // ALERT TIME CLOCK
+    // LOOPS TO FIRE
+    serialReceiver();  // SERIAL RECEIVE LOOP
+    realtimeclock();   // REAL TIME CLOCK IN MILLIS
+
+    // ONLY CALL MOVEMENT/TEMPERATURE LOOP IF PRINTER IS ACTIVE AND SITTING IDLE
+    if (printingactive == true && currentlylocked != true) {
+      movement();  // STEPPER MOTOR MICROSTEP LOOP
+    } else {
+      delay(1);
+    }
+
+    // TEMP SENSING EVERY ONE-HUNDRED LOOPS
+    if (tempsensingruntime == 250) {
+      tempsensingruntime = 0;
+      maintenance();      // MAINTENANCE LOOP
+      litetempsensing();  // TEMPERATURE SENSING LOOP
+      alerttimeclock();   // ALERT TIME CLOCK
+    }
   }
 }
 
@@ -492,6 +555,39 @@ void eSERIALRECEIVER() {
       newData = true;
       receivedSerial3000 = receivedChars;
       ePARSER(receivedSerial3000);
+      newData = false;
+      receivedSerial3000 = "";
+      receivedChars == "";
+    }
+  }
+}
+
+// WATCHDOG SERIAL INFORMATION
+void watchdogserialReceiver() {
+  static byte ndx = 0;
+  char endMarker = '\n';
+  char rc;
+
+  while (Serial.available() > 0 && newData == false) {
+    rc = Serial.read();
+
+    if (rc != endMarker) {
+      receivedChars[ndx] = rc;
+      ndx++;
+      if (ndx >= numChars) {
+        ndx = numChars - 1;
+      }
+    } else {
+      receivedChars[ndx] = '\0';  // terminate the string
+      ndx = 0;
+      newData = true;
+      receivedSerial3000 = receivedChars;
+      int working = watchdoginterpretation(receivedSerial3000);
+      //if (working != 0 && working != 2) {
+      //  Serial.println(F("GCODE COMMAND NOT RECOGNIZED!"));
+      //}
+      // if working == 2, then no args were passed
+      // if working == 0, the command was initiated successfully
       newData = false;
       receivedSerial3000 = "";
       receivedChars == "";

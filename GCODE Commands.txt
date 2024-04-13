@@ -38,6 +38,8 @@ ________________________________________________________________________________
 | Z202    | Supported			 | Move Z-Axis to Certain Position                                  | Position: (ZZZ.ZZ)                  |
 | Z203    | Supported			 | Move E-Axis to Certain Position                                  | Position: (EEE.EE)                  |
 | Z204    | Supported			 | Home All Axis                                                    | N/A                                 |
+| Z700    | Supported			 | Set Watchdog to True (Lockout)                                   | N/A                                 |
+| Z701    | Supported			 | Set Watchdog to False (Lockout)                                  | N/A                                 |
 | Z900*   | BETA			 | Run Full System Test                                             | N/A                                 |
 | Z999    | Supported			 | Print Cached Database to Serial                                  | N/A                                 |
 | Z999.1  | Supported			 | Clean Database and Restart Printer                               | N/A                                 |
@@ -140,6 +142,15 @@ ________________________________________________________________________________
 
 
 
+/////////////////////////////
+//// EEPROM NOTES/VALUES ////
+/////////////////////////////
+// 0 - Hard Watchdog Status
+// 1 - 
+// 2 - Restart from Power Loss
+// 3 - 
+// 4 - 
+// 5 - 
 
 
 

@@ -453,3 +453,13 @@ bool zendsetup = 0;
 float anae0read = 00.0001;
 float anahbread = 00.0001;
 
+
+/////////////////////////////
+//// EEPROM NOTES/VALUES ////
+/////////////////////////////
+// 0 - Hard Watchdog Status
+// 1 - 
+// 2 - Restart from Power Loss
+// 3 - 
+// 4 - 
+// 5 - 
