@@ -479,15 +479,47 @@ void setup() {
     }
 
     // EEPROM-11 - SUCCESS PRINTS (256)
+    if (EEPROM.read(11) == "") {
+      Serial.println(F("EEPROM-11 NOT SET - CONFIGURING"));
+      delay(3000);
+      EEPROM.update(11,0);
+      delay(3000);
+      Serial.println(F("restarting"));
+      setup();
+    }
 
 
     // EEPROM-12 - SUCCESS PRINTS (1)
+    if (EEPROM.read(12) == "") {
+      Serial.println(F("EEPROM-12 NOT SET - CONFIGURING"));
+      delay(3000);
+      EEPROM.update(12,0);
+      delay(3000);
+      Serial.println(F("restarting"));
+      setup();
+    }
 
 
     // EEPROM-13 - BAD PRINTS (256)
+    if (EEPROM.read(13) == "") {
+      Serial.println(F("EEPROM-13 NOT SET - CONFIGURING"));
+      delay(3000);
+      EEPROM.update(13,0);
+      delay(3000);
+      Serial.println(F("restarting"));
+      setup();
+    }
 
 
     // EEPROM-14 - BAD PRINTS (1)
+    if (EEPROM.read(14) == "") {
+      Serial.println(F("EEPROM-14 NOT SET - CONFIGURING"));
+      delay(3000);
+      EEPROM.update(14,0);
+      delay(3000);
+      Serial.println(F("restarting"));
+      setup();
+    }
   }
 
 
