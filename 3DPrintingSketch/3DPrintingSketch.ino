@@ -16,6 +16,7 @@
 #include <Wire.h>
 #include <LiquidCrystal.h>
 #include <EEPROM.h>
+int PRINTERVERSION = 0.2;
 
 
 ////////////////////////////////////
@@ -308,8 +309,8 @@ float z2shift = 0.000;
 //////////////////////////
 /// MODIFIER VARIABLES ///
 //////////////////////////
-float xmodifier = 0.0111;
-float ymodifier = 0.0111;
+float xmodifier = 0.0131;
+float ymodifier = 0.0131;
 float zmodifier = 0.0005;
 float e0tempmodifier = 0.7;
 float e1tempmodifier = 0.7;
@@ -441,7 +442,7 @@ int extrusiontimeout = 120;
 //// DEBUG VARIABLES ////
 /////////////////////////
 bool debugserial = false;
-
+bool skipsystemcheck = false;
 
 
 /////////////////////////
@@ -458,8 +459,17 @@ float anahbread = 00.0001;
 //// EEPROM NOTES/VALUES ////
 /////////////////////////////
 // 0 - Hard Watchdog Status
-// 1 - 
+// 1 - Debug Serial
 // 2 - Restart from Power Loss
-// 3 - 
-// 4 - 
-// 5 - 
+// 3 - Currently Locked
+// 4 - watchdog errors
+// 5 - temperature errors
+// 6 - g-parser errors
+// 7 - m-parser errors
+// 8 - movement errors
+// 9 - FIRMWARE VERSION
+// 10 - success prints (256)
+// 11 - success prints (1)
+// 12 - bad prints (256)
+// 13 - bad prints (1)
+// 
