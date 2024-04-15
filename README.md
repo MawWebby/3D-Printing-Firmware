@@ -28,3 +28,4 @@
 <p>Calibrate XYZ Components</p>
 <p>Rewrite XYZ Decision Code</p>
 <p>Add more to this README</p>
+<p>FIX ENDSTOP BUG</p>
