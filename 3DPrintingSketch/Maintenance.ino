@@ -197,8 +197,8 @@ int alerttimeclock() {
 // 0      - tempchange()        - THERMAL PROTECTION - EXTRUDER ON TIME
 // 1      - startup()           - STARTUP TIME
 // 2      - hbtempchange()      - HEATED BED THERMAL PROTECTION - HEATED BED ON TIME
-// 3      - 
-// 4      - 
+// 3      - tempreporting()     - TIME TO REPORT TEMPERATURES AUTOMATICALLY (M155)
+// 4      - printTimer()        - Print Timer as Requested by M75/76
 // 5      - 
 // 6      - 
 // 7      - 
