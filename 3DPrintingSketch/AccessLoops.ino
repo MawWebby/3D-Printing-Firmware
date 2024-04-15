@@ -8,7 +8,7 @@
 // DATABASE (ARRAY) ACCESS LOOPS!
 
 // SEND A FLOAT VALUE TO THE MASTER ARRAY
-void sendtoarray(int commandtoanalyze, float valuetoinsert, int positiontoinsert) { 
+void sendtoarray(int commandtoanalyze, float valuetoinsert, int positiontoinsert) {
   switch (commandtoanalyze) {
     case 0:
       if (analyzedgcodestack0[10] == 0 || analyzedgcodestack0[10] == 2) {
@@ -215,6 +215,64 @@ void clearrowinarray(int commandtoclear, bool removelock) {
       }
       break;
   }
+}
+
+void fulldatabaseread() {
+  for (int i = 0; i < 11; i++) {
+    Serial.print(analyzedgcodestack0[i]);
+    Serial.print(F(" "));
+  }
+  Serial.println(F(""));
+  for (int i = 0; i < 11; i++) {
+    Serial.print(analyzedgcodestack1[i]);
+    Serial.print(F(" "));
+  }
+  Serial.println(F(""));
+  for (int i = 0; i < 11; i++) {
+    Serial.print(analyzedgcodestack2[i]);
+    Serial.print(F(" "));
+  }
+  Serial.println(F(""));
+  for (int i = 0; i < 11; i++) {
+    Serial.print(analyzedgcodestack3[i]);
+    Serial.print(F(" "));
+  }
+  Serial.println(F(""));
+  for (int i = 0; i < 11; i++) {
+    Serial.print(analyzedgcodestack4[i]);
+    Serial.print(F(" "));
+  }
+  Serial.println(F(""));
+  for (int i = 0; i < 11; i++) {
+    Serial.print(analyzedgcodestack5[i]);
+    Serial.print(F(" "));
+  }
+  Serial.println(F(""));
+  for (int i = 0; i < 11; i++) {
+    Serial.print(analyzedgcodestack6[i]);
+    Serial.print(F(" "));
+  }
+  Serial.println(F(""));
+  for (int i = 0; i < 11; i++) {
+    Serial.print(analyzedgcodestack7[i]);
+    Serial.print(F(" "));
+  }
+  Serial.println(F(""));
+  for (int i = 0; i < 11; i++) {
+    Serial.print(analyzedgcodestack8[i]);
+    Serial.print(F(" "));
+  }
+  Serial.println(F(""));
+  for (int i = 0; i < 11; i++) {
+    Serial.print(analyzedgcodestack9[i]);
+    Serial.print(F(" "));
+  }
+  Serial.println(F(""));
+  for (int i = 0; i < 11; i++) {
+    Serial.print(analyzedgcodestack10[i]);
+    Serial.print(F(" "));
+  }
+  Serial.println(F(""));
 }
 
 

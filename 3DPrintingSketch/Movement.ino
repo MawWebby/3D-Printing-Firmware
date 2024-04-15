@@ -200,8 +200,10 @@ void movement() {
           edisabled = false;
         }
       } else {
-        Serial.println(F("EXTRUDER CONDITIION NOT MET; FORCE RUNNING EXTRUDER HEATING"));
-        tempsensing();
+        if (e0movingnegative != false || e0movingpositive != false) {
+          Serial.println(F("EXTRUDER CONDITIION NOT MET; FORCE RUNNING EXTRUDER HEATING"));
+          tempsensing();
+        }
       }
     }
   }

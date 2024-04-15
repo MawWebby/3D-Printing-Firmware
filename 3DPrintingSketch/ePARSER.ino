@@ -2692,10 +2692,12 @@ int zShell(String commanding) {
       if (firstletter == " ") {
         // Q3 - TURN DEBUGGING FEATURE ON OR OFF TO SERIAL INTERFACE
         firstletter = commanding.substring(3, 4);
+
         if (firstletter == 0) {
           debugserial = false;
           EEPROM.update(1, 0);
         }
+
         if (firstletter == 1) {
           Serial.println(F("debug"));
           debugserial = true;
@@ -2740,8 +2742,26 @@ int zShell(String commanding) {
         // Q5 - READ VARIABLES RELATING TO CACHING ARRAY
         return (0);
       }
-      return (0);
+
+      // Z50*
+      if (firstletter == "0") {
+        firstletter = commanding.substring(3, 4);
+
+        // Z500 - SYSTEM CHECK
+        if (firstletter == "0") {
+          quickprint();
+          Serial.println(F("ok"));
+        }
+
+        // Z501 - SYSTEM CHECK
+        if (firstletter == "1") {
+          quickprint();
+          Serial.println(F("ok"));
+        }
+      }
     }
+    return (0);
+
 
     // Z6* -
     if (firstletter == "6") {
@@ -2810,61 +2830,8 @@ int zShell(String commanding) {
 
             Serial.println(printingactive);
 
-            for (int i = 0; i < 11; i++) {
-              Serial.print(analyzedgcodestack0[i]);
-              Serial.print(F(" "));
-            }
-            Serial.println(F(""));
-            for (int i = 0; i < 11; i++) {
-              Serial.print(analyzedgcodestack1[i]);
-              Serial.print(F(" "));
-            }
-            Serial.println(F(""));
-            for (int i = 0; i < 11; i++) {
-              Serial.print(analyzedgcodestack2[i]);
-              Serial.print(F(" "));
-            }
-            Serial.println(F(""));
-            for (int i = 0; i < 11; i++) {
-              Serial.print(analyzedgcodestack3[i]);
-              Serial.print(F(" "));
-            }
-            Serial.println(F(""));
-            for (int i = 0; i < 11; i++) {
-              Serial.print(analyzedgcodestack4[i]);
-              Serial.print(F(" "));
-            }
-            Serial.println(F(""));
-            for (int i = 0; i < 11; i++) {
-              Serial.print(analyzedgcodestack5[i]);
-              Serial.print(F(" "));
-            }
-            Serial.println(F(""));
-            for (int i = 0; i < 11; i++) {
-              Serial.print(analyzedgcodestack6[i]);
-              Serial.print(F(" "));
-            }
-            Serial.println(F(""));
-            for (int i = 0; i < 11; i++) {
-              Serial.print(analyzedgcodestack7[i]);
-              Serial.print(F(" "));
-            }
-            Serial.println(F(""));
-            for (int i = 0; i < 11; i++) {
-              Serial.print(analyzedgcodestack8[i]);
-              Serial.print(F(" "));
-            }
-            Serial.println(F(""));
-            for (int i = 0; i < 11; i++) {
-              Serial.print(analyzedgcodestack9[i]);
-              Serial.print(F(" "));
-            }
-            Serial.println(F(""));
-            for (int i = 0; i < 11; i++) {
-              Serial.print(analyzedgcodestack10[i]);
-              Serial.print(F(" "));
-            }
-            Serial.println(F(""));
+            fulldatabaseread();
+
             Serial.println(F("ok"));
           }
 
@@ -2909,6 +2876,7 @@ int zShell(String commanding) {
 
 // WATCHDOG INTERPRETATION LOOP
 int watchdoginterpretation(String commanding) {
+  
   // SELECT M/Z CODE COMMANDS
   bool interpretedcompleted = false;
 

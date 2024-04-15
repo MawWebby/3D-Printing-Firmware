@@ -7,7 +7,7 @@
 // CONTROL + SPACE
 
 
-// CURRENT NUMBER OF LINES OF CODE: 7856
+// CURRENT NUMBER OF LINES OF CODE: 8766
 
 
 ///////////////////////////////
@@ -19,7 +19,7 @@
 int PRINTERVERSION = 0.2;
 int MAJORVERSION = 0;
 int MINORVERSION = 2;
-bool allowolderversion = false;
+bool allowolderversions = false;
 
 
 ////////////////////////////////////
@@ -44,21 +44,21 @@ bool allowolderversion = false;
 #define E1_STEP_PIN 36
 #define E1_DIR_PIN 34
 #define E1_ENABLE_PIN 30
-#define PS_ON_PIN -1        // ATX , awake=LOW, SLEEP=High  // NOT APPLICABLE
-#define HEATER_0_PIN 10     // Extruder Heater
+#define PS_ON_PIN -1     // ATX , awake=LOW, SLEEP=High  // NOT APPLICABLE
+#define HEATER_0_PIN 10  // Extruder Heater
 #define HEATER_1_PIN 8
-#define TEMP_0_PIN 13       // ANALOG NUMBERING
-#define TEMP_1_PIN 14       // ANALOG NUMBERING
-#define TEMP_HB_PIN 16      // PROBABLY NOT
+#define TEMP_0_PIN 13   // ANALOG NUMBERING
+#define TEMP_1_PIN 14   // ANALOG NUMBERING
+#define TEMP_HB_PIN 16  // PROBABLY NOT
 #define HEATER_HB_PIN 8
 #define FAN_PIN 9
 #define SDPOWER -1
 #define SDCS_PIN 53
-#define SD_DETECT_PIN -1    //currently not implemented
-#define MASTERADDRESS 0x7   // MASTER ADDRESS FOR THE I2C CONTROLLER
-#define DEBUGARDUINO 0x8    // DEBUGGING ARDUINO WHERE ALL DEBUGGING/STATUS UPDATES WILL BE SENT OVER A DIFFERENT SERIAL INTERFACE
-#define LCDARDUINO 0x9      // LCD ARDUINO WHERE EXTRA INFORMATION CAN BE DISPLAYED OR DEBUGGING STATUS UPDATES CAN BE SENT
-#define SDARDUINO 0x10      // SD ARDUINO WHERE THE ARDUINO CAN PRINT COMPLETELY INDEPENDENTLY THROUGH A SD CARD
+#define SD_DETECT_PIN -1   //currently not implemented
+#define MASTERADDRESS 0x7  // MASTER ADDRESS FOR THE I2C CONTROLLER
+#define DEBUGARDUINO 0x8   // DEBUGGING ARDUINO WHERE ALL DEBUGGING/STATUS UPDATES WILL BE SENT OVER A DIFFERENT SERIAL INTERFACE
+#define LCDARDUINO 0x9     // LCD ARDUINO WHERE EXTRA INFORMATION CAN BE DISPLAYED OR DEBUGGING STATUS UPDATES CAN BE SENT
+#define SDARDUINO 0x10     // SD ARDUINO WHERE THE ARDUINO CAN PRINT COMPLETELY INDEPENDENTLY THROUGH A SD CARD
 
 #define BEEPER 37
 #define ROTARYBUTTON1 31
@@ -91,7 +91,7 @@ bool encoder2 = false;
 bool encoder3 = false;
 int numbertoshow = 0;
 float millimeterstoinches = 0.0393701;
-float currentunits = 0; // 0 FOR MM, 1 FOR INCHES
+float currentunits = 0;  // 0 FOR MM, 1 FOR INCHES
 float printpercentage = 0.000;
 
 
@@ -162,8 +162,8 @@ bool e0on = false;
 bool e0max = false;
 bool hbon = false;
 unsigned long long int timesincelastmotorcurrent = 0;
-unsigned long int clocktimers[10] = {0,0,0,0,0,0,0,0,0,0};
-unsigned long int targettime[10] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+unsigned long int clocktimers[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+unsigned long int targettime[10] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 unsigned long int currenttimer = 0;
 unsigned long int startseconds = 0;
 
@@ -185,7 +185,7 @@ int extrusionlength;
 
 ////////////////////////////////////////
 /// MOTOR VARIABLES SOFTWARE RELATED ///
-//////////////////////////////////////// 
+////////////////////////////////////////
 bool xmovingpositive = false;
 bool xmovingnegative = false;
 bool ymovingpositive = false;
@@ -242,7 +242,7 @@ float maxe0temp = 300.0001;
 float maxe1temp = 300.0001;
 float maxhbtemp = 300.0001;
 int currenttempunits = 0;          // 0 FOR CELSIUS, 2 FOR KELVIN, 1 FOR F
-float filamentdiameter = 1.75;         // FILAMENT DIMATER IN MM
+float filamentdiameter = 1.75;     // FILAMENT DIMATER IN MM
 float maxacceleration = 3600.001;  // MAX ACCELERATION OF STEPPER MOTORS
 float maxtravelspeed = 3600.001;
 bool steppermotorsdisabled = true;
@@ -336,7 +336,7 @@ bool printingactive = false;  // IS THE PRINTER ACTIVE THAT IT SHOULD START FOCU
 String character = "";
 int analyzedCURRENTLYANALYZINGNUMBER = 0;
 bool currentANALYZING = false;    // IS THE PRINTER ACTIVELY ANALYZING A COMMAND AS IT IS RECEIVED (TRUE/FALSE)
-int currentgcodecommand = -1;      // CURRENT GCODE COMMAND PRINTER IS OPERATING ON (0-10)
+int currentgcodecommand = -1;     // CURRENT GCODE COMMAND PRINTER IS OPERATING ON (0-10)
 int analyzedgcodecommand = 0;     // LAST GCODE COMAND THAT WAS ANALYZED (0-11)
 int characternumberanalyzed = 0;  // CHARACTER NUMBER THAT HAS BEEN ANALYZED LAST.  (0-127)
 int currentlycachedgcodes = 0;    // HOW MANY GCODE COMMANDS ARE CURRENTLY CACHED IN THE ARRAY (0-10)
@@ -344,7 +344,7 @@ float readvaluefromarray = 00.001;
 int lastnoncachedstring = 0;
 int totalnoncachedstrings = 0;
 String stringfromstack = "";
-int absoluterelative = 0; // 0 = ABSOLUTE; 1 = RELATIVE
+int absoluterelative = 0;  // 0 = ABSOLUTE; 1 = RELATIVE
 
 // CURRENT GCODE CHARACTERS
 unsigned long int gcodenumber0 = 0;
@@ -476,4 +476,4 @@ float anahbread = 00.0001;
 // 12 - success prints (1)
 // 13 - bad prints (256)
 // 14 - bad prints (1)
-// 
+//
