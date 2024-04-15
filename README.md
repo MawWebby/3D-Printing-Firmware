@@ -21,11 +21,12 @@
 <p>12. ENJOY!</p>
 </br>
 <h1>Steps to Configure:</h1>
+<p>More to come if time allows...</p>
 </br>
 <h1>Things to Do:</h1>
 <p>Calibrate Hotend</p>
 <p>Rewrite Hotend</p>
-<p>Calibrate XYZ Components</p>
-<p>Rewrite XYZ Decision Code</p>
-<p>Add more to this README</p>
 <p>FIX ENDSTOP BUG</p>
+<p>Add ZE Absolute/Relative</p>
+<p>Add E/HB Absolute/Relative</p>
+<p>Add More Movement Options (Once Fixed)</p>
