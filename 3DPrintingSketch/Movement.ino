@@ -843,7 +843,7 @@ void xhome() {
     }
 
 
-    delayMicroseconds(800);
+    delayMicroseconds(200);
     numberoftimeshoming = numberoftimeshoming + 1;
 
 
@@ -947,7 +947,7 @@ void yhome() {
         }
       }
 
-      delayMicroseconds(800);
+      delayMicroseconds(200);
       numberoftimeshoming = numberoftimeshoming + 1;
 
 
@@ -1056,7 +1056,7 @@ void zhome() {
       // TURN ALL STEP PINS TO LOW
       digitalWrite(Z_STEP_PIN, LOW);
 
-      delayMicroseconds(800);
+      delayMicroseconds(100);
       numberoftimeshoming = numberoftimeshoming + 1;
 
       if (watchdogactivated == true) {
