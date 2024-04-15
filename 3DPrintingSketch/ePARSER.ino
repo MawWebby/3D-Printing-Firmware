@@ -29,7 +29,7 @@ int ePARSER(String commanding) {
 
       if (fixin == " ") {
         fixin = commanding.substring(prisms + 1, 255);
-        int testers = interpretation(fixin);
+        int testers = ePARSER(fixin);
         finished = true;
         interpretedcompleted = true;
         return (testers);
@@ -41,7 +41,7 @@ int ePARSER(String commanding) {
 
   // IF COMMAND STARTS WITH " ", REMOVE THE FRONT SPACE AND RESTART INTERPRETATION
   if (firstletter == " ") {
-    interpretation(commanding.substring(1, 255));
+    ePARSER(commanding.substring(1, 255));
     interpretedcompleted = true;
   }
 
@@ -2263,4 +2263,722 @@ int eShell(String commanding) {
       digitalWrite(HEATER_HB_PIN, HIGH);
     }
   }
+}
+
+// DEBUGGING COMMANDS
+int zShell(String commanding) {
+  {
+    bool interpretedcompleted = false;
+
+    // DETERMINE THE SECOND LETTER OF THE STRING
+    String firstletter = commanding.substring(1, 2);
+
+    // Z0 - LOAD FILAMENT AND UNLOAD FILAMENT
+    if (firstletter == "0") {
+
+      // DETERMINE THE INPUT STRING
+      firstletter = commanding.substring(3, 4);
+
+      if (firstletter == "" || firstletter == " ") {
+        Serial.println(F("NO COMMAND RECEIVED! IGNORING TYPE EXTRUSION"));
+        Serial.println(F("0 - UNLOAD FILAMENT / 1 - LOAD FILAMENT"));
+        return (2);
+      }
+
+      // Z0 0 - UNLOAD FILAMENT
+      if (firstletter == "0") {
+        Serial.println(F("PLEASE WAIT"));
+        lcd.clear();
+        lcd.setCursor(4, 1);
+        lcd.print(F("PLEASE WAIT"));
+
+        int timertest9800 = 0;
+        bool totemp = false;
+
+        while (timertest9800 < extrusiontimeout && totemp == false) {
+          digitalWrite(HEATER_0_PIN, HIGH);
+          lcd.setCursor(5, 2);
+          currente0temp = (1010 - TEMP_0_PIN) * e0tempmodifier;
+          lcd.print(currente0temp);
+          if (TEMP_0_PIN > 250) {
+            totemp = true;
+          }
+          timertest9800 = timertest9800 + 1;
+          delay(1000);
+          eSERIALRECEIVER();
+        }
+
+        digitalWrite(E_ENABLE_PIN, HIGH);
+        digitalWrite(E_STEP_PIN, HIGH);
+        digitalWrite(E_DIR_PIN, LOW);
+        digitalWrite(HEATER_0_PIN, LOW);
+
+        Serial.println(F("PLEASE REMOVE THE FILAMENT NOW"));
+        lcd.clear();
+        lcd.setCursor(4, 1);
+        lcd.print(F("REMOVE FILAMENT NOW"));
+
+        delay(5000);
+
+        digitalWrite(E_ENABLE_PIN, LOW);
+        digitalWrite(E_STEP_PIN, LOW);
+        digitalWrite(E_DIR_PIN, LOW);
+        digitalWrite(HEATER_0_PIN, LOW);
+      }
+
+      // Z0 1 - LOAD FILAMENT
+      if (firstletter == "0") {
+        Serial.println(F("PLEASE WAIT"));
+        lcd.clear();
+        lcd.setCursor(4, 1);
+        lcd.print(F("PLEASE WAIT"));
+
+        int timertest9800 = 0;
+        bool totemp = false;
+
+        while (timertest9800 < extrusiontimeout && totemp == false) {
+          digitalWrite(HEATER_0_PIN, HIGH);
+          lcd.setCursor(5, 2);
+          currente0temp = (1010 - TEMP_0_PIN) * e0tempmodifier;
+          lcd.print(currente0temp);
+          if (TEMP_0_PIN > 250) {
+            totemp = true;
+          }
+          timertest9800 = timertest9800 + 1;
+          delay(1000);
+          eSERIALRECEIVER();
+        }
+
+        digitalWrite(E_ENABLE_PIN, HIGH);
+        digitalWrite(E_STEP_PIN, HIGH);
+        digitalWrite(E_DIR_PIN, HIGH);
+        digitalWrite(HEATER_0_PIN, LOW);
+
+        Serial.println(F("PLEASE REMOVE THE FILAMENT NOW"));
+        lcd.clear();
+        lcd.setCursor(4, 1);
+        lcd.print(F("REMOVE FILAMENT NOW"));
+
+        delay(5000);
+
+        digitalWrite(E_ENABLE_PIN, LOW);
+        digitalWrite(E_STEP_PIN, LOW);
+        digitalWrite(E_DIR_PIN, LOW);
+        digitalWrite(HEATER_0_PIN, LOW);
+      }
+    }
+
+    // Z1* - IF THE SECOND NUMBER IS A "1" CONTINUE
+    if (firstletter == "1") {
+
+      // DETERMINE THE THIRD LETTER OF THE STRING
+      firstletter = commanding.substring(2, 3);
+
+      // Z1 - IS THE PRINTER ACTIVE?
+      if (firstletter == " " || firstletter == "") {
+
+        if (firstletter != " ") {
+          Serial.println(F("Z1 - NO ARGS PASSED! Skipping..."));
+          return (2);
+        }
+
+        firstletter = commanding.substring(3, 4);
+        printingactive = firstletter.toInt();
+
+        if (printingactive == true) {
+          Serial.println(F("PRINTING ACTIVE"));
+          return (0);
+        }
+
+        if (printingactive == false) {
+          Serial.println(F("printer no longer active"));
+          return (0);
+        }
+        return (2);
+      }
+
+      // Z10*
+      if (firstletter == "0") {
+
+        // READ THE FOURTH LETTER OF THE STRING
+        firstletter = commanding.substring(3, 4);
+
+        // Z10 - EMERGENCY SHUTOFF MODE
+        if (firstletter == "" || firstletter == " ") {
+          watchdogactivated = true;
+          Serial.println(F("EMERGENCY SHUTDOWN MODE ACTIVATED"));
+          return (0);
+        }
+      }
+
+      // Z11*
+      if (firstletter == "1") {
+        Serial.println(F("Z11 NO LONGER SUPPORTED"));
+        return (0);
+      }
+
+      // Z12*
+      if (firstletter == "2") {
+
+        // READ THE FOURTH LETTER OF TEH STRING
+        firstletter = commanding.substring(3, 4);
+
+        // Z12 - FULL DEBUG OF MOTOR MOVEMENT OVER SERIAL
+        if (firstletter == "" || firstletter == " ") {
+          Serial.println(F("ok"));
+          Serial.println(currente0temp);
+          Serial.println(currente1temp);
+          Serial.println(currenthbtemp);
+          Serial.println(F("RAW"));
+          Serial.println(analogRead(TEMP_0_PIN));
+          Serial.println(analogRead(TEMP_1_PIN));
+          Serial.println(analogRead(TEMP_HB_PIN));
+          return (0);
+        }
+      }
+
+      // Z13*
+      if (firstletter == "3") {
+
+        // READ THE FORUTH LETTER OF THE STRING
+        firstletter = commanding.substring(3, 4);
+        if (firstletter == " ") {
+          String modmod = commanding.substring(4, 100);
+
+          // SET MODIFIERS BUTTON
+        }
+
+        if (firstletter == "") {
+          Serial.println(F("NO ARGS PASSED FOR TEMPERATURE MODIFICATION"));
+          Serial.println(F("ok"));
+          return (2);
+        }
+      }
+
+      // Z14*
+      if (firstletter == "4") {
+
+        // READ ALL VARIABLES RELATING TO CACHING
+        return (0);
+      }
+
+      // Z15*
+      if (firstletter == "5") {
+
+        // READ ALL VARIABLES RELATING TO CACHING (FINAL)
+        return (0);
+      }
+    }
+
+    // Z2* -
+    if (firstletter == "2") {
+
+      // DETERMINE THE THIRD LETTER OF THE STRING
+      firstletter = commanding.substring(2, 3);
+
+      if (firstletter == " " || firstletter == "") {
+        // Z2 - PRINT ENTIRE CACHED ARRAY TO SERIAL
+
+        int greatnumber6000 = 0;
+        while (greatnumber6000 <= 12) {
+          Serial.print(analyzedgcodestack0[greatnumber6000]);
+          greatnumber6000 = greatnumber6000 + 1;
+          Serial.print(F(" "));
+        }
+        Serial.println();
+        greatnumber6000 = 0;
+        while (greatnumber6000 <= 12) {
+          Serial.print(analyzedgcodestack1[greatnumber6000]);
+          greatnumber6000 = greatnumber6000 + 1;
+          Serial.print(F(" "));
+        }
+        Serial.println();
+        greatnumber6000 = 0;
+        while (greatnumber6000 <= 12) {
+          Serial.print(analyzedgcodestack2[greatnumber6000]);
+          greatnumber6000 = greatnumber6000 + 1;
+          Serial.print(F(" "));
+        }
+        Serial.println();
+        greatnumber6000 = 0;
+        while (greatnumber6000 <= 12) {
+          Serial.print(analyzedgcodestack3[greatnumber6000]);
+          greatnumber6000 = greatnumber6000 + 1;
+          Serial.print(F(" "));
+        }
+        Serial.println();
+        greatnumber6000 = 0;
+        while (greatnumber6000 <= 12) {
+          Serial.print(analyzedgcodestack4[greatnumber6000]);
+          greatnumber6000 = greatnumber6000 + 1;
+          Serial.print(F(" "));
+        }
+        Serial.println();
+        greatnumber6000 = 0;
+        while (greatnumber6000 <= 12) {
+          Serial.print(analyzedgcodestack5[greatnumber6000]);
+          greatnumber6000 = greatnumber6000 + 1;
+          Serial.print(F(" "));
+        }
+        Serial.println();
+        greatnumber6000 = 0;
+        while (greatnumber6000 <= 12) {
+          Serial.print(analyzedgcodestack6[greatnumber6000]);
+          greatnumber6000 = greatnumber6000 + 1;
+          Serial.print(F(" "));
+        }
+        Serial.println();
+        greatnumber6000 = 0;
+        while (greatnumber6000 <= 12) {
+          Serial.print(analyzedgcodestack7[greatnumber6000]);
+          greatnumber6000 = greatnumber6000 + 1;
+          Serial.print(F(" "));
+        }
+        Serial.println();
+        greatnumber6000 = 0;
+        while (greatnumber6000 <= 12) {
+          Serial.print(analyzedgcodestack8[greatnumber6000]);
+          greatnumber6000 = greatnumber6000 + 1;
+          Serial.print(F(" "));
+        }
+        Serial.println();
+        greatnumber6000 = 0;
+        while (greatnumber6000 <= 12) {
+          Serial.print(analyzedgcodestack9[greatnumber6000]);
+          greatnumber6000 = greatnumber6000 + 1;
+          Serial.print(F(" "));
+        }
+        Serial.println();
+        greatnumber6000 = 0;
+        while (greatnumber6000 <= 12) {
+          Serial.print(analyzedgcodestack10[greatnumber6000]);
+          greatnumber6000 = greatnumber6000 + 1;
+          Serial.print(F(" "));
+        }
+        Serial.println();
+        return (0);
+      }
+
+      // Z20* - CONTINUE
+      if (firstletter == "0") {
+
+        // DETERMINE THE FOURTH LETTER OF THE STRING
+        firstletter = commanding.substring(3, 4);
+
+        // Z200 - MOVE X-AXIS TO CERTAIN POSITION
+        if (firstletter == "0") {
+
+          // DETERMINE THE FIFTH LETTER OF THE STRING
+          firstletter = commanding.substring(4, 5);
+
+          // CHECK AND SEE IF THERE ARE ARGS THAT ARE PASSED
+          if (firstletter == "") {
+            xhome();
+            interpretedcompleted = true;
+            return (1);
+          }
+
+          // IF THERE ARE ARGS, SET X TO THAT POSITION AND CONTINUE
+          if (firstletter == " ") {
+            String xtargett = firstletter.substring(5, 125);
+            targetxdimension = xtargett.toFloat();
+            Serial.println(F("ok"));
+            interpretedcompleted = true;
+          }
+        }
+
+        // Z201 - MOVE Y-AXIS TO CERTAIN POSITION
+        if (firstletter == "1") {
+
+          // DETERMINE THE FIFTH LETTER OF THE STRING
+          firstletter = commanding.substring(4, 5);
+
+          // CHECK AND SEE IF THERE ARE ARGS THAT ARE PASSED
+          if (firstletter == "") {
+            yhome();
+            interpretedcompleted = true;
+            return (1);
+          }
+
+          // IF THERE ARE ARGS, SET X TO THAT POSITION AND CONTINUE
+          if (firstletter == " ") {
+            String ytargett = firstletter.substring(5, 125);
+            targetydimension = ytargett.toFloat();
+            Serial.println(F("ok"));
+            interpretedcompleted = true;
+          }
+        }
+
+        // Z202 - MOVE Z-AXIS TO CERTAIN POSITION
+        if (firstletter == "2") {
+
+          // DETERMINE THE FIFTH LETTER OF THE STRING
+          firstletter = commanding.substring(4, 5);
+
+          // CHECK AND SEE IF THERE ARE ARGS THAT ARE PASSED
+          if (firstletter == "") {
+            zhome();
+            interpretedcompleted = true;
+            return (1);
+          }
+
+          // IF THERE ARE ARGS, SET X TO THAT POSITION AND CONTINUE
+          if (firstletter == " ") {
+            String ztargett = firstletter.substring(5, 125);
+            targetzdimension = ztargett.toFloat();
+            Serial.println(F("ok"));
+            interpretedcompleted = true;
+          }
+        }
+
+        // Z203 - MOVE E-AXIS TO CERTAIN POSITION
+        if (firstletter == "3") {
+
+          // DETERMINE THE FIFTH LETTER OF THE STRING
+          firstletter = commanding.substring(4, 5);
+
+          // CHECK AND SEE IF THERE ARE ARGS THAT ARE PASSED
+          if (firstletter == "") {
+            Serial.println(F("NO ARGS PASSED! CANT CONTINUE!"));
+            interpretedcompleted = true;
+            return (1);
+          }
+
+          // IF THERE ARE ARGS, SET X TO THAT POSITION AND CONTINUE
+          if (firstletter == " ") {
+            String etargett = firstletter.substring(5, 125);
+            targete0motordimension = etargett.toFloat();
+            Serial.println(F("ok"));
+            interpretedcompleted = true;
+          }
+        }
+
+        // Z204 - HOME ALL
+        if (firstletter == "4") {
+          homeall();
+        }
+
+        // Z205 - MOVE ALL DIMENSIONS TO A CERTAIN POSITION (XYZE)
+        if (firstletter == "5") {
+          String xtarget = firstletter.substring(5, 11);
+          String ytarget = firstletter.substring(10, 16);
+          String ztarget = firstletter.substring(16, 22);
+          String etarget = firstletter.substring(22, 28);
+          Serial.println(xtarget);
+          Serial.println(ytarget);
+          Serial.println(ztarget);
+          Serial.println(etarget);
+          targetxdimension = xtarget.toFloat();
+          targetydimension = ytarget.toFloat();
+          targetzdimension = ztarget.toFloat();
+          targete0motordimension = etarget.toFloat();
+          movetonewgcodeformovement(false);
+          interpretedcompleted = true;
+        }
+      }
+    }
+
+    // Z3* -
+    if (firstletter == "3") {
+
+      // DETERMINE THE THIRD LETTER OF THE STRING
+      firstletter = commanding.substring(2, 3);
+
+      if (firstletter == "") {
+        Serial.println(F("Q3 - NO ARGS PASSED! Skipping..."));
+        return (2);
+      }
+
+      if (firstletter == " ") {
+        // Q3 - TURN DEBUGGING FEATURE ON OR OFF TO SERIAL INTERFACE
+        firstletter = commanding.substring(3, 4);
+        if (firstletter == 0) {
+          debugserial = false;
+          EEPROM.update(1, 0);
+        }
+        if (firstletter == 1) {
+          Serial.println(F("debug"));
+          debugserial = true;
+          EEPROM.update(1, 1);
+        }
+        Serial.println(F("ok"));
+        return (0);
+      }
+    }
+
+    // Z4* -
+    if (firstletter == "4") {
+
+      // DETERMINE THE THIRD LETTER OF THE STRING
+      firstletter = commanding.substring(2, 3);
+
+      if (firstletter == "") {
+        // Q4 - READ THE UNCACHED DATA ARRAY TO SERIAL BUS
+        Serial.println(gcodestack0);
+        Serial.println(gcodestack1);
+        Serial.println(gcodestack2);
+        Serial.println(gcodestack3);
+        Serial.println(gcodestack4);
+        Serial.println(gcodestack5);
+        Serial.println(gcodestack6);
+        Serial.println(gcodestack7);
+        Serial.println(gcodestack8);
+        Serial.println(gcodestack9);
+        Serial.println(gcodestack10);
+        return (0);
+      }
+      return (2);
+    }
+
+    // Z5* -
+    if (firstletter == "5") {
+
+      // DETERMINE THE THIRD LETTER OF THE STRING
+      firstletter = commanding.substring(2, 3);
+
+      if (firstletter == "") {
+        // Q5 - READ VARIABLES RELATING TO CACHING ARRAY
+        return (0);
+      }
+      return (0);
+    }
+
+    // Z6* -
+    if (firstletter == "6") {
+      Serial.println(currentxdimension);
+      Serial.println(currentydimension);
+      Serial.println(currentzdimension);
+      Serial.println(currente0motordimension);
+      Serial.println(currente1motordimension);
+      return (0);
+    }
+
+    // Z7* -
+    if (firstletter == "7") {
+
+      firstletter = commanding.substring(2, 3);
+
+      if (firstletter == "0") {
+
+        firstletter = commanding.substring(3, 4);
+
+        // Z700 - SET WATCHDOG TO TRUE
+        if (firstletter == "0") {
+          watchdogactivated = true;
+          Serial.println(F("ok"));
+          Serial.println(F("watchdog"));
+          return;
+        }
+
+        // Z701 - SET WATCHDOG TO FALSE
+        if (firstletter == "1") {
+          watchdogactivated = false;
+          Serial.println(F("ok"));
+          return;
+        }
+      }
+      return (0);
+    }
+
+    // Z8* -
+    if (firstletter == "8") {
+      Serial.println(currente0temp);
+      Serial.println(currente1temp);
+      Serial.println(currenthbtemp);
+      return (0);
+    }
+
+    // Z9* -
+    if (firstletter == "9") {
+
+      // DETERMINE THE THIRD LETTER OF THE STRING
+      firstletter = commanding.substring(2, 3);
+
+      // Z99*
+      if (firstletter == "9") {
+
+        // DETERMINE THE FOURTH LETTER OF THE STRING
+        firstletter = commanding.substring(3, 4);
+
+        // Z999 - PRINT ENTIRE DATABASE TO SERIAL BUS/OTHER DATABASE OPERATIONS
+        if (firstletter == "9") {
+
+          // DETERMINE THE FIFTH LETTER OF THE STRING
+          firstletter = commanding.substring(4, 5);
+
+          if (firstletter == "") {
+
+            Serial.println(printingactive);
+
+            for (int i = 0; i < 11; i++) {
+              Serial.print(analyzedgcodestack0[i]);
+              Serial.print(F(" "));
+            }
+            Serial.println(F(""));
+            for (int i = 0; i < 11; i++) {
+              Serial.print(analyzedgcodestack1[i]);
+              Serial.print(F(" "));
+            }
+            Serial.println(F(""));
+            for (int i = 0; i < 11; i++) {
+              Serial.print(analyzedgcodestack2[i]);
+              Serial.print(F(" "));
+            }
+            Serial.println(F(""));
+            for (int i = 0; i < 11; i++) {
+              Serial.print(analyzedgcodestack3[i]);
+              Serial.print(F(" "));
+            }
+            Serial.println(F(""));
+            for (int i = 0; i < 11; i++) {
+              Serial.print(analyzedgcodestack4[i]);
+              Serial.print(F(" "));
+            }
+            Serial.println(F(""));
+            for (int i = 0; i < 11; i++) {
+              Serial.print(analyzedgcodestack5[i]);
+              Serial.print(F(" "));
+            }
+            Serial.println(F(""));
+            for (int i = 0; i < 11; i++) {
+              Serial.print(analyzedgcodestack6[i]);
+              Serial.print(F(" "));
+            }
+            Serial.println(F(""));
+            for (int i = 0; i < 11; i++) {
+              Serial.print(analyzedgcodestack7[i]);
+              Serial.print(F(" "));
+            }
+            Serial.println(F(""));
+            for (int i = 0; i < 11; i++) {
+              Serial.print(analyzedgcodestack8[i]);
+              Serial.print(F(" "));
+            }
+            Serial.println(F(""));
+            for (int i = 0; i < 11; i++) {
+              Serial.print(analyzedgcodestack9[i]);
+              Serial.print(F(" "));
+            }
+            Serial.println(F(""));
+            for (int i = 0; i < 11; i++) {
+              Serial.print(analyzedgcodestack10[i]);
+              Serial.print(F(" "));
+            }
+            Serial.println(F(""));
+            Serial.println(F("ok"));
+          }
+
+          if (firstletter == ".") {
+
+            // DETERMINE THE SIXTH LETTER OF THE STRING
+            firstletter = commanding.substring(5, 6);
+
+            // Z999.1 - CLEAR ENTIRE DATABASE
+            if (firstletter == "1") {
+              Serial.println(F("CLEARING DATABASE!"));
+
+              delay(100);
+              /////////////////////////////////////
+              // DO A FRESH WIPE OF MASTER ARRAY //
+              /////////////////////////////////////
+              clearrowinarray(0, true);
+              clearrowinarray(1, true);
+              clearrowinarray(2, true);
+              clearrowinarray(3, true);
+              clearrowinarray(4, true);
+
+              delay(1000);
+
+              clearrowinarray(5, true);
+              clearrowinarray(6, true);
+              clearrowinarray(7, true);
+              clearrowinarray(8, true);
+              clearrowinarray(9, true);
+              clearrowinarray(10, true);
+
+              Serial.println(F("DONE!"));
+              Serial.println(F("ok"));
+            }
+          }
+        }
+      }
+      return (0);
+    }
+  }
+}
+
+// WATCHDOG INTERPRETATION LOOP
+int watchdoginterpretation(String commanding) {
+  // SELECT M/Z CODE COMMANDS
+  bool interpretedcompleted = false;
+
+  // DETERMINE THE FIRST LETTER OF THE STRING
+  String firstletter = commanding.substring(0, 1);
+
+  // IF COMMAND STARTS WITH " ", REMOVE THE FRONT SPACE AND RESTART INTERPRETATION
+  if (firstletter == " ") {
+    watchdoginterpretation(commanding.substring(1, 255));
+    interpretedcompleted = true;
+  }
+
+  // EMERGENCY COMMANDS - SEND IMMEDIATELY TO MAIN LOOP
+  if (firstletter == "E") {
+    eShell(commanding);
+  }
+
+  // MODIFIER COMMANDS - DON'T TAKE LONG, RUN ANYWAY
+  if (firstletter == "M") {
+    mShell(commanding);
+  }
+
+  // DEBUG COMMANDS
+  if (firstletter == "Z") {
+    zShell(commanding);
+  }
+
+  // IF COMMAND IS NOT RECOGNIZED IMMEDIATELY, SEND TO ECACHE TO BE CACHED AT END
+  if (interpretedcompleted == false) {
+    switch (numberinecache) {
+      case 0:
+        ecache0 = commanding;
+        toecache = true;
+        numberinecache = 1;
+        Serial.println(F("ok"));
+        return (3);
+        break;
+      case 1:
+        ecache1 = commanding;
+        toecache = true;
+        numberinecache = 2;
+        Serial.println(F("ok"));
+        return (3);
+        break;
+      case 2:
+        ecache2 = commanding;
+        toecache = true;
+        numberinecache = 3;
+        Serial.println(F("ok"));
+        return (3);
+        break;
+      case 3:
+        ecache3 = commanding;
+        toecache = true;
+        numberinecache = 4;
+        Serial.println(F("ok"));
+        return (3);
+        break;
+      case 4:
+        ecache4 = commanding;
+        toecache = true;
+        numberinecache = 5;
+        Serial.println(F("ok"));
+        return (3);
+        break;
+      case 5:
+        Serial.println(F("ECACHE FULL! - TRUNKATING LAST COMMAND!"));
+        Serial.println(F("ok"));
+        return (5);
+    }
+  }
+  return (1);
 }
