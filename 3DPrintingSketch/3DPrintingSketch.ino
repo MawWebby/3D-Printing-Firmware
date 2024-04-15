@@ -17,6 +17,9 @@
 #include <LiquidCrystal.h>
 #include <EEPROM.h>
 int PRINTERVERSION = 0.2;
+int MAJORVERSION = 0;
+int MINORVERSION = 2;
+bool allowolderversion = false;
 
 
 ////////////////////////////////////
@@ -467,9 +470,10 @@ float anahbread = 00.0001;
 // 6 - g-parser errors
 // 7 - m-parser errors
 // 8 - movement errors
-// 9 - FIRMWARE VERSION
-// 10 - success prints (256)
-// 11 - success prints (1)
-// 12 - bad prints (256)
-// 13 - bad prints (1)
+// 9 - FIRMWARE MAJOR VERSION
+// 10 - FIRMWARE MINOR VERSION
+// 11 - success prints (256)
+// 12 - success prints (1)
+// 13 - bad prints (256)
+// 14 - bad prints (1)
 // 

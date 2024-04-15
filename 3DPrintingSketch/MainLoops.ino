@@ -4,7 +4,7 @@ void setup() {
   ////////////////////////////////
   // BEGIN SERIAL COMMUNICATION //
   ////////////////////////////////
-  Serial.begin(serialBAUDRATE);
+  Serial.begin(115200);
 
 
 
@@ -295,7 +295,26 @@ void setup() {
       }
     }
 
-    // EEPROM-1 - 
+    // EEPROM-1 - Debug Serial
+    if (EEPROM.read(1) == 1) {
+
+      // IF RESTART EEPROM EQUAL 1, THEN SET Debug EQUAL TO TRUE
+      debugserial = true;
+      Serial.println(F(""));
+      Serial.println(F("Debug Serial (EEPROM-1)"));
+    } else {
+      if (EEPROM.read(1) != 0) {
+
+        // Debug Serial VARIABLE NOT SET, SETTING AND RESTARTING
+        Serial.println(F("SETTING EEPROM-1"));
+        delay(3000);
+        EEPROM.update(1, 0);
+        delay(3000);
+        Serial.println(F("restart"));
+        delay(500);
+        setup();
+      }
+    }
 
     // EEPROM-2 - RESTART FROM POWER LOSS
     if (EEPROM.read(2) == 1) {
@@ -307,7 +326,7 @@ void setup() {
     } else {
       if (EEPROM.read(2) != 0) {
 
-        // WATCHDOG VARIABLE NOT SET, SETTING AND RESTARTING
+        // Printer Active VARIABLE NOT SET, SETTING AND RESTARTING
         Serial.println(F("SETTING EEPROM-2"));
         delay(3000);
         EEPROM.update(2, 0);
@@ -317,6 +336,158 @@ void setup() {
         setup();
       }
     }
+
+    // EEPROM-3 - CURRENTLY LOCKED
+    if (EEPROM.read(3) == 1) {
+
+      // IF RESTART EEPROM EQUAL 1, THEN SET CURRENTLYLOCKED EQUAL TO TRUE
+      currentlylocked = true;
+      Serial.println(F("locked"));
+      Serial.println(F("LOCKED (EEPROM-3)"));
+    } else {
+      if (EEPROM.read(3) != 0) {
+
+        // CURRENTLY LOCKED VARIABLE NOT SET, SETTING AND RESTARTING
+        Serial.println(F("SETTING EEPROM-3"));
+        delay(3000);
+        EEPROM.update(3, 0);
+        delay(3000);
+        Serial.println(F("restart"));
+        delay(500);
+        setup();
+      }
+    }
+
+    // CHECK FOR 0 VALUES, OTHERWISE, CREATE QUICK SYSTEM REPORT OVER SERIAL
+    bool failedsystemcheckcomplete = false;
+
+    // EEPROM-4 - WATCHDOG ERRORS
+    if (EEPROM.read(4) != 0) {
+      failedsystemcheckcomplete = true;
+    }
+
+    // EEPROM-5 - TEMPERATURE ERRORS
+    if (EEPROM.read(5) != 0) {
+      failedsystemcheckcomplete = true;
+    }
+
+    // EEPROM-6 - G-PARSER ERRORS
+    if (EEPROM.read(6) != 0) {
+      failedsystemcheckcomplete = true;
+    }
+
+    // EEPROM-7 - M-PARSER ERRORS
+    if (EEPROM.read(7) != 0) {
+      failedsystemcheckcomplete = true;
+    }
+
+    // EEPROM-8 - MOVEMENT ERRORS
+    if (EEPROM.read(8) != 0) {
+      failedsystemcheckcomplete = true;
+    }
+
+    if (skipsystemcheck == true) {
+      Serial.println(F("SKIPPING SYSTEM CHECK!"));
+      delay(100);
+    } else {
+      if (failedsystemcheckcomplete == true && watchdogactivated == false) {
+        quickprint();
+      }
+    }
+
+    // FIRMWARE CHECKS
+    bool olderversion = false;
+    bool newerversion = false;
+    bool versionmatchmajor = false;
+    bool versionmatchminor = false;
+    watchdogactivated = true;
+
+    // EEPROM-9 - FIRMWARE MAJOR VERSION
+    if (EEPROM.read(9) << MAJORVERSION) {
+      Serial.println(F("OLDER VERSION DETECTED"));
+      olderversion = true;
+    } else {
+      if (EEPROM.read(9) >> MAJORVERSION) {
+        Serial.println(F("NEWER VERSION DETECTED"));
+        newerversion = false;
+      } else {
+        if (EEPROM.read(9) == MAJORVERSION) {
+          versionmatchmajor = true;
+        } else {
+          Serial.println(F("EEPROM-9 NOT SET/CONFIGURING"));
+          delay(3000);
+          EEPROM.update(9, MAJORVERSION);
+          delay(3000);
+          Serial.println(F("RESTARTING"));
+          setup();
+        }
+      }
+    }
+
+    // EEPROM-10 - FIRMWARE MINOR VERSION
+    if (EEPROM.read(10) << MINORVERSION) {
+      Serial.println(F("OLDER VERSION DETECTED"));
+      if (newerversion == false && olderversion == false) {
+        olderversion = true;
+      }
+    } else {
+      if (EEPROM.read(10) >> MINORVERSION) {
+        Serial.println(F("NEWER VERSION DETECTED"));
+        if (newerversion == false && olderversion == false) {
+          newerversion = false;
+        }
+      } else {
+        if (EEPROM.read(10) == MINORVERSION) {
+          versionmatchminor = true;
+        } else {
+          Serial.println(F("EEPROM-10 NOT SET/CONFIGURING"));
+          delay(3000);
+          EEPROM.update(10, MINORVERSION);
+          delay(3000);
+          Serial.println(F("restarting"));
+          setup();
+        }
+      }
+    }
+
+    // IF VERSION MATCH IS TRUE, CONTINUE; ELSE RECONFIGURE
+    if (versionmatchmajor == true && versionmatchminor == true) {
+      watchdogactivated = true;
+    } else {
+      if (olderversion == true) {
+        if (allowolderversions == true) {
+          watchdogactivated = true;
+        }
+      }
+      if (newerversion == true) {
+        Serial.println(F("NEW VERSION DETECTED"));
+        delay(3000);
+        Serial.print(F("RUNNING UPGRADE SCRIPTS..."));
+
+        // VERSION 0.X - NO DB UPRGADE REQUIRED/UPGRADE EEPROM VALUES
+        if (EEPROM.read(9) == 0) {
+          EEPROM.update(9, MAJORVERSION);
+          delay(1000);
+          EEPROM.update(10, MINORVERSION);
+          delay(1000);
+          Serial.println(F("done"));
+          delay(1000);
+          Serial.println(F("restarting"));
+          setup();
+        }
+      }
+    }
+
+    // EEPROM-11 - SUCCESS PRINTS (256)
+
+
+    // EEPROM-12 - SUCCESS PRINTS (1)
+
+
+    // EEPROM-13 - BAD PRINTS (256)
+
+
+    // EEPROM-14 - BAD PRINTS (1)
   }
 
 
