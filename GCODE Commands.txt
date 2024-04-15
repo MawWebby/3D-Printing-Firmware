@@ -38,9 +38,14 @@ ________________________________________________________________________________
 | Z202    | Supported			 | Move Z-Axis to Certain Position                                  | Position: (ZZZ.ZZ)                  |
 | Z203    | Supported			 | Move E-Axis to Certain Position                                  | Position: (EEE.EE)                  |
 | Z204    | Supported			 | Home All Axis                                                    | N/A                                 |
+| Z500*   | Supported			 | Quick System-On Check	                                    | N/A                                 |
+| Z501    | Supported			 | Print Full System-On Check	                                    | N/A                                 |
+
 | Z700    | Supported			 | Set Watchdog to True (Lockout)                                   | N/A                                 |
 | Z701    | Supported			 | Set Watchdog to False (Lockout)                                  | N/A                                 |
-| Z900*   | BETA			 | Run Full System Test                                             | N/A                                 |
+| Z702    | Supported			 | Clear All Errors in Controller                                   | N/A                                 |
+
+| Z900**  | BETA			 | Run Full System Test                                             | N/A                                 |
 | Z999    | Supported			 | Print Cached Database to Serial                                  | N/A                                 |
 | Z999.1  | Supported			 | Clean Database and Restart Printer                               | N/A                                 |
 |_________|______________________________|__________________________________________________________________|_____________________________________|
@@ -49,6 +54,8 @@ ________________________________________________________________________________
 |_________|______________________________|__________________________________________________________________|_____________________________________|
 
 
+*Z500 - 
+**Z900 - Runs a Full System Test by Performing Commands that are NOT Accessible over Serial Communication and Provides a Full Detailed Report
 
 
 
@@ -146,11 +153,17 @@ ________________________________________________________________________________
 //// EEPROM NOTES/VALUES ////
 /////////////////////////////
 // 0 - Hard Watchdog Status
-// 1 - 
+// 1 - Debug Serial
 // 2 - Restart from Power Loss
-// 3 - 
-// 4 - 
-// 5 - 
+// 3 - watchdog errors
+// 4 - temperature errors
+// 5 - g-parser errors
+// 6 - m-parser errors
+// 7 - movement errors
+// 8 - success prints (256)
+// 9 - success prints (1)
+// 10 - bad prints (256)
+// 11 - bad prints (1)
 
 
 
@@ -297,7 +310,6 @@ ________________________________________________________________________________
 
 
 KEYNOTES:
-*Z900 - Runs a Full System Test by Performing Commands that are NOT Accessible over Serial Communication and Provides a Full Detailed Report
 **M126 - Set Fan Speed Custom Percentage is Supported, however, this will only trigger a On/Off Signal instead of Resistance Values
 
 ***M143 - Reset Maximum Temperature Loop by Using Same Algorithm as G0/G1
