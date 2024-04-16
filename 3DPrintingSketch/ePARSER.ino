@@ -2760,7 +2760,6 @@ int zShell(String commanding) {
         }
       }
     }
-    return (0);
 
 
     // Z6* -

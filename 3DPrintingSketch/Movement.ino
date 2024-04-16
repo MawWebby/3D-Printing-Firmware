@@ -6,6 +6,7 @@
 
 // STEPPER MOTOR CONTROLS
 void movement() {
+  debugserial = true;
 
   // VERIFY ENDSTOP POSITION
   endstops();
@@ -17,8 +18,11 @@ void movement() {
   digitalWrite(E_STEP_PIN, LOW);
 
   // MOVE TO NEW GCODE COMMAND IF CONDITIONS ARE MET
-  if (xstepstaken >= xstepsrequired && ystepstaken >= ystepsrequired && zstepstaken >= zstepsrequired && estepstaken >= estepsrequired && checklockstatus(currentgcodecommand) == 1) {
+  if (xstepstaken >= xstepsrequired && ystepstaken >= ystepsrequired && zstepstaken >= zstepsrequired && estepstaken >= estepsrequired) {
     movetonewgcodeformovement(true);
+  } else {
+    if (checklockstatus(currentgcodecommand) == 1) {
+    }
   }
 
   /*
@@ -509,18 +513,21 @@ void movetonewgcodeformovement(bool runchecks) {
           xmovingpositive = true;
           xmovingnegative = false;
           xstepsrequired = xdifference / xmodifier;
+          xdisabled = false;
         }
         if (targetxdimension == currentxdimension) {
           xdifference = 0;
           xstepsrequired = 0;
           xmovingpositive = false;
           xmovingnegative = false;
+          xdisabled = false;
         }
         if (targetxdimension < currentxdimension) {
           xdifference = currentxdimension - targetxdimension;
           xmovingpositive = false;
           xmovingnegative = true;
           xstepsrequired = xdifference / xmodifier;
+          xdisabled = false;
         }
 
 
@@ -531,18 +538,21 @@ void movetonewgcodeformovement(bool runchecks) {
             ymovingpositive = true;
             ymovingnegative = false;
             ystepsrequired = ydifference / ymodifier;
+            ydisabled = false;
           }
           if (targetydimension == currentydimension) {
             ydifference = 0;
             ystepsrequired = 0;
             ymovingpositive = false;
             ymovingnegative = false;
+            ydisabled = false;
           }
           if (targetydimension < currentydimension) {
             ydifference = currentydimension - targetydimension;
             ymovingpositive = false;
             ymovingnegative = true;
             ystepsrequired = ydifference / ymodifier;
+            ydisabled = false;
           }
         }
 
@@ -553,18 +563,21 @@ void movetonewgcodeformovement(bool runchecks) {
             zmovingpositive = true;
             zmovingnegative = false;
             zstepsrequired = zdifference / zmodifier;
+            zdisabled = false;
           }
           if (targetzdimension == currentzdimension) {
             zdifference = 0;
             zstepsrequired = 0;
             zmovingpositive = false;
             zmovingnegative = false;
+            zdisabled = false;
           }
           if (targetzdimension < currentzdimension) {
             zdifference = currentzdimension - targetzdimension;
             zmovingpositive = false;
             zmovingnegative = true;
             zstepsrequired = zdifference / zmodifier;
+            zdisabled = false;
           }
         }
 
@@ -576,18 +589,21 @@ void movetonewgcodeformovement(bool runchecks) {
               e0movingpositive = true;
               e0movingnegative = false;
               estepsrequired = edifference / e0motormodifier;
+              edisabled = false;
             }
             if (targete0motordimension == currente0motordimension) {
               edifference = 0;
               estepsrequired = 0;
               e0movingpositive = false;
               e0movingnegative = false;
+              edisabled = false;
             }
             if (targete0motordimension < currente0motordimension) {
               edifference = currente0motordimension - targete0motordimension;
               e0movingpositive = false;
               e0movingnegative = true;
               estepsrequired = edifference / e0motormodifier;
+              edisabled = false;
             }
           }
         }
@@ -670,12 +686,28 @@ void movetonewgcodeformovement(bool runchecks) {
   }
 
   Serial.print(xstepsrequired);
-  Serial.print(" ");
+  Serial.print(F(" "));
   Serial.print(ystepsrequired);
-  Serial.print(" ");
+  Serial.print(F(" "));
   Serial.print(zstepsrequired);
-  Serial.print(" ");
+  Serial.print(F(" "));
   Serial.println(estepsrequired);
+  Serial.println(F(""));
+  Serial.print(xmovingpositive);
+  Serial.print(F(" "));
+  Serial.print(xmovingnegative);
+  Serial.print(F(" "));
+  Serial.print(ymovingpositive);
+  Serial.print(F(" "));
+  Serial.print(ymovingnegative);
+  Serial.print(F(" "));
+  Serial.print(zmovingpositive);
+  Serial.print(F(" "));
+  Serial.print(zmovingnegative);
+  Serial.print(F(" "));
+  Serial.print(e0movingpositive);
+  Serial.print(F(" "));
+  Serial.print(e0movingnegative);
 }
 
 
