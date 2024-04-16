@@ -22,7 +22,6 @@ int MINORVERSION = 2;
 bool allowolderversions = false;
 
 
-
 /////////////////////////////
 // CHANGE THESE VARIABLES! //
 /////////////////////////////
@@ -32,7 +31,6 @@ float e2intoffset = 14.75;
 float e0tempmodifier = 0.7;
 float e1tempmodifier = 0.7;
 float hbtempmodifier = 0.7;
-
 
 
 ////////////////////////////////////
@@ -466,7 +464,15 @@ bool yendsetup = 0;
 bool zendsetup = 0;
 float anae0read = 00.0001;
 float anahbread = 00.0001;
-
+float rawsensore0 = 00.0001;
+float rawsensore1 = 00.0001;
+float rawsensorhb = 00.0001;
+float rawsensore0in = 00.0001;
+float rawsensore1in = 00.0001;
+float rawsensorhbin = 00.0001;
+float rawsensore0f = 00.0001;
+float rawsensore1f = 00.0001;
+float rawsensorhbf = 00.0001;
 
 /////////////////////////////
 //// EEPROM NOTES/VALUES ////
