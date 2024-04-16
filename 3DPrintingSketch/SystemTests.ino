@@ -46,6 +46,13 @@ void quickprint() {
   Serial.println(printingactive);
   Serial.print(F("Currently Locked: "));
   Serial.println(currentlylocked);
+  Serial.print(F("Completed Prints: "));
+  Serial.print(readsuccessprints());
+  Serial.print(F(" / "));
+  Serial.print(readbadprints());
+  Serial.print(F(" ("));
+  Serial.print(printsuccess());
+  Serial.println(F("%)"));
   Serial.println(F(""));
 
 
