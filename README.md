@@ -5,6 +5,11 @@
 <p>The equipment used for this project is an original Prusa i3 that is running an Arduino MEGA 2560 with a RAMPS 1.4 header board on top of it. The Prusa has one heated extruder and a heated bed. An external analog thermistor is added for detecting and reading ambient temperature.</p>
 <p>Full List of Printer Commands Supported is available at "GCODE Commands.txt"</p>
 </br>
+<h1>Files in this Repository</h1>
+<p>3DPrintingSketch - The Main Folder and Code to Be Run in this Repository</p>
+<p>3DPrintingCalibration - Temperature Tool to help calibrate the temperature hotends of your 3D Printer</p>
+<p>GCODE Commands.txt - Table of all GCODE commands that are supported by this code and commands that will be added with future support.</p>
+</br>
 <h1>Steps to Install:</h1>
 <p> Before we begin, please make sure to have either a printer machine controller, such as Simplify3D or Octoprint, installed on a system to be controlled before continuing.</p>
 <p>1. Download the Arduino IDE Version 2.x.x</p>
