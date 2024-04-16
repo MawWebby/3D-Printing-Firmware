@@ -777,6 +777,18 @@ int interpretation(String commanding) {
 
       firstletter = commanding.substring(2, 3);
 
+      // G90 - SET MOVEMENT TO ABSOLUTE POITIONING MODE
+      if (firstletter == "0") {
+        absoluterelative = 0;
+        Serial.println(F("ok"));
+      }
+
+      // G91 - SET MOVEMENT TO RELATIVE POSITIONING MODE
+      if (firstletter == "1") {
+        absoluterelative = 1;
+        Serial.println(F("ok"));
+      }
+
       // G92 - SET CURRENT MOTOR POSITIONS
       if (firstletter == "2") {
 
