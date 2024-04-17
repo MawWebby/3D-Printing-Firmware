@@ -68,11 +68,27 @@ void tempsensing() {
 void tempchange() {
   // CHANGE HOTEND PINS IF THE TEMPERATURE IS LOWER THAN TARGET
 
+  // ADD SAFETY PRECAUTION HERE FROM TURNING ON FOR NEGATIVE VALUES OR 0!!!
+  if (targete0temp == 0 || currente0temp <= 0) {
+    digitalWrite(HEATER_0_PIN, LOW);
+    return;
+  }
+
+  if (targethbtemp == 0 || targete0temp <= 0) {
+    digitalWrite(HEATER_HB_PIN, LOW);
+    return;
+  }
+
 
   // E0 ACTIVATION LOOP
   if (e0on == false) {
 
     if (currente0temp == 0) {
+      digitalWrite(HEATER_0_PIN, LOW);
+      return;
+    }
+
+    if (targete0temp == 0) {
       digitalWrite(HEATER_0_PIN, LOW);
       return;
     }
