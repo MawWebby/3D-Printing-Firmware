@@ -6,7 +6,6 @@
 
 // STEPPER MOTOR CONTROLS
 void movement() {
-  debugserial = true;
 
   // VERIFY ENDSTOP POSITION
   endstops();
@@ -685,6 +684,11 @@ void movetonewgcodeformovement(bool runchecks) {
     }
   }
 
+  Serial.print(F("INFO: "));
+  Serial.print(currentxdimension);
+  Serial.print(F(" / "));
+  Serial.print(targetxdimension);
+  Serial.println(F(""));
   Serial.print(xstepsrequired);
   Serial.print(F(" "));
   Serial.print(ystepsrequired);
