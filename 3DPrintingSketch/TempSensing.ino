@@ -71,11 +71,13 @@ void tempchange() {
   // ADD SAFETY PRECAUTION HERE FROM TURNING ON FOR NEGATIVE VALUES OR 0!!!
   if (targete0temp == 0 || currente0temp <= 0) {
     digitalWrite(HEATER_0_PIN, LOW);
+    e0on = false;
     return;
   }
 
   if (targethbtemp == 0 || currenthbtemp <= 0) {
     digitalWrite(HEATER_HB_PIN, LOW);
+    hbon = false;
     return;
   }
 
@@ -85,27 +87,25 @@ void tempchange() {
 
     if (currente0temp == 0) {
       digitalWrite(HEATER_0_PIN, LOW);
+      e0on = false;
       return;
     }
 
     if (targete0temp == 0) {
       digitalWrite(HEATER_0_PIN, LOW);
+      e0on = false;
       return;
     }
 
     // CURRENT E0 TEMP IS SUFFICIENT FOR TARGET TEMPEARTURE
     if (currente0temp >= targete0temp) {
       digitalWrite(HEATER_0_PIN, LOW);
+      e0on = false;
       return (0);
-      if (printingactive == true || targete0temp >= 150) {
-        if (currente0temp + 5 >= targete0temp) {
-          digitalWrite(HEATER_0_PIN, HIGH);
-        }
-      }
     }
 
     // CURRENT E0 TEMP IS LESS THAN TARGET TEMPERATURE
-    if (currente0temp < targete0temp) {
+    if (currente0temp < targete0temp && currente0temp > 0) {
       // SET EXTRUDER TIMEOUT START VARIABLE
       startextrudertimeout = millis();
 
@@ -115,6 +115,7 @@ void tempchange() {
         if (currente0temp + 10 > targete0temp) {
           Serial.println(F("within 10 - pin high for 5 seconds"));
           digitalWrite(HEATER_0_PIN, HIGH);
+          e0on = true;
           e0ontime = 5;
           return (1);
         }
@@ -124,6 +125,7 @@ void tempchange() {
           Serial.println(F("within 30 - pin high for 9 seconds"));
           digitalWrite(HEATER_0_PIN, HIGH);
           e0ontime = 9;
+          e0on = true;
           return (1);
         }
 
@@ -132,6 +134,7 @@ void tempchange() {
           Serial.println(F("within 50 - pin high for 12 seconds"));
           digitalWrite(HEATER_0_PIN, HIGH);
           e0ontime = 12;
+          e0on = true;
           return (1);
         }
 
@@ -140,6 +143,7 @@ void tempchange() {
         digitalWrite(HEATER_0_PIN, HIGH);
         e0ontime = 300;
         e0max = true;
+        e0on = true;
         return (1);
       }
     }
@@ -156,6 +160,7 @@ void tempchange() {
         e0max = true;
         digitalWrite(HEATER_0_PIN, LOW);
         Serial.println(F("REACHED SUFFICIENT TEMPERATURE!"));
+        e0on = false;
         return (0);
       }
     }
@@ -164,6 +169,7 @@ void tempchange() {
     if (e0ontime > currentextrudertimer) {
       digitalWrite(HEATER_0_PIN, HIGH);
       Serial.println(F("PIN ON"));
+      e0on = true;
       return (1);
     }
 
@@ -186,6 +192,7 @@ void tempchange() {
       Serial.println(F("ERROR! - EXTRUDER HAS BEEN ON FOR WAY TOO LONG!"));
       Serial.println(F("TURNING OFF PRINTER!"));
       watchdogactivated = true;
+      e0on = false;
       return (3);
     }
   }
@@ -196,13 +203,15 @@ void tempchange() {
     i2csend("E1 NOT SUPPORTED", "", "", 0);
   }
   if (targethbtemp > currenthbtemp) {
-    digitalWrite(HEATER_1_PIN, HIGH);
+    digitalWrite(HEATER_HB_PIN, HIGH);
+    hbon = false;
   }
 
   // CHANGE HOTEND PINS IF THE TEMPERATURE IS HIGHER THATN TARGET
   if (targete0temp < currente0temp) {
     digitalWrite(HEATER_0_PIN, LOW);
     Serial.println(F("PIN LOW"));
+    e0on = false;
   }
   if (targete1temp < currente1temp) {
     if (targete1temp != 0) {
@@ -210,7 +219,8 @@ void tempchange() {
     }
   }
   if (targethbtemp < currenthbtemp) {
-    digitalWrite(HEATER_1_PIN, LOW);
+    digitalWrite(HEATER_HB_PIN, LOW);
+    hbon = false;
   }
 }
 
@@ -219,10 +229,12 @@ void hbtempchange() {
   if (targethbtemp > currenthbtemp) {
     digitalWrite(HEATER_HB_PIN, HIGH);
     digitalWrite(HEATER_1_PIN, HIGH);
+    hbon = true;
   }
   if (targethbtemp <= currenthbtemp) {
     digitalWrite(HEATER_HB_PIN, LOW);
     digitalWrite(HEATER_1_PIN, LOW);
+    hbon = false;
   }
 }
 

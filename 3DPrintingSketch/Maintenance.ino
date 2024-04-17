@@ -69,13 +69,108 @@ int maintenance() {
       targetzdimension = currentzdimension;
     }
   }
+
+
+
+  ///////////////////////////////////////////////
+  // EXTRUDER THERMAL PROTECTION CODE (PART 1) //
+  ///////////////////////////////////////////////
+  {
+    if (e0on == true) {
+      if (e0onprevious == false) {
+        startextrudertimeout = currenttimer;
+        e0onprevious = false;
+      } else {
+        if (e0onprevious == true) {
+          float timedifference = currenttimer - startextrudertimeout;
+          timedifference = timedifference / 1000;
+          if (timedifference >= extrudertimeout) {
+            Serial.println(F("THERMAL RUNAWAY DETECTED! (E0)"));
+            Serial.println(F("CALLING WATCHDOG!"));
+            e0on = false;
+            e0onprevious = false;
+            digitalWrite(HEATER_0_PIN, LOW);
+            watchdogactivated = true;
+            return;
+          }
+        } else {
+          Serial.println(F("TEMP VARIABLES NOT SET RIGHT/CALLING WATCHDOG FOR SAFETY!"));
+          e0on = false;
+          e0onprevious = false;
+          digitalWrite(HEATER_0_PIN, LOW);
+          watchdogactivated = true;
+          return;
+        }
+      }
+    } else {
+      if (e0on == false) {
+        e0onprevious = false;
+        digitalWrite(HEATER_0_PIN, LOW);
+      } else {
+        Serial.println(F("TEMP VARIABLES NOT SET RIGHT/CALLING WATCHDOG FOR SAFETY!"));
+        e0on = false;
+        e0onprevious = false;
+        digitalWrite(HEATER_0_PIN, LOW);
+        watchdogactivated = true;
+        return;
+      }
+    }
+  }
+
+
+
+  /////////////////////////////////////////////////
+  // HEATED BED THERMAL PROTECTION CODE (PART 2) //
+  /////////////////////////////////////////////////
+  {
+    if (hbon == true) {
+      if (hbonprevious == false) {
+        startheatedbedtimeout = currenttimer;
+        hbonprevious = false;
+      } else {
+        if (hbonprevious == true) {
+          float timedifference = currenttimer - startextrudertimeout;
+          timedifference = timedifference / 1000;
+          if (timedifference >= heatedbedtimeout) {
+            Serial.println(F("THERMAL RUNAWAY DTECTED! (HB)"));
+            Serial.println(F("CALLING WATCHDOG!"));
+            hbon = false;
+            hbonprevious = false;
+            digitalWrite(HEATER_HB_PIN, LOW);
+            digitalWrite(HEATER_0_PIN, LOW);
+            watchdogactivated = true;
+            return;
+          }
+        } else {
+          Serial.println(F("TEMP VARIABLES NOT SET RIGHT/CALLING WATCHDOG FOR SAFETY!"));
+          hbon = false;
+          hbonprevious = false;
+          digitalWrite(HEATER_HB_PIN, LOW);
+          watchdogactivated = true;
+          return;
+        }
+      }
+    } else {
+      if (hbon == false) {
+        hbonprevious = false;
+        digitalWrite(HEATER_HB_PIN, LOW);
+      } else {
+        Serial.println(F("TEMP VARIABLES NOT SET RIGHT/CALLING WATCHDOG FOR SAFETY!"));
+        hbon = false;
+        hbonprevious = false;
+        digitalWrite(HEATER_HB_PIN, LOW);
+        watchdogactivated = true;
+        return;
+      }
+    }
+  }
 }
 
 // REAL TIME CLOCK
 int realtimeclock() {
   currenttimer = millis();
   if (millis() <= 0) {
-    currenttimer = 0;
+    currenttimer = -1;
   }
 }
 
@@ -388,5 +483,5 @@ float printsuccess() {
   times25 = times25 + EEPROM.read(14);
 
   float percentage = times256 / times25;
-  return(percentage);
+  return (percentage);
 }

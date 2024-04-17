@@ -134,25 +134,10 @@ cs &= 0xff;  // Defensive programming...
 */
 
 
-// For RAMPS 1.4 (FROM REPRAP)
 
-
-//#define SDPOWER            -1
-//#define SDCS_PIN           53
-//#define SD_DETECT_PIN 	   -1 //currently not implemented
-
-
-
-
-
-/*
-Xstep = A0, Xdir = A1, Xenable = 38Ystep = A6, Ydir = A7, Yenable = A2Zstep = 46, Zdir = 49, Zenable = A8
-ExtrudersE0step = 26, E0dir = 28, E0enable = 24E1step = 36, E1dir = 34, E1ensble = 30
-*/
-
-//////////////////////////
-//// TIMING VARIABLES ////
-//////////////////////////
+//////////////////////////////////////////////////////////////////
+//// TIMING VARIABLES / EXTRUDER PROTECTION / THERMAL RUNAWAY ////
+//////////////////////////////////////////////////////////////////
 int timesincestartup = 0;
 int ledpinblink = 0;
 bool ledblink = false;
@@ -163,10 +148,12 @@ int printjobtimerinseconds = 0;
 bool printjobtimeractive = false;
 int idlesteppermotortimeoutinseconds = 0;
 int safetytimeout = 600;
-int extrudertimeout = 300;
+int extrudertimeout = 60;
+int heatedbedtimeout = 60;
 int currentsafetytimer = 0;
 int currentextrudertimer = 0;
 unsigned long long int startextrudertimeout = 0;
+unsigned long long int startheatedbedtimeout = 0;
 bool currentlylocked = false;
 bool waitingholdingstate = false;
 int tempsensingruntime = 0;
@@ -174,6 +161,8 @@ int e0ontime = 0;
 bool e0on = false;
 bool e0max = false;
 bool hbon = false;
+bool hbonprevious = false;
+bool e0onprevious = false;
 unsigned long long int timesincelastmotorcurrent = 0;
 unsigned long int clocktimers[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 unsigned long int targettime[10] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
