@@ -17,7 +17,7 @@ void movement() {
   digitalWrite(E_STEP_PIN, LOW);
 
   // MOVE TO NEW GCODE COMMAND IF CONDITIONS ARE MET
-  if (xstepstaken >= xstepsrequired && ystepstaken >= ystepsrequired && zstepstaken >= zstepsrequired && estepstaken >= estepsrequired) {
+  if ((xstepstaken >= xstepsrequired && ystepstaken >= ystepsrequired && zstepstaken >= zstepsrequired && estepstaken >= estepsrequired) || (currentxdimension >= targetxdimension - 0.05 && currentxdimension <= targetxdimension + 0.05 && currentydimension >= targetydimension - 0.05 && currentydimension <= targetydimension + 0.05 && currentzdimension >= targetzdimension - 0.05 && currentzdimension <= targetzdimension + 0.05)) {
     movetonewgcodeformovement(true);
   } else {
     if (checklockstatus(currentgcodecommand) == 1) {
