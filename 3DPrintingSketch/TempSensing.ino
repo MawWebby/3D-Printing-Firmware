@@ -74,7 +74,7 @@ void tempchange() {
     return;
   }
 
-  if (targethbtemp == 0 || targete0temp <= 0) {
+  if (targethbtemp == 0 || currenthbtemp <= 0) {
     digitalWrite(HEATER_HB_PIN, LOW);
     return;
   }
