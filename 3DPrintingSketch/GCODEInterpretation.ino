@@ -92,7 +92,6 @@ int interpretation(String commanding) {
     eShell(commanding);
   }
 
-
   // IF COMMAND STARTS WITH Q, EVALUATE WHAT IT ACTUALLY MEANS
   if (firstletter == "Z") {
     zShell(commanding);
@@ -235,6 +234,8 @@ int interpretation(String commanding) {
                     ypreviousvalue = readfromarray(analyzedCURRENTLYANALYZINGNUMBER - 1, 1);
                   }
 
+                  Serial.println(ypreviousvalue);
+
                   if (ypreviousvalue == -1) {
                     Serial.println(F("COMMAND COULD NOT BE COMPLETED - PARSER ERROR"));
                   } else {
@@ -266,20 +267,30 @@ int interpretation(String commanding) {
 
               // WAIT UNTIL CHARACTER RECEIVED IS A " ", THEN END THIS WHILE LOOP
               if (firstletter == " " || firstletter == "") {
-                if (currentunits == 0) {
-                  String zvalues = commanding.substring(startzdigit, gcodenumber);
-                  float zvaluestoinsert = zvalues.toFloat();
-                  sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, zvaluestoinsert, 2);
-                  zfinished = true;
-                  zstatement = true;
-                } else {
-                  String zvalues = commanding.substring(startzdigit, gcodenumber);
-                  float zvaluestoinsert = zvalues.toFloat();
+
+                // CONVERT FROM INCHES TO MM
+                String zvalues = commanding.substring(startzdigit, gcodenumber);
+                float zvaluestoinsert = zvalues.toFloat();
+                if (currentunits == 1) {
                   zvaluestoinsert = zvaluestoinsert / millimeterstoinches;
-                  sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, zvaluestoinsert, 2);
-                  zfinished = true;
-                  zstatement = true;
                 }
+                if (absoluterelative == 1) {
+                  float zpreviousvalue = -1;
+                  if (analyzedCURRENTLYANALYZINGNUMBER == 0) {
+                    zpreviousvalue = readfromarray(10,0);
+                  } else {
+                    zpreviousvalue = readfromarray(analyzedCURRENTLYANALYZINGNUMBER - 1, 0);
+                  }
+
+                  if (zpreviousvalue == -1) {
+                    Serial.println(F("COMMAND COULD NOT BE COMPLETED - PARSER ERROR!"));
+                  } else {
+                    zvaluestoinsert = zpreviousvalue + zvaluestoinsert;
+                  }
+                }
+                sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, zvaluestoinsert, 0);
+                zfinished = true;
+                zstatement = true;
               }
 
               gcodenumber = gcodenumber + 1;
@@ -303,20 +314,30 @@ int interpretation(String commanding) {
 
               // WAIT UNTIL CHARACTER RECEIVED IS A " ", THEN END THIS WHILE LOOP
               if (firstletter == " " || firstletter == "") {
-                if (currentunits == 0) {
-                  String evalues = commanding.substring(startedigit, gcodenumber);
-                  float evaluestoinsert = evalues.toFloat();
-                  sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, evaluestoinsert, 3);
-                  efinished = true;
-                  estatement = true;
-                } else {
-                  String evalues = commanding.substring(startedigit, gcodenumber);
-                  float evaluestoinsert = evalues.toFloat();
+
+                // CONVERT FROM INCHES TO MM
+                String evalues = commanding.substring(startedigit, gcodenumber);
+                float evaluestoinsert = evalues.toFloat();
+                if (currentunits == 1) {
                   evaluestoinsert = evaluestoinsert / millimeterstoinches;
-                  sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, evaluestoinsert, 3);
-                  efinished = true;
-                  estatement = true;
                 }
+                if (absoluterelative == 1) {
+                  float epreviousvalue = -1;
+                  if (analyzedCURRENTLYANALYZINGNUMBER == 0) {
+                    epreviousvalue = readfromarray(10,0);
+                  } else {
+                    epreviousvalue = readfromarray(analyzedCURRENTLYANALYZINGNUMBER - 1, 0);
+                  }
+
+                  if (epreviousvalue == -1) {
+                    Serial.println(F("COMMAND COULD NOT BE COMPLETED - PARSER ERROR!"));
+                  } else {
+                    evaluestoinsert = epreviousvalue + evaluestoinsert;
+                  }
+                }
+                sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, evaluestoinsert, 0);
+                efinished = true;
+                estatement = true;
               }
 
               gcodenumber = gcodenumber + 1;
@@ -390,276 +411,304 @@ int interpretation(String commanding) {
     // G1*
     if (firstletter == "1") {
 
-      // DETERMINE THE THIRD LETTER OF THE STRING
+      // DETERMINE THE SECOND LETTER OF THE STRING
       firstletter = commanding.substring(2, 3);
 
-      // "" - EMPTY G1 COMMAND
-      if (firstletter == "") {
-        Serial.println(F("EMPTY GCODE COMMAND!"));
-        Serial.println(F("OK"));
-        interpretedcompleted = true;
-      }
+      // PRINTER ACTIVE
+      printingactive = true;
 
-      // G1 - MOVEMENT COMMAND WITH EXTRUSION
+      if (firstletter == "") {
+        Serial.println(F("EMPTY G1 COMMAND RECEIVED - IGNORING"));
+        return (2);
+      }
       if (firstletter == " ") {
 
-        // DETERMINE THE SECOND LETTER OF THE STRING
-        firstletter = commanding.substring(2, 3);
+        commanding = commanding + " ";
 
-        // PRINTER ACTIVE
-        printingactive = true;
+        // ANALYZING QUICK COMMANDS
+        bool gcodecomplete = false;
+        int gcodenumber = 3;
+        int executionnumber = 0;
 
-        if (firstletter == "") {
-          Serial.println(F("EMPTY G1 COMMAND RECEIVED - IGNORING"));
-          return (2);
-        }
-        if (firstletter == " ") {
-
-          commanding = commanding + " ";
-
-          // ANALYZING QUICK COMMANDS
-          bool gcodecomplete = false;
-          int gcodenumber = 3;
-          int executionnumber = 0;
-
-          while (readfromarray(analyzedCURRENTLYANALYZINGNUMBER, 10) == 1) {
-            analyzedCURRENTLYANALYZINGNUMBER = analyzedCURRENTLYANALYZINGNUMBER + 1;
-            if (analyzedCURRENTLYANALYZINGNUMBER == 11) {
-              analyzedCURRENTLYANALYZINGNUMBER = 0;
-            }
+        // analyzedCURRENTLYANALYZINGNUMBER FLIP
+        while (readfromarray(analyzedCURRENTLYANALYZINGNUMBER, 10) == 1) {
+          analyzedCURRENTLYANALYZINGNUMBER = analyzedCURRENTLYANALYZINGNUMBER + 1;
+          if (analyzedCURRENTLYANALYZINGNUMBER == 11) {
+            analyzedCURRENTLYANALYZINGNUMBER = 0;
           }
+        }
 
-          bool xstatement = false;
-          bool ystatement = false;
-          bool zstatement = false;
-          bool estatement = false;
+        bool xstatement = false;
+        bool ystatement = false;
+        bool zstatement = false;
+        bool estatement = false;
 
-          while (gcodecomplete != true && executionnumber <= 25) {
+        // MAIN ANALYZE GCODE LOOP
+        while (gcodecomplete != true && executionnumber <= 25) {
 
-            // EMERGENCY LOOP
-            eSERIALRECEIVER();
+          // EMERGENCY LOOP
+          eSERIALRECEIVER();
 
-            // DETERMINE THE NEXT LETTER IN THE STRING
-            firstletter = commanding.substring(gcodenumber, gcodenumber + 1);
+          // DETERMINE THE NEXT LETTER IN THE STRING
+          firstletter = commanding.substring(gcodenumber, gcodenumber + 1);
 
-            // IF IT IS " ", MOVE ON TO NEXT CHARACTER
-            if (firstletter == " ") {
-              gcodenumber = gcodenumber + 1;
-              firstletter = commanding.substring(gcodenumber, gcodenumber + 1);
-            }
-
-            // IF IT IS "", FINISH LOOP AND HEAD BACK TO MAIN LOOP
-            if (firstletter == "") {
-              Serial.println(F("ok"));
-              gcodecomplete = true;
-            }
-
-            // IF IT IS A "X", DETERMINE NUMBER OF CHARACTERS, THEN SAVE TO DB ARRAY
-            if (firstletter == "X") {
-              int startxdigit = gcodenumber + 1;
-              gcodenumber = gcodenumber + 1;
-              int finalxdigit = 0;
-              bool xfinished = false;
-              int xexecutionnumber = 0;
-
-              while (xfinished != true && xexecutionnumber <= 10) {
-                // DETERMINE THE NEXT CHARACTER IN THE STRING
-                firstletter = commanding.substring(gcodenumber, gcodenumber + 1);
-
-                // WAIT UNTIL CHARACTER RECEIVED IS A " ", THEN END THIS WHILE LOOP
-                if (firstletter == " " || firstletter == "") {
-
-                  // CONVERT FROM INCHES TO MM
-                  if (currentunits == 0) {
-                    String xvalues = commanding.substring(startxdigit, gcodenumber);
-                    float xvaluestoinsert = xvalues.toFloat();
-                    sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, xvaluestoinsert, 0);
-                    xfinished = true;
-                    xstatement = true;
-                  } else {
-                    String xvalues = commanding.substring(startxdigit, gcodenumber);
-                    float xvaluestoinsert = xvalues.toFloat();
-                    xvaluestoinsert = xvaluestoinsert / millimeterstoinches;
-                    sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, xvaluestoinsert, 0);
-                    xfinished = true;
-                    xstatement = true;
-                  }
-                }
-
-                gcodenumber = gcodenumber + 1;
-                xexecutionnumber = xexecutionnumber + 1;
-              }
-              firstletter = commanding.substring(gcodenumber, gcodenumber + 1);
-            }
-
-            // IF IT IS A "Y", DETERMINE NUMBER OF CHARACTERS, THEN SAVE TO DB ARRAY
-            if (firstletter == "Y") {
-              int startydigit = gcodenumber + 1;
-              gcodenumber = gcodenumber + 1;
-              int finalydigit = 0;
-              bool yfinished = false;
-              int yexecutionnumber = 0;
-
-              while (yfinished != true && yexecutionnumber <= 10) {
-                // DETERMINE THE NEXT CHARACTER IN THE STRING
-                firstletter = commanding.substring(gcodenumber, gcodenumber + 1);
-
-                // WAIT UNTIL CHARACTER RECEIVED IS A " ", THEN END THIS WHILE LOOP
-
-                if (firstletter == " " || firstletter == "") {
-                  if (currentunits == 0) {
-                    String yvalues = commanding.substring(startydigit, gcodenumber);
-                    float yvaluestoinsert = yvalues.toFloat();
-                    sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, yvaluestoinsert, 1);
-                    yfinished = true;
-                    ystatement = true;
-                  } else {
-                    String yvalues = commanding.substring(startydigit, gcodenumber);
-                    float yvaluestoinsert = yvalues.toFloat();
-                    yvaluestoinsert = yvaluestoinsert / millimeterstoinches;
-                    sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, yvaluestoinsert, 1);
-                    yfinished = true;
-                    ystatement = true;
-                  }
-                }
-
-                gcodenumber = gcodenumber + 1;
-                yexecutionnumber = yexecutionnumber + 1;
-              }
-              firstletter = commanding.substring(gcodenumber, gcodenumber + 1);
-            }
-
-            // IF IT IS A "Z", DETERMINE NUMBER OF CHARACTERS, THEN SAVE TO DB ARRAY
-            if (firstletter == "Z") {
-              int startzdigit = gcodenumber + 1;
-              gcodenumber = gcodenumber + 1;
-              int finalzdigit = 0;
-              bool zfinished = false;
-              int zexecutionnumber = 0;
-
-              while (zfinished != true && zexecutionnumber <= 10) {
-                // DETERMINE THE NEXT CHARACTER IN THE STRING
-                firstletter = commanding.substring(gcodenumber, gcodenumber + 1);
-
-                // WAIT UNTIL CHARACTER RECEIVED IS A " ", THEN END THIS WHILE LOOP
-                if (firstletter == " " || firstletter == "") {
-                  if (currentunits == 0) {
-                    String zvalues = commanding.substring(startzdigit, gcodenumber);
-                    float zvaluestoinsert = zvalues.toFloat();
-                    sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, zvaluestoinsert, 2);
-                    zfinished = true;
-                    zstatement = true;
-                  } else {
-                    String zvalues = commanding.substring(startzdigit, gcodenumber);
-                    float zvaluestoinsert = zvalues.toFloat();
-                    zvaluestoinsert = zvaluestoinsert / millimeterstoinches;
-                    sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, zvaluestoinsert, 2);
-                    zfinished = true;
-                    zstatement = true;
-                  }
-                }
-
-                gcodenumber = gcodenumber + 1;
-                zexecutionnumber = zexecutionnumber + 1;
-              }
-              firstletter = commanding.substring(gcodenumber, gcodenumber + 1);
-            }
-
-            // IF IT IS A "E", DETERMINE NUMBER OF CHARACTERS, THEN SAVE TO DB ARRAY
-            if (firstletter == "E") {
-              int startedigit = gcodenumber + 1;
-              gcodenumber = gcodenumber + 1;
-              int finaledigit = 0;
-              bool efinished = false;
-              int eexecutionnumber = 0;
-
-              while (efinished != true && eexecutionnumber <= 10) {
-                // DETERMINE THE NEXT CHARACTER IN THE STRING
-                firstletter = commanding.substring(gcodenumber, gcodenumber + 1);
-
-                // WAIT UNTIL CHARACTER RECEIVED IS A " ", THEN END THIS WHILE LOOP
-                if (firstletter == " " || firstletter == "") {
-                  if (currentunits == 0) {
-                    String evalues = commanding.substring(startedigit, gcodenumber);
-                    float evaluestoinsert = evalues.toFloat();
-                    sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, evaluestoinsert, 3);
-                    efinished = true;
-                    estatement = true;
-                  } else {
-                    String evalues = commanding.substring(startedigit, gcodenumber);
-                    float evaluestoinsert = evalues.toFloat();
-                    evaluestoinsert = evaluestoinsert / millimeterstoinches;
-                    sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, evaluestoinsert, 3);
-                    efinished = true;
-                    estatement = true;
-                  }
-                }
-
-                gcodenumber = gcodenumber + 1;
-                eexecutionnumber = eexecutionnumber + 1;
-              }
-              firstletter = commanding.substring(gcodenumber, gcodenumber + 1);
-            }
-
-            // IF IT IS A "E", DETERMINE NUMBER OF CHARACTERS, THEN SAVE TO DB ARRAY
-            if (firstletter == "F") {
-              // FEEDRATE VARIABLES
-              gcodecomplete = true;
-              Serial.println(F("ok"));
-            }
-
-            // TIME UP VARIABLES
+          // IF IT IS " ", MOVE ON TO NEXT CHARACTER
+          if (firstletter == " ") {
             gcodenumber = gcodenumber + 1;
-            executionnumber = executionnumber + 1;
+            firstletter = commanding.substring(gcodenumber, gcodenumber + 1);
           }
 
-          // DECLARE PREVIOUS INFORMATION IN NEW SCRIPT IF NO INFORMATION WAS GIVEN PREVIOUSLY!
-          if (xstatement == false) {
-            if (analyzedCURRENTLYANALYZINGNUMBER == 0) {
-              sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(10, 0), 0);
-            } else {
-              sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(analyzedCURRENTLYANALYZINGNUMBER - 1, 0), 0);
-            }
-          }
-          if (ystatement == false) {
-            if (analyzedCURRENTLYANALYZINGNUMBER == 0) {
-              sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(10, 1), 1);
-            } else {
-              sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(analyzedCURRENTLYANALYZINGNUMBER - 1, 1), 1);
-            }
-          }
-          if (zstatement == false) {
-            if (analyzedCURRENTLYANALYZINGNUMBER == 0) {
-              sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(10, 2), 2);
-            } else {
-              sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(analyzedCURRENTLYANALYZINGNUMBER - 1, 2), 2);
-            }
-          }
-          if (estatement == false) {
-            if (analyzedCURRENTLYANALYZINGNUMBER == 0) {
-              sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(10, 3), 3);
-            } else {
-              sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(analyzedCURRENTLYANALYZINGNUMBER - 1, 3), 3);
-            }
-          }
-
-          // SEND CURRENT GCODE COMMAND TO BE OK IF THERE ARE LESS THAN 8 CURRENTLY CACHED GCODE COMMANDS
-          if (currentlycachedgcodes <= 8) {
+          // IF IT IS "", FINISH LOOP AND HEAD BACK TO MAIN LOOP
+          if (firstletter == "") {
             Serial.println(F("ok"));
-            sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, 1, 9);
-          } else {
-            sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, 0, 9);
+            gcodecomplete = true;
           }
 
-          // CURRENTLY CACHED GCODES!
-          currentlycachedgcodes = currentlycachedgcodes + 1;
+          // IF IT IS A "X", DETERMINE NUMBER OF CHARACTERS, THEN SAVE TO DB ARRAY
+          if (firstletter == "X") {
+            int startxdigit = gcodenumber + 1;
+            gcodenumber = gcodenumber + 1;
+            int finalxdigit = 0;
+            bool xfinished = false;
+            int xexecutionnumber = 0;
 
-          // SEND LOCK TO ARRAY TO FINISH GCODE ANALYZING
-          sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, 1, 10);
+            while (xfinished != true && xexecutionnumber <= 10) {
+              // DETERMINE THE NEXT CHARACTER IN THE STRING
+              firstletter = commanding.substring(gcodenumber, gcodenumber + 1);
 
-          // GCODE COMPLETE
-          interpretedcompleted = true;
+              // WAIT UNTIL CHARACTER RECEIVED IS A " ", THEN END THIS WHILE LOOP
+              if (firstletter == " " || firstletter == "") {
+
+                // CONVERT FROM INCHES TO MM
+                String xvalues = commanding.substring(startxdigit, gcodenumber);
+                float xvaluestoinsert = xvalues.toFloat();
+                if (currentunits == 1) {
+                  xvaluestoinsert = xvaluestoinsert / millimeterstoinches;
+                }
+                if (absoluterelative == 1) {
+                  float xpreviousvalue = -1;
+                  if (analyzedCURRENTLYANALYZINGNUMBER == 0) {
+                    xpreviousvalue = readfromarray(10, 0);
+                  } else {
+                    xpreviousvalue = readfromarray(analyzedCURRENTLYANALYZINGNUMBER - 1, 0);
+                  }
+
+                  if (xpreviousvalue == -1) {
+                    Serial.println(F("COMMAND COULD NOT BE COMPLETED - PARSER ERROR!"));
+                  } else {
+                    xvaluestoinsert = xpreviousvalue + xvaluestoinsert;
+                  }
+                }
+                sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, xvaluestoinsert, 0);
+                xfinished = true;
+                xstatement = true;
+              }
+
+              gcodenumber = gcodenumber + 1;
+              xexecutionnumber = xexecutionnumber + 1;
+            }
+            firstletter = commanding.substring(gcodenumber, gcodenumber + 1);
+          }
+
+          // IF IT IS A "Y", DETERMINE NUMBER OF CHARACTERS, THEN SAVE TO DB ARRAY
+          if (firstletter == "Y") {
+            int startydigit = gcodenumber + 1;
+            gcodenumber = gcodenumber + 1;
+            int finalydigit = 0;
+            bool yfinished = false;
+            int yexecutionnumber = 0;
+
+            while (yfinished != true && yexecutionnumber <= 10) {
+              // DETERMINE THE NEXT CHARACTER IN THE STRING
+              firstletter = commanding.substring(gcodenumber, gcodenumber + 1);
+
+              // WAIT UNTIL CHARACTER RECEIVED IS A " ", THEN END THIS WHILE LOOP
+
+              // CONVERT FROM INCHES TO MM
+              if (firstletter == " " || firstletter == "") {
+                String yvalues = commanding.substring(startydigit, gcodenumber);
+                float yvaluestoinsert = yvalues.toFloat();
+                if (currentunits == 1) {
+                  yvaluestoinsert = yvaluestoinsert / millimeterstoinches;
+                }
+                if (absoluterelative == 1) {
+                  float ypreviousvalue = -1;
+                  if (analyzedCURRENTLYANALYZINGNUMBER == 0) {
+                    ypreviousvalue = readfromarray(10, 1);
+                  } else {
+                    ypreviousvalue = readfromarray(analyzedCURRENTLYANALYZINGNUMBER - 1, 1);
+                  }
+
+                  Serial.println(ypreviousvalue);
+
+                  if (ypreviousvalue == -1) {
+                    Serial.println(F("COMMAND COULD NOT BE COMPLETED - PARSER ERROR"));
+                  } else {
+                    yvaluestoinsert = ypreviousvalue + yvaluestoinsert;
+                  }
+                }
+                sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, yvaluestoinsert, 1);
+                yfinished = true;
+                ystatement = true;
+              }
+              gcodenumber = gcodenumber + 1;
+              yexecutionnumber = yexecutionnumber + 1;
+            }
+            firstletter = commanding.substring(gcodenumber, gcodenumber + 1);
+          }
+
+
+          // IF IT IS A "Z", DETERMINE NUMBER OF CHARACTERS, THEN SAVE TO DB ARRAY
+          if (firstletter == "Z") {
+            int startzdigit = gcodenumber + 1;
+            gcodenumber = gcodenumber + 1;
+            int finalzdigit = 0;
+            bool zfinished = false;
+            int zexecutionnumber = 0;
+
+            while (zfinished != true && zexecutionnumber <= 10) {
+              // DETERMINE THE NEXT CHARACTER IN THE STRING
+              firstletter = commanding.substring(gcodenumber, gcodenumber + 1);
+
+              // WAIT UNTIL CHARACTER RECEIVED IS A " ", THEN END THIS WHILE LOOP
+              if (firstletter == " " || firstletter == "") {
+
+                // CONVERT FROM INCHES TO MM
+                String zvalues = commanding.substring(startzdigit, gcodenumber);
+                float zvaluestoinsert = zvalues.toFloat();
+                if (currentunits == 1) {
+                  zvaluestoinsert = zvaluestoinsert / millimeterstoinches;
+                }
+                if (absoluterelative == 1) {
+                  float zpreviousvalue = -1;
+                  if (analyzedCURRENTLYANALYZINGNUMBER == 0) {
+                    zpreviousvalue = readfromarray(10,0);
+                  } else {
+                    zpreviousvalue = readfromarray(analyzedCURRENTLYANALYZINGNUMBER - 1, 0);
+                  }
+
+                  if (zpreviousvalue == -1) {
+                    Serial.println(F("COMMAND COULD NOT BE COMPLETED - PARSER ERROR!"));
+                  } else {
+                    zvaluestoinsert = zpreviousvalue + zvaluestoinsert;
+                  }
+                }
+                sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, zvaluestoinsert, 0);
+                zfinished = true;
+                zstatement = true;
+              }
+
+              gcodenumber = gcodenumber + 1;
+              zexecutionnumber = zexecutionnumber + 1;
+            }
+            firstletter = commanding.substring(gcodenumber, gcodenumber + 1);
+          }
+
+          // IF IT IS A "E", DETERMINE NUMBER OF CHARACTERS, THEN SAVE TO DB ARRAY
+          if (firstletter == "E") {
+            int startedigit = gcodenumber + 1;
+            gcodenumber = gcodenumber + 1;
+            int finaledigit = 0;
+            bool efinished = false;
+            int eexecutionnumber = 0;
+
+            while (efinished != true && eexecutionnumber <= 10) {
+              // DETERMINE THE NEXT CHARACTER IN THE STRING
+              firstletter = commanding.substring(gcodenumber, gcodenumber + 1);
+
+              // WAIT UNTIL CHARACTER RECEIVED IS A " ", THEN END THIS WHILE LOOP
+              if (firstletter == " " || firstletter == "") {
+
+                // CONVERT FROM INCHES TO MM
+                String evalues = commanding.substring(startedigit, gcodenumber);
+                float evaluestoinsert = evalues.toFloat();
+                if (currentunits == 1) {
+                  evaluestoinsert = evaluestoinsert / millimeterstoinches;
+                }
+                if (absoluterelative == 1) {
+                  float epreviousvalue = -1;
+                  if (analyzedCURRENTLYANALYZINGNUMBER == 0) {
+                    epreviousvalue = readfromarray(10,0);
+                  } else {
+                    epreviousvalue = readfromarray(analyzedCURRENTLYANALYZINGNUMBER - 1, 0);
+                  }
+
+                  if (epreviousvalue == -1) {
+                    Serial.println(F("COMMAND COULD NOT BE COMPLETED - PARSER ERROR!"));
+                  } else {
+                    evaluestoinsert = epreviousvalue + evaluestoinsert;
+                  }
+                }
+                sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, evaluestoinsert, 0);
+                efinished = true;
+                estatement = true;
+              }
+
+              gcodenumber = gcodenumber + 1;
+              eexecutionnumber = eexecutionnumber + 1;
+            }
+            firstletter = commanding.substring(gcodenumber, gcodenumber + 1);
+          }
+
+          // IF IT IS A "E", DETERMINE NUMBER OF CHARACTERS, THEN SAVE TO DB ARRAY
+          if (firstletter == "F") {
+            // FEEDRATE VARIABLES
+            gcodecomplete = true;
+          }
+
+          // TIME UP VARIABLES
+          gcodenumber = gcodenumber + 1;
+          executionnumber = executionnumber + 1;
         }
+
+        // DECLARE PREVIOUS INFORMATION IN NEW SCRIPT IF NO INFORMATION WAS GIVEN PREVIOUSLY!
+        if (xstatement == false) {
+          if (analyzedCURRENTLYANALYZINGNUMBER == 0) {
+            sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(10, 0), 0);
+          } else {
+            sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(analyzedCURRENTLYANALYZINGNUMBER - 1, 0), 0);
+          }
+        }
+        if (ystatement == false) {
+          if (analyzedCURRENTLYANALYZINGNUMBER == 0) {
+            sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(10, 1), 1);
+          } else {
+            sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(analyzedCURRENTLYANALYZINGNUMBER - 1, 1), 1);
+          }
+        }
+        if (zstatement == false) {
+          if (analyzedCURRENTLYANALYZINGNUMBER == 0) {
+            sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(10, 2), 2);
+          } else {
+            sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(analyzedCURRENTLYANALYZINGNUMBER - 1, 2), 2);
+          }
+        }
+        if (estatement == false) {
+          if (analyzedCURRENTLYANALYZINGNUMBER == 0) {
+            sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(10, 3), 3);
+          } else {
+            sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, readfromarray(analyzedCURRENTLYANALYZINGNUMBER - 1, 3), 3);
+          }
+        }
+
+
+
+        // SEND CURRENT GCODE COMMAND TO BE OK IF THERE ARE LESS THAN 8 CURRENTLY CACHED GCODE COMMANDS
+        if (currentlycachedgcodes <= 8) {
+          Serial.println(F("ok"));
+          sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, 1, 9);
+        } else {
+          sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, 0, 9);
+        }
+
+        // CURRENTLY CACHED GCODES!
+        currentlycachedgcodes = currentlycachedgcodes + 1;
+
+        // SEND LOCK TO ARRAY TO FINISH GCODE ANALYZING
+        sendtoarray(analyzedCURRENTLYANALYZINGNUMBER, 1, 10);
+
+        // GCODE COMPLETE
+        interpretedcompleted = true;
       }
     }
 
