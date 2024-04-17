@@ -14,8 +14,8 @@
 <p> Before we begin, please make sure to have either a printer machine controller, such as Simplify3D or Octoprint, installed on a system to be controlled before continuing.</p>
 <p>1. Download the Arduino IDE Version 2.x.x</p>
 <p>2. Install Arduino IDE</p>
-<p>3. Give Read/Wiret Priviledges to Arduino if Arduino is not able to access USB already</p>
-<p>4. Clone the Repository by saving as ZIP file.</p>
+<p>3. Give Read/Write Priviledges to Arduino if Arduino is not able to access USB already</p>
+<p>4. Download the Latest Version of the Repository Under the Tags Section and Downloading the ZIP File.</p>
 <p>5. Extract the Downloaded Repository</p>
 <p>6. Open the Folder Called "3DPrintingSketch"</p>
 <p>7. Open the File Called "3DPrintingSketch.ino"</p>
