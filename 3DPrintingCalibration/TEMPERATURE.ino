@@ -5,7 +5,7 @@ void tempsensing() {
 
   int testaway = 0;
 
-  while (testaway <= 10) {
+  while (testaway <= 9) {
     testaway = testaway + 1;
     rawsensore0 = rawsensore0 + analogRead(TEMP_0_PIN);
     rawsensore1 = rawsensore1 + analogRead(TEMP_1_PIN);
@@ -119,17 +119,23 @@ void tempcalibration() {
   Serial.println(F("// FINISHED CALIBRATING!"));
   Serial.println(F("// COPY AND PASTE THIS RESPONSE INTO LINES 29-34 IN 3DPrintingSketch.ino"));
   Serial.print(F("float e0intoffset = "));
-  Serial.println(e0roomoffsetpart3);
+  Serial.print(e0roomoffsetpart3);
+  Serial.println(F(";"));
   Serial.print(F("float e1intoffset = "));
-  Serial.println(e1roomoffsetpart3);
+  Serial.print(e1roomoffsetpart3);
+  Serial.println(F(";"));
   Serial.print(F("float e2intoffset = "));
-  Serial.println(hbroomoffsetpart3);
+  Serial.print(hbroomoffsetpart3);
+  Serial.println(F(";"));
   Serial.print(F("float e0tempmodifier = "));
-  Serial.println(e0roomofffinpart2);
+  Serial.print(e0roomofffinpart2);
+  Serial.println(F(";"));
   Serial.print(F("float e1tempmodifier = "));
-  Serial.println(hbroomofffinpart2);
+  Serial.print(hbroomofffinpart2);
+  Serial.println(F(";"));
   Serial.print(F("float hbtempmodifier = "));
-  Serial.println(hbroomofffinpart2);
+  Serial.print(hbroomofffinpart2);
+  Serial.println(F(";"));
   Serial.println(F("// END OF OUTPUT"));
 }
 
