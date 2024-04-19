@@ -7,7 +7,7 @@
 // CONTROL + SPACE
 
 
-// CURRENT NUMBER OF LINES OF CODE: 9797
+// CURRENT NUMBER OF LINES OF CODE: 9900
 
 
 ///////////////////////////////
@@ -16,9 +16,9 @@
 #include <Wire.h>
 #include <LiquidCrystal.h>
 #include <EEPROM.h>
-int PRINTERVERSION = 0.2;
+int PRINTERVERSION = 0.3;
 int MAJORVERSION = 0;
-int MINORVERSION = 2;
+int MINORVERSION = 3;
 bool allowolderversions = false;
 
 
@@ -26,12 +26,12 @@ bool allowolderversions = false;
 /////////////////////////////
 // CHANGE THESE VARIABLES! //
 /////////////////////////////
-float e0intoffset = 14.75;
-float e1intoffset = 14.75;
-float e2intoffset = 14.75;
-float e0tempmodifier = 0.7;
-float e1tempmodifier = 0.7;
-float hbtempmodifier = 0.7;
+float e0intoffset = 78.42;
+float e1intoffset = 80.62;
+float e2intoffset = 80.62;
+float e0tempmodifier = 0.11;
+float e1tempmodifier = 0.11;
+float hbtempmodifier = 0.11;
 
 
 

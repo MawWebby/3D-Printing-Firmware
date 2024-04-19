@@ -133,6 +133,132 @@ void setup() {
   digitalWrite(PS_ON_PIN, LOW);
 
 
+  /////////////////////////////////////////////
+  // FIRMWARE CHECKS AND DATABASE MIGRATIONS //
+  /////////////////////////////////////////////
+  bool olderversion = false;
+  bool newerversion = false;
+  bool versionmatchmajor = false;
+  bool versionmatchminor = false;
+  watchdogactivated = true;
+
+  // EEPROM-9 - FIRMWARE MAJOR VERSION
+  if (EEPROM.read(9) << MAJORVERSION) {
+    Serial.println(F("OLDER VERSION DETECTED"));
+    olderversion = true;
+  } else {
+    if (EEPROM.read(9) >> MAJORVERSION) {
+      Serial.println(F("NEWER VERSION DETECTED"));
+      newerversion = false;
+    } else {
+      if (EEPROM.read(9) == MAJORVERSION) {
+        versionmatchmajor = true;
+      } else {
+        Serial.println(F("EEPROM-9 NOT SET/CONFIGURING"));
+        delay(3000);
+        EEPROM.update(9, MAJORVERSION);
+        delay(3000);
+        Serial.println(F("RESTARTING"));
+        setup();
+      }
+    }
+  }
+
+  // EEPROM-10 - FIRMWARE MINOR VERSION
+  if (EEPROM.read(10) << MINORVERSION) {
+    Serial.println(F("OLDER VERSION DETECTED"));
+    if (newerversion == false && olderversion == false) {
+      olderversion = true;
+    }
+  } else {
+    if (EEPROM.read(10) >> MINORVERSION) {
+      Serial.println(F("NEWER VERSION DETECTED"));
+      if (newerversion == false && olderversion == false) {
+        newerversion = false;
+      }
+    } else {
+      if (EEPROM.read(10) == MINORVERSION) {
+        versionmatchminor = true;
+      } else {
+        Serial.println(F("EEPROM-10 NOT SET/CONFIGURING"));
+        delay(3000);
+        EEPROM.update(10, MINORVERSION);
+        delay(3000);
+        Serial.println(F("restarting"));
+        setup();
+      }
+    }
+  }
+
+  // IF VERSION MATCH IS TRUE, CONTINUE; ELSE RECONFIGURE
+  if (versionmatchmajor == true && versionmatchminor == true) {
+    watchdogactivated = true;
+  } else {
+
+    // OLDER VERSION IS TRUE
+    if (olderversion == true) {
+      if (allowolderversions == true) {
+        watchdogactivated = true;
+        Serial.println(F("OLDER VERSIONS ARE NOT SUPPORTED REMOTELY, IF THIS IS INTENTIONAL, PLEASE TYPE 'Z800'!"));
+      }
+    }
+
+    // NEWER VERSION IS TRUE
+    if (newerversion == true) {
+      Serial.println(F("NEW VERSION DETECTED"));
+      delay(3000);
+
+      // VERSION 0.X - NO DB UPRGADE REQUIRED/UPGRADE EEPROM VALUES
+      if (EEPROM.read(9) == 0) {
+        if (EEPROM.read(10) == 2) {
+          Serial.print(F("allocating new storage..."));
+          delay(1000);
+          EEPROM.update(15, 0);
+          delay(1000);
+          EEPROM.update(16, 0);
+          delay(1000);
+          EEPROM.update(17, 0);
+          delay(1000);
+          EEPROM.update(18, 0);
+          delay(1000);
+          EEPROM.update(19, 0);
+          delay(1000);
+          EEPROM.update(20, 0);
+          Serial.println(F("done"));
+          delay(4000);
+          Serial.print(F("configuring new values..."));
+
+          // ADD MORE HERE LATER
+
+          Serial.println(F("done"));
+
+          delay(1000);
+
+          Serial.print(F("finishing upgrade scripts (0.3)..."));
+
+          delay(1000);
+
+          Serial.println(F("done"));
+
+          delay(1000);
+
+          setup();
+
+        } else {
+          Serial.print(F("running upgrade scripts (0.2)..."));
+          EEPROM.update(9, MAJORVERSION);
+          delay(1000);
+          EEPROM.update(10, MINORVERSION);
+          delay(1000);
+          Serial.println(F("done"));
+          delay(1000);
+          Serial.println(F("restarting"));
+          setup();
+        }
+      }
+    }
+  }
+
 
   //////////////////////////////////////////////////////////////
   //// READ THE INITIAL STATE OF THE ENDSTOPS AND EXTRUDERS ////
@@ -395,94 +521,13 @@ void setup() {
       }
     }
 
-    // FIRMWARE CHECKS
-    bool olderversion = false;
-    bool newerversion = false;
-    bool versionmatchmajor = false;
-    bool versionmatchminor = false;
-    watchdogactivated = true;
 
-    // EEPROM-9 - FIRMWARE MAJOR VERSION
-    if (EEPROM.read(9) << MAJORVERSION) {
-      Serial.println(F("OLDER VERSION DETECTED"));
-      olderversion = true;
-    } else {
-      if (EEPROM.read(9) >> MAJORVERSION) {
-        Serial.println(F("NEWER VERSION DETECTED"));
-        newerversion = false;
-      } else {
-        if (EEPROM.read(9) == MAJORVERSION) {
-          versionmatchmajor = true;
-        } else {
-          Serial.println(F("EEPROM-9 NOT SET/CONFIGURING"));
-          delay(3000);
-          EEPROM.update(9, MAJORVERSION);
-          delay(3000);
-          Serial.println(F("RESTARTING"));
-          setup();
-        }
-      }
-    }
-
-    // EEPROM-10 - FIRMWARE MINOR VERSION
-    if (EEPROM.read(10) << MINORVERSION) {
-      Serial.println(F("OLDER VERSION DETECTED"));
-      if (newerversion == false && olderversion == false) {
-        olderversion = true;
-      }
-    } else {
-      if (EEPROM.read(10) >> MINORVERSION) {
-        Serial.println(F("NEWER VERSION DETECTED"));
-        if (newerversion == false && olderversion == false) {
-          newerversion = false;
-        }
-      } else {
-        if (EEPROM.read(10) == MINORVERSION) {
-          versionmatchminor = true;
-        } else {
-          Serial.println(F("EEPROM-10 NOT SET/CONFIGURING"));
-          delay(3000);
-          EEPROM.update(10, MINORVERSION);
-          delay(3000);
-          Serial.println(F("restarting"));
-          setup();
-        }
-      }
-    }
-
-    // IF VERSION MATCH IS TRUE, CONTINUE; ELSE RECONFIGURE
-    if (versionmatchmajor == true && versionmatchminor == true) {
-      watchdogactivated = true;
-    } else {
-      if (olderversion == true) {
-        if (allowolderversions == true) {
-          watchdogactivated = true;
-        }
-      }
-      if (newerversion == true) {
-        Serial.println(F("NEW VERSION DETECTED"));
-        delay(3000);
-        Serial.print(F("RUNNING UPGRADE SCRIPTS..."));
-
-        // VERSION 0.X - NO DB UPRGADE REQUIRED/UPGRADE EEPROM VALUES
-        if (EEPROM.read(9) == 0) {
-          EEPROM.update(9, MAJORVERSION);
-          delay(1000);
-          EEPROM.update(10, MINORVERSION);
-          delay(1000);
-          Serial.println(F("done"));
-          delay(1000);
-          Serial.println(F("restarting"));
-          setup();
-        }
-      }
-    }
 
     // EEPROM-11 - SUCCESS PRINTS (256)
     if (EEPROM.read(11) == "") {
       Serial.println(F("EEPROM-11 NOT SET - CONFIGURING"));
       delay(3000);
-      EEPROM.update(11,0);
+      EEPROM.update(11, 0);
       delay(3000);
       Serial.println(F("restarting"));
       setup();
@@ -493,7 +538,7 @@ void setup() {
     if (EEPROM.read(12) == "") {
       Serial.println(F("EEPROM-12 NOT SET - CONFIGURING"));
       delay(3000);
-      EEPROM.update(12,0);
+      EEPROM.update(12, 0);
       delay(3000);
       Serial.println(F("restarting"));
       setup();
@@ -504,7 +549,7 @@ void setup() {
     if (EEPROM.read(13) == "") {
       Serial.println(F("EEPROM-13 NOT SET - CONFIGURING"));
       delay(3000);
-      EEPROM.update(13,0);
+      EEPROM.update(13, 0);
       delay(3000);
       Serial.println(F("restarting"));
       setup();
@@ -515,7 +560,7 @@ void setup() {
     if (EEPROM.read(14) == "") {
       Serial.println(F("EEPROM-14 NOT SET - CONFIGURING"));
       delay(3000);
-      EEPROM.update(14,0);
+      EEPROM.update(14, 0);
       delay(3000);
       Serial.println(F("restarting"));
       setup();

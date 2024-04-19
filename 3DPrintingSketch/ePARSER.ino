@@ -2875,7 +2875,7 @@ int zShell(String commanding) {
 
 // WATCHDOG INTERPRETATION LOOP
 int watchdoginterpretation(String commanding) {
-  
+
   // SELECT M/Z CODE COMMANDS
   bool interpretedcompleted = false;
 

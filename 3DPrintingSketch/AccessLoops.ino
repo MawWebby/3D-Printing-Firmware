@@ -7,96 +7,118 @@
 
 // DATABASE (ARRAY) ACCESS LOOPS!
 
-// SEND A FLOAT VALUE TO THE MASTER ARRAY
-void sendtoarray(int commandtoanalyze, float valuetoinsert, int positiontoinsert) {
+// SEND A FLOAT VALUE TO THE MASTER ARRAY // 0 = GOOD / 1 = BAD
+int sendtoarray(int commandtoanalyze, float valuetoinsert, int positiontoinsert) {
   switch (commandtoanalyze) {
     case 0:
       if (analyzedgcodestack0[10] == 0 || analyzedgcodestack0[10] == 2) {
         analyzedgcodestack0[positiontoinsert] = valuetoinsert;
+        return(0);
       } else {
         Serial.println(F("READ-ONLY ARRAY ACCESS DENIED (CACHE-0)!"));
         i2csend("READ-ONLY ARRAY ACCESS DENIED (CACHE-0)!", "", "", 0);
+        return(1);
       }
       break;
     case 1:
       if (analyzedgcodestack1[10] == 0 || analyzedgcodestack1[10] == 2) {
         analyzedgcodestack1[positiontoinsert] = valuetoinsert;
+        return(0);
       } else {
         Serial.println(analyzedgcodestack1[positiontoinsert]);
         Serial.println(F("READ-ONLY ARRAY ACCESS DENIED (CACHE-1)!"));
         i2csend("READ-ONLY ARRAY ACCESS DENIED (CACHE-1)!", "", "", 0);
+        return(1);
       }
       break;
     case 2:
       if (analyzedgcodestack2[10] == 0 || analyzedgcodestack2[10] == 2) {
         analyzedgcodestack2[positiontoinsert] = valuetoinsert;
+        return(0);
       } else {
         Serial.println(F("READ-ONLY ARRAY ACCESS DENIED (CACHE-2)!"));
         i2csend("READ-ONLY ARRAY ACCESS DENIED (CACHE-2)!", "", "", 0);
+        return(1);
       }
       break;
     case 3:
       if (analyzedgcodestack3[10] == 0 || analyzedgcodestack3[10] == 2) {
         analyzedgcodestack3[positiontoinsert] = valuetoinsert;
+        return(0);
       } else {
         Serial.println(F("READ-ONLY ARRAY ACCESS DENIED (CACHE-3)!"));
         i2csend("READ-ONLY ARRAY ACCESS DENIED (CACHE-3)!", "", "", 0);
+        return(1);
       }
       break;
     case 4:
       if (analyzedgcodestack4[10] == 0 || analyzedgcodestack4[10] == 2) {
         analyzedgcodestack4[positiontoinsert] = valuetoinsert;
+        return(0);
       } else {
         Serial.println(F("READ-ONLY ARRAY ACCESS DENIED (CACHE-4)!"));
         i2csend("READ-ONLY ARRAY ACCESS DENIED (CACHE-4)!", "", "", 0);
+        return(1);
       }
       break;
     case 5:
       if (analyzedgcodestack5[10] == 0 || analyzedgcodestack5[10] == 2) {
         analyzedgcodestack5[positiontoinsert] = valuetoinsert;
+        return(0);
       } else {
         Serial.println(F("READ-ONLY ARRAY ACCESS DENIED (CACHE-5)!"));
         i2csend("READ-ONLY ARRAY ACCESS DENIED (CACHE-5)!", "", "", 0);
+        return(1);
       }
       break;
     case 6:
       if (analyzedgcodestack6[10] == 0 || analyzedgcodestack6[10] == 2) {
         analyzedgcodestack6[positiontoinsert] = valuetoinsert;
+        return(0);
       } else {
         Serial.println(F("READ-ONLY ARRAY ACCESS DENIED (CACHE-6)!"));
         i2csend("READ-ONLY ARRAY ACCESS DENIED (CACHE-6)!", "", "", 0);
+        return(1);
       }
       break;
     case 7:
       if (analyzedgcodestack7[10] == 0 || analyzedgcodestack7[10] == 2) {
         analyzedgcodestack7[positiontoinsert] = valuetoinsert;
+        return(0);
       } else {
         Serial.println(F("READ-ONLY ARRAY ACCESS DENIED (CACHE-7)!"));
         i2csend("READ-ONLY ARRAY ACCESS DENIED (CACHE-7)!", "", "", 0);
+        return(1);
       }
       break;
     case 8:
       if (analyzedgcodestack8[10] == 0 || analyzedgcodestack8[10] == 2) {
         analyzedgcodestack8[positiontoinsert] = valuetoinsert;
+        return(0);
       } else {
         Serial.println(F("READ-ONLY ARRAY ACCESS DENIED (CACHE-8)!"));
         i2csend("READ-ONLY ARRAY ACCESS DENIED (CACHE-8)!", "", "", 0);
+        return(1);
       }
       break;
     case 9:
       if (analyzedgcodestack9[10] == 0 || analyzedgcodestack9[10] == 2) {
         analyzedgcodestack9[positiontoinsert] = valuetoinsert;
+        return(0);
       } else {
         Serial.println(F("READ-ONLY ARRAY ACCESS DENIED (CACHE-9)!"));
         i2csend("READ-ONLY ARRAY ACCESS DENIED (CACHE-9)!", "", "", 0);
+        return(1);
       }
       break;
     case 10:
       if (analyzedgcodestack10[10] == 0 || analyzedgcodestack10[10] == 2) {
         analyzedgcodestack10[positiontoinsert] = valuetoinsert;
+        return(0);
       } else {
         Serial.println(F("READ-ONLY ARRAY ACCESS DENIED (CACHE-10)!"));
         i2csend("READ-ONLY ARRAY ACCESS DENIED (CACHE-10)!", "", "", 0);
+        return(1);
       }
       break;
   }
@@ -217,6 +239,7 @@ void clearrowinarray(int commandtoclear, bool removelock) {
   }
 }
 
+// FULL DATABASE READ FOR DEBUGGING PURPOSES
 void fulldatabaseread() {
   for (int i = 0; i < 11; i++) {
     Serial.print(analyzedgcodestack0[i]);
@@ -491,6 +514,8 @@ void writestringtostack(int commandtoanalyze, String stringvaluetoinsert) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// ERROR STACK LOOPS!
 
 // LOGS ERRORS INTO A STRING STACK
 void writeerrorsstackloop(String errortoinput, int severity, bool activatewatchdog, int errornumber, bool overflowtowatchdog, bool repeats) {

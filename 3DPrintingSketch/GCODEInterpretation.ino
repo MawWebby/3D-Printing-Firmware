@@ -277,7 +277,7 @@ int interpretation(String commanding) {
                 if (absoluterelative == 1) {
                   float zpreviousvalue = -1;
                   if (analyzedCURRENTLYANALYZINGNUMBER == 0) {
-                    zpreviousvalue = readfromarray(10,0);
+                    zpreviousvalue = readfromarray(10, 0);
                   } else {
                     zpreviousvalue = readfromarray(analyzedCURRENTLYANALYZINGNUMBER - 1, 0);
                   }
@@ -324,7 +324,7 @@ int interpretation(String commanding) {
                 if (absoluterelative == 1) {
                   float epreviousvalue = -1;
                   if (analyzedCURRENTLYANALYZINGNUMBER == 0) {
-                    epreviousvalue = readfromarray(10,0);
+                    epreviousvalue = readfromarray(10, 0);
                   } else {
                     epreviousvalue = readfromarray(analyzedCURRENTLYANALYZINGNUMBER - 1, 0);
                   }
@@ -582,7 +582,7 @@ int interpretation(String commanding) {
                 if (absoluterelative == 1) {
                   float zpreviousvalue = -1;
                   if (analyzedCURRENTLYANALYZINGNUMBER == 0) {
-                    zpreviousvalue = readfromarray(10,0);
+                    zpreviousvalue = readfromarray(10, 0);
                   } else {
                     zpreviousvalue = readfromarray(analyzedCURRENTLYANALYZINGNUMBER - 1, 0);
                   }
@@ -628,7 +628,7 @@ int interpretation(String commanding) {
                 if (absoluterelative == 1) {
                   float epreviousvalue = -1;
                   if (analyzedCURRENTLYANALYZINGNUMBER == 0) {
-                    epreviousvalue = readfromarray(10,0);
+                    epreviousvalue = readfromarray(10, 0);
                   } else {
                     epreviousvalue = readfromarray(analyzedCURRENTLYANALYZINGNUMBER - 1, 0);
                   }
