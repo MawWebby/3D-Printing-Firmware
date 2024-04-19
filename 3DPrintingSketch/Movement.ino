@@ -18,7 +18,7 @@ void movement() {
 
   // MOVE TO NEW GCODE COMMAND IF CONDITIONS ARE MET
   if ((xstepstaken >= xstepsrequired && ystepstaken >= ystepsrequired && zstepstaken >= zstepsrequired && estepstaken >= estepsrequired) || (currentxdimension >= targetxdimension - 0.05 && currentxdimension <= targetxdimension + 0.05 && currentydimension >= targetydimension - 0.05 && currentydimension <= targetydimension + 0.05 && currentzdimension >= targetzdimension - 0.05 && currentzdimension <= targetzdimension + 0.05)) {
-    movetonewgcodeformovement(true);
+    movetonewgcodeformovement();
   } else {
     if (checklockstatus(currentgcodecommand) == 1) {
     }
@@ -303,10 +303,12 @@ void movement() {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // MOVE TO NEW GCODE FOR MOVEMENT
-void movetonewgcodeformovement(bool runchecks) {
-  Serial.println(F("NEW_GCODE"));
+void movetonewgcodeformovement() {
 
-  // ONLY RUN THIS SCRIPT IF THERE IS A NEW NUMBER IN THE DATABASE CONFIRMED!
+  // DEBUG SERIAL FOR NEW GCODE PROMPT
+  if (debugserial == true) {
+    Serial.println(F("NEW_GCODE"));
+  }
 
   // DETERMINE IF THE CONDITIONS ARE MET TO CONTINUE TO NEW GCODE COMMAND
   bool conditionsmetX = false;
@@ -316,373 +318,371 @@ void movetonewgcodeformovement(bool runchecks) {
 
 
 
-  // IF RUN CHECKS DOES NOT EQUAL TRUE, IT MUST BE CALLED BY TEST COMMAND (NOT CURENTLY SUPPORTED!)
-  if (runchecks == false) {
-    Serial.println(F("RUNNING NEW GCODE COMMAND WITHOUT CHECKS IS NOT RECOMMENDED!"));
-    Serial.println(F("RUNNING CHECKS ANYWAY"));
-    movetonewgcodeformovement(true);
 
-    // REMOVED FOR SAFETY REASONS
-
-  } else {
+  {
+    // X MOVING VERIFICATION CODE
     {
-      // X MOVING VERIFICATION CODE
-      {
-        if (xmovingpositive == true) {
-          if (targetxdimension <= currentxdimension) {
-            conditionsmetX = true;
-          } else {
-            conditionsmetX = false;
-          }
-        }
-
-        if (xmovingnegative == true) {
-          if (targetxdimension >= currentxdimension) {
-            conditionsmetX = true;
-          } else {
-            conditionsmetX = false;
-          }
-        }
-
-        if (xmovingpositive == false && xmovingnegative == false) {
+      if (xmovingpositive == true) {
+        if (targetxdimension <= currentxdimension) {
           conditionsmetX = true;
-        }
-      }
-
-      // Y MOVING VERIFCATION CODE
-      {
-        if (ymovingpositive == true) {
-          if (targetydimension <= currentydimension) {
-            conditionsmetY = true;
-          } else {
-            conditionsmetY = false;
-          }
-        }
-
-        if (ymovingnegative == true) {
-          if (targetydimension >= currentydimension) {
-            conditionsmetY = true;
-          } else {
-            conditionsmetY = false;
-          }
-        }
-
-        if (ymovingpositive == false && ymovingnegative == false) {
-          conditionsmetY = true;
-        }
-      }
-      // Z MOVING VERIFICATION CODE
-      {
-        if (zmovingpositive == true) {
-          if (targetzdimension <= currentzdimension) {
-            conditionsmetZ = true;
-          } else {
-            conditionsmetZ = false;
-          }
-        }
-
-        if (zmovingnegative == true) {
-          if (targetzdimension <= currentzdimension) {
-            conditionsmetZ = true;
-          } else {
-            conditionsmetZ = false;
-          }
-        }
-
-        if (zmovingnegative == false && zmovingpositive == false) {
-          conditionsmetZ = true;
-        }
-      }
-
-      // E0 MOVING VERIFICATION CODE
-      {
-        if (currente0motordimension == targete0motordimension) {
-          conditionsmetE = true;
         } else {
-          if (e0movingpositive == true) {
-            if (targete0motordimension <= currente0motordimension) {
-              conditionsmetE = true;
-            } else {
-              conditionsmetE = false;
-            }
-          }
-
-          if (e0movingnegative == true) {
-            if (targete0motordimension >= currente0motordimension) {
-              conditionsmetE = true;
-            } else {
-              conditionsmetE = false;
-            }
-          }
-
-          if (e0movingpositive == false && e0movingnegative == false) {
-            conditionsmetE = true;
-          }
-        }
-        if (simulationmode == true) {
-          conditionsmetE = true;
+          conditionsmetX = false;
         }
       }
-      conditionsmetE = true;
+
+      if (xmovingnegative == true) {
+        if (targetxdimension >= currentxdimension) {
+          conditionsmetX = true;
+        } else {
+          conditionsmetX = false;
+        }
+      }
+
+      if (xmovingpositive == false && xmovingnegative == false) {
+        conditionsmetX = true;
+      }
     }
 
-    // IF ALL THE CONDITIONS ARE MET, CONTINUE TO NEW GCODE
-    if (conditionsmetX == true && conditionsmetY == true && conditionsmetZ == true && conditionsmetE && printingactive == true && checklockstatus(currentgcodecommand) == 1) {
+    // Y MOVING VERIFCATION CODE
+    {
+      if (ymovingpositive == true) {
+        if (targetydimension <= currentydimension) {
+          conditionsmetY = true;
+        } else {
+          conditionsmetY = false;
+        }
+      }
 
-      // SEND OKAY IF NOT PREVIOUSLY SENT
+      if (ymovingnegative == true) {
+        if (targetydimension >= currentydimension) {
+          conditionsmetY = true;
+        } else {
+          conditionsmetY = false;
+        }
+      }
+
+      if (ymovingpositive == false && ymovingnegative == false) {
+        conditionsmetY = true;
+      }
+    }
+    // Z MOVING VERIFICATION CODE
+    {
+      if (zmovingpositive == true) {
+        if (targetzdimension <= currentzdimension) {
+          conditionsmetZ = true;
+        } else {
+          conditionsmetZ = false;
+        }
+      }
+
+      if (zmovingnegative == true) {
+        if (targetzdimension <= currentzdimension) {
+          conditionsmetZ = true;
+        } else {
+          conditionsmetZ = false;
+        }
+      }
+
+      if (zmovingnegative == false && zmovingpositive == false) {
+        conditionsmetZ = true;
+      }
+    }
+
+    // E0 MOVING VERIFICATION CODE
+    {
+      if (currente0motordimension == targete0motordimension) {
+        conditionsmetE = true;
+      } else {
+        if (e0movingpositive == true) {
+          if (targete0motordimension <= currente0motordimension) {
+            conditionsmetE = true;
+          } else {
+            conditionsmetE = false;
+          }
+        }
+
+        if (e0movingnegative == true) {
+          if (targete0motordimension >= currente0motordimension) {
+            conditionsmetE = true;
+          } else {
+            conditionsmetE = false;
+          }
+        }
+
+        if (e0movingpositive == false && e0movingnegative == false) {
+          conditionsmetE = true;
+        }
+      }
+      if (simulationmode == true) {
+        conditionsmetE = true;
+      }
+    }
+    conditionsmetE = true;
+  }
+
+  // IF ALL THE CONDITIONS ARE MET, CONTINUE TO NEW GCODE
+  if (conditionsmetX == true && conditionsmetY == true && conditionsmetZ == true && conditionsmetE && printingactive == true && checklockstatus(currentgcodecommand) == 1) {
+
+
+    // SEND OKAY IF NOT PREVIOUSLY SENT
+    if (currentlycachedgcodes <= 8) {
+      Serial.println(F("ok"));
+    } else {
+      // SECOND CONDITION - SEND OKAY IF NOT PREVIOUSLY SENT
       if (readfromarray(currentgcodecommand, 9) == 0) {
         Serial.println(F("ok"));
       }
+    }
 
-      // MOVE TO NEW GCODE
-      clearrowinarray(currentgcodecommand, true);
+    // MOVE TO NEW GCODE
+    clearrowinarray(currentgcodecommand, true);
 
-      /////////////////////////////////////////////
-      //// RUN LONG LOOPS THAT COULDN'T BEFORE ////
-      /////////////////////////////////////////////
-      lcdEngine();
-      tempsensing();
+    /////////////////////////////////////////////
+    //// RUN LONG LOOPS THAT COULDN'T BEFORE ////
+    /////////////////////////////////////////////
+    lcdEngine();
+    tempsensing();
 
-      // SET ALL MOVEMENT DIRECTIONS TO FALSE
-      xmovingpositive = false;
-      xmovingnegative = false;
-      ymovingpositive = false;
-      ymovingnegative = false;
-      zmovingpositive = false;
-      zmovingnegative = false;
-      e0movingpositive = false;
-      e0movingnegative = false;
+    // SET ALL MOVEMENT DIRECTIONS TO FALSE
+    xmovingpositive = false;
+    xmovingnegative = false;
+    ymovingpositive = false;
+    ymovingnegative = false;
+    zmovingpositive = false;
+    zmovingnegative = false;
+    e0movingpositive = false;
+    e0movingnegative = false;
 
-      // FLIP TO NEXT GCODE COMMAND
-      if (currentgcodecommand != 10) {
-        currentgcodecommand = currentgcodecommand + 1;
-      } else {
-        currentgcodecommand = 0;
+    // FLIP TO NEXT GCODE COMMAND
+    if (currentgcodecommand != 10) {
+      currentgcodecommand = currentgcodecommand + 1;
+    } else {
+      currentgcodecommand = 0;
+    }
+
+
+    // SET NEW TARGET POSITIONS
+    targetxdimension = readfromarray(currentgcodecommand, 0);
+    targetydimension = readfromarray(currentgcodecommand, 1);
+    targetzdimension = readfromarray(currentgcodecommand, 2);
+    targete0motordimension = readfromarray(currentgcodecommand, 3);
+
+    if (debugserial == true) {
+      Serial.println(currentgcodecommand);
+      Serial.print(targetxdimension);
+      Serial.print(" ");
+      Serial.print(targetydimension);
+      Serial.print(" ");
+      Serial.print(targetzdimension);
+      Serial.print(" ");
+      Serial.println(targete0motordimension);
+    }
+
+
+    // DECLARE DIFFERENCE VARIABLES
+    float xdifference = 0;
+    float ydifference = 0;
+    float zdifference = 0;
+    float edifference = 0;
+
+
+    // RESET ALL VARIABLES BACK TO 0
+    xsteptimer = 0;
+    ysteptimer = 0;
+    zsteptimer = 0;
+    esteptimer = 0;
+    xcurrentstep = 0;
+    ycurrentstep = 0;
+    zcurrentstep = 0;
+    ecurrentstep = 0;
+    xstepsrequired = 0;
+    ystepsrequired = 0;
+    zstepsrequired = 0;
+    estepsrequired = 0;
+    xstepstaken = 0;
+    ystepstaken = 0;
+    zstepstaken = 0;
+    estepstaken = 0;
+
+    // DIMENSION ANALYSIS AND STEP COUNTS
+    {
+      // X DIMENSION ANALYSIS AND STEP COUNTS
+      if (targetxdimension > currentxdimension) {
+        xdifference = targetxdimension - currentxdimension;
+        xmovingpositive = true;
+        xmovingnegative = false;
+        xstepsrequired = xdifference / xmodifier;
+        xdisabled = false;
+      }
+      if (targetxdimension == currentxdimension) {
+        xdifference = 0;
+        xstepsrequired = 0;
+        xmovingpositive = false;
+        xmovingnegative = false;
+        xdisabled = false;
+      }
+      if (targetxdimension < currentxdimension) {
+        xdifference = currentxdimension - targetxdimension;
+        xmovingpositive = false;
+        xmovingnegative = true;
+        xstepsrequired = xdifference / xmodifier;
+        xdisabled = false;
       }
 
 
-      // SET NEW TARGET POSITIONS
-      targetxdimension = readfromarray(currentgcodecommand, 0);
-      targetydimension = readfromarray(currentgcodecommand, 1);
-      targetzdimension = readfromarray(currentgcodecommand, 2);
-      targete0motordimension = readfromarray(currentgcodecommand, 3);
-
-      if (debugserial == true) {
-        Serial.println(currentgcodecommand);
-        Serial.print(targetxdimension);
-        Serial.print(" ");
-        Serial.print(targetydimension);
-        Serial.print(" ");
-        Serial.print(targetzdimension);
-        Serial.print(" ");
-        Serial.println(targete0motordimension);
-      }
-
-
-      // DECLARE DIFFERENCE VARIABLES
-      float xdifference = 0;
-      float ydifference = 0;
-      float zdifference = 0;
-      float edifference = 0;
-
-
-      // RESET ALL VARIABLES BACK TO 0
-      xsteptimer = 0;
-      ysteptimer = 0;
-      zsteptimer = 0;
-      esteptimer = 0;
-      xcurrentstep = 0;
-      ycurrentstep = 0;
-      zcurrentstep = 0;
-      ecurrentstep = 0;
-      xstepsrequired = 0;
-      ystepsrequired = 0;
-      zstepsrequired = 0;
-      estepsrequired = 0;
-      xstepstaken = 0;
-      ystepstaken = 0;
-      zstepstaken = 0;
-      estepstaken = 0;
-
-      // DIMENSION ANALYSIS AND STEP COUNTS
+      // Y DIMENSION ANALYSIS AND STEP COUNTS
       {
-        // X DIMENSION ANALYSIS AND STEP COUNTS
-        if (targetxdimension > currentxdimension) {
-          xdifference = targetxdimension - currentxdimension;
-          xmovingpositive = true;
-          xmovingnegative = false;
-          xstepsrequired = xdifference / xmodifier;
-          xdisabled = false;
+        if (targetydimension > currentydimension) {
+          ydifference = targetydimension - currentydimension;
+          ymovingpositive = true;
+          ymovingnegative = false;
+          ystepsrequired = ydifference / ymodifier;
+          ydisabled = false;
         }
-        if (targetxdimension == currentxdimension) {
-          xdifference = 0;
-          xstepsrequired = 0;
-          xmovingpositive = false;
-          xmovingnegative = false;
-          xdisabled = false;
+        if (targetydimension == currentydimension) {
+          ydifference = 0;
+          ystepsrequired = 0;
+          ymovingpositive = false;
+          ymovingnegative = false;
+          ydisabled = false;
         }
-        if (targetxdimension < currentxdimension) {
-          xdifference = currentxdimension - targetxdimension;
-          xmovingpositive = false;
-          xmovingnegative = true;
-          xstepsrequired = xdifference / xmodifier;
-          xdisabled = false;
-        }
-
-
-        // Y DIMENSION ANALYSIS AND STEP COUNTS
-        {
-          if (targetydimension > currentydimension) {
-            ydifference = targetydimension - currentydimension;
-            ymovingpositive = true;
-            ymovingnegative = false;
-            ystepsrequired = ydifference / ymodifier;
-            ydisabled = false;
-          }
-          if (targetydimension == currentydimension) {
-            ydifference = 0;
-            ystepsrequired = 0;
-            ymovingpositive = false;
-            ymovingnegative = false;
-            ydisabled = false;
-          }
-          if (targetydimension < currentydimension) {
-            ydifference = currentydimension - targetydimension;
-            ymovingpositive = false;
-            ymovingnegative = true;
-            ystepsrequired = ydifference / ymodifier;
-            ydisabled = false;
-          }
-        }
-
-        // Z DIMENSION ANALYSIS AND STEP COUNTS
-        {
-          if (targetzdimension > currentzdimension) {
-            zdifference = targetzdimension - currentzdimension;
-            zmovingpositive = true;
-            zmovingnegative = false;
-            zstepsrequired = zdifference / zmodifier;
-            zdisabled = false;
-          }
-          if (targetzdimension == currentzdimension) {
-            zdifference = 0;
-            zstepsrequired = 0;
-            zmovingpositive = false;
-            zmovingnegative = false;
-            zdisabled = false;
-          }
-          if (targetzdimension < currentzdimension) {
-            zdifference = currentzdimension - targetzdimension;
-            zmovingpositive = false;
-            zmovingnegative = true;
-            zstepsrequired = zdifference / zmodifier;
-            zdisabled = false;
-          }
-        }
-
-        // E0 DIMENSION ANALYSIS AND STEP COUNTS
-        {
-          if (simulationmode == false) {
-            if (targete0motordimension > currente0motordimension) {
-              edifference = targete0motordimension - currente0motordimension;
-              e0movingpositive = true;
-              e0movingnegative = false;
-              estepsrequired = edifference / e0motormodifier;
-              edisabled = false;
-            }
-            if (targete0motordimension == currente0motordimension) {
-              edifference = 0;
-              estepsrequired = 0;
-              e0movingpositive = false;
-              e0movingnegative = false;
-              edisabled = false;
-            }
-            if (targete0motordimension < currente0motordimension) {
-              edifference = currente0motordimension - targete0motordimension;
-              e0movingpositive = false;
-              e0movingnegative = true;
-              estepsrequired = edifference / e0motormodifier;
-              edisabled = false;
-            }
-          }
+        if (targetydimension < currentydimension) {
+          ydifference = currentydimension - targetydimension;
+          ymovingpositive = false;
+          ymovingnegative = true;
+          ystepsrequired = ydifference / ymodifier;
+          ydisabled = false;
         }
       }
 
-      // DETERMINE WHICH OF THE FOLLOWING HAS THE GREATEST STEP COUNT REQUIRED AND BASE EVERYTHING ON THAT ONE AND DETERMINE X/Y/Z/ESTEPTIMERs
+      // Z DIMENSION ANALYSIS AND STEP COUNTS
       {
-        // IF X IS THE LARGEST, CONTINUE WITH THAT
-        if (xstepsrequired >= ystepsrequired && xstepsrequired >= zstepsrequired && xstepsrequired >= estepsrequired) {
-          xsteptimer = 1;
-          ysteptimer = xstepsrequired / ystepsrequired;
-          zsteptimer = xstepsrequired / zstepsrequired;
-          esteptimer = xstepsrequired / estepsrequired;
-        } else {
-          // IF IT IS NOT X, IS IT Y
-          if (ystepsrequired >= xstepsrequired && ystepsrequired >= zstepsrequired && ystepsrequired >= estepsrequired) {
-            ysteptimer = 1;
-            xsteptimer = ystepsrequired / xstepsrequired;
-            zsteptimer = ystepsrequired / zstepsrequired;
-            esteptimer = ystepsrequired / estepsrequired;
-          } else {
-            // IF IT IS NOT Y, IS IT Z
-            if (zstepsrequired >= xstepsrequired && zstepsrequired >= ystepsrequired && zstepsrequired >= estepsrequired) {
-              zsteptimer = 1;
-              xsteptimer = zstepsrequired / xstepsrequired;
-              ysteptimer = zstepsrequired / ystepsrequired;
-              esteptimer = zstepsrequired / estepsrequired;
-            } else {
-              // IF IT IS NOT Z, IS IT E
-              if (zstepsrequired >= xstepsrequired && zstepsrequired >= ystepsrequired && zstepsrequired >= estepsrequired) {
-                esteptimer = 1;
-                xsteptimer = estepsrequired / xstepsrequired;
-                ysteptimer = estepsrequired / ystepsrequired;
-                zsteptimer = estepsrequired / zstepsrequired;
-                // IF IT IS NONE OF THE ABOVE, ERROR OUT
-              } else {
-                Serial.println(F("NEW COMMAND FOUND BUT COULD NOT BE SET!"));
-                writeerrorsstackloop("E-M102: G FOUND BUT COULD NOT BE SET", 3, true, 0, true, true);
-              }
-            }
+        if (targetzdimension > currentzdimension) {
+          zdifference = targetzdimension - currentzdimension;
+          zmovingpositive = true;
+          zmovingnegative = false;
+          zstepsrequired = zdifference / zmodifier;
+          zdisabled = false;
+        }
+        if (targetzdimension == currentzdimension) {
+          zdifference = 0;
+          zstepsrequired = 0;
+          zmovingpositive = false;
+          zmovingnegative = false;
+          zdisabled = false;
+        }
+        if (targetzdimension < currentzdimension) {
+          zdifference = currentzdimension - targetzdimension;
+          zmovingpositive = false;
+          zmovingnegative = true;
+          zstepsrequired = zdifference / zmodifier;
+          zdisabled = false;
+        }
+      }
+
+      // E0 DIMENSION ANALYSIS AND STEP COUNTS
+      {
+        if (simulationmode == false) {
+          if (targete0motordimension > currente0motordimension) {
+            edifference = targete0motordimension - currente0motordimension;
+            e0movingpositive = true;
+            e0movingnegative = false;
+            estepsrequired = edifference / e0motormodifier;
+            edisabled = false;
+          }
+          if (targete0motordimension == currente0motordimension) {
+            edifference = 0;
+            estepsrequired = 0;
+            e0movingpositive = false;
+            e0movingnegative = false;
+            edisabled = false;
+          }
+          if (targete0motordimension < currente0motordimension) {
+            edifference = currente0motordimension - targete0motordimension;
+            e0movingpositive = false;
+            e0movingnegative = true;
+            estepsrequired = edifference / e0motormodifier;
+            edisabled = false;
           }
         }
       }
     }
-    // NEW COMMAND CALLED BUT NONE RECEIVED
-    else {
-      if (checklockstatus(currentgcodecommand) != 1) {
-        printingactive = false;
+
+    // DETERMINE WHICH OF THE FOLLOWING HAS THE GREATEST STEP COUNT REQUIRED AND BASE EVERYTHING ON THAT ONE AND DETERMINE X/Y/Z/ESTEPTIMERs
+    {
+      // IF X IS THE LARGEST, CONTINUE WITH THAT
+      if (xstepsrequired >= ystepsrequired && xstepsrequired >= zstepsrequired && xstepsrequired >= estepsrequired) {
+        xsteptimer = 1;
+        ysteptimer = xstepsrequired / ystepsrequired;
+        zsteptimer = xstepsrequired / zstepsrequired;
+        esteptimer = xstepsrequired / estepsrequired;
       } else {
-        if (printingactive == true) {
-          Serial.println(F("NEW GCODE COMMAND CALLED BUT CONDITIONS NOT MET!"));
-          if (conditionsmetX != true) {
-            Serial.println(F("X CONDITION NOT MET; traceback..."));
-            Serial.println(currentxdimension);
-            Serial.println(targetxdimension);
+        // IF IT IS NOT X, IS IT Y
+        if (ystepsrequired >= xstepsrequired && ystepsrequired >= zstepsrequired && ystepsrequired >= estepsrequired) {
+          ysteptimer = 1;
+          xsteptimer = ystepsrequired / xstepsrequired;
+          zsteptimer = ystepsrequired / zstepsrequired;
+          esteptimer = ystepsrequired / estepsrequired;
+        } else {
+          // IF IT IS NOT Y, IS IT Z
+          if (zstepsrequired >= xstepsrequired && zstepsrequired >= ystepsrequired && zstepsrequired >= estepsrequired) {
+            zsteptimer = 1;
+            xsteptimer = zstepsrequired / xstepsrequired;
+            ysteptimer = zstepsrequired / ystepsrequired;
+            esteptimer = zstepsrequired / estepsrequired;
+          } else {
+            // IF IT IS NOT Z, IS IT E
+            if (zstepsrequired >= xstepsrequired && zstepsrequired >= ystepsrequired && zstepsrequired >= estepsrequired) {
+              esteptimer = 1;
+              xsteptimer = estepsrequired / xstepsrequired;
+              ysteptimer = estepsrequired / ystepsrequired;
+              zsteptimer = estepsrequired / zstepsrequired;
+              // IF IT IS NONE OF THE ABOVE, ERROR OUT
+            } else {
+              Serial.println(F("NEW COMMAND FOUND BUT COULD NOT BE SET!"));
+              writeerrorsstackloop("E-M102: G FOUND BUT COULD NOT BE SET", 3, true, 0, true, true);
+            }
           }
-          if (conditionsmetY != true) {
-            Serial.println(F("Y CONDITION NOT MET; traceback..."));
-            Serial.println(currentydimension);
-            Serial.println(targetydimension);
-          }
-          if (conditionsmetZ != true) {
-            Serial.println(F("Z CONDITION NOT MET; traceback..."));
-            Serial.println(currentzdimension);
-            Serial.println(targetzdimension);
-          }
-          if (conditionsmetE != true) {
-            Serial.println(F("E MOTOR CONDITION NOT MET; traceback..."));
-            Serial.println(currente0motordimension);
-            Serial.println(targete0motordimension);
-          }
-          if (printingactive != true) {
-            Serial.println(F("printer not active"));
-            Serial.println(printingactive);
-          }
-          writeerrorsstackloop("E-M101: CONDITIONS NOT MET, ACCORDING TO XYZE0WATCH", 2, false, 0, false, false);
         }
       }
     }
   }
+  // NEW COMMAND CALLED BUT NONE RECEIVED
+  else {
+    if (checklockstatus(currentgcodecommand) != 1) {
+      printingactive = false;
+    } else {
+      if (printingactive == true) {
+        Serial.println(F("NEW GCODE COMMAND CALLED BUT CONDITIONS NOT MET!"));
+        if (conditionsmetX != true) {
+          Serial.println(F("X CONDITION NOT MET; traceback..."));
+          Serial.println(currentxdimension);
+          Serial.println(targetxdimension);
+        }
+        if (conditionsmetY != true) {
+          Serial.println(F("Y CONDITION NOT MET; traceback..."));
+          Serial.println(currentydimension);
+          Serial.println(targetydimension);
+        }
+        if (conditionsmetZ != true) {
+          Serial.println(F("Z CONDITION NOT MET; traceback..."));
+          Serial.println(currentzdimension);
+          Serial.println(targetzdimension);
+        }
+        if (conditionsmetE != true) {
+          Serial.println(F("E MOTOR CONDITION NOT MET; traceback..."));
+          Serial.println(currente0motordimension);
+          Serial.println(targete0motordimension);
+        }
+        if (printingactive != true) {
+          Serial.println(F("printer not active"));
+          Serial.println(printingactive);
+        }
+        writeerrorsstackloop("E-M101: CONDITIONS NOT MET, ACCORDING TO XYZE0WATCH", 2, false, 0, false, false);
+      }
+    }
+  }
+
 
   Serial.print(F("INFO: "));
   Serial.print(currentxdimension);

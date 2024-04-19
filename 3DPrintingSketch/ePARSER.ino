@@ -2556,6 +2556,7 @@ int zShell(String commanding) {
           Serial.print(F(" "));
         }
         Serial.println();
+        Serial.println(F("ok"));
         return (0);
       }
 
@@ -2575,6 +2576,7 @@ int zShell(String commanding) {
           if (firstletter == "") {
             xhome();
             interpretedcompleted = true;
+            Serial.println(F("ok"));
             return (1);
           }
 
@@ -2597,6 +2599,7 @@ int zShell(String commanding) {
           if (firstletter == "") {
             yhome();
             interpretedcompleted = true;
+            Serial.println(F("ok"));
             return (1);
           }
 
@@ -2619,6 +2622,7 @@ int zShell(String commanding) {
           if (firstletter == "") {
             zhome();
             interpretedcompleted = true;
+            Serial.println(F("ok"));
             return (1);
           }
 
@@ -2641,6 +2645,7 @@ int zShell(String commanding) {
           if (firstletter == "") {
             Serial.println(F("NO ARGS PASSED! CANT CONTINUE!"));
             interpretedcompleted = true;
+            Serial.println(F("ok"));
             return (1);
           }
 
@@ -2656,6 +2661,7 @@ int zShell(String commanding) {
         // Z204 - HOME ALL
         if (firstletter == "4") {
           homeall();
+          Serial.println(F("ok"));
         }
 
         // Z205 - MOVE ALL DIMENSIONS TO A CERTAIN POSITION (XYZE)
@@ -2672,8 +2678,9 @@ int zShell(String commanding) {
           targetydimension = ytarget.toFloat();
           targetzdimension = ztarget.toFloat();
           targete0motordimension = etarget.toFloat();
-          movetonewgcodeformovement(false);
+          movetonewgcodeformovement();
           interpretedcompleted = true;
+          Serial.println(F("ok"));
         }
       }
     }

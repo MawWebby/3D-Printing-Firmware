@@ -26,13 +26,14 @@ bool allowolderversions = false;
 /////////////////////////////
 // CHANGE THESE VARIABLES! //
 /////////////////////////////
-float e0intoffset = 78.42;
+float e0intoffset = 15;
 float e1intoffset = 80.62;
 float e2intoffset = 80.62;
-float e0tempmodifier = 0.11;
-float e1tempmodifier = 0.11;
+float e0tempmodifier = 0.228;
+float e1tempmodifier = 0.228;
 float hbtempmodifier = 0.11;
 
+// E0TEMP MODIFIER - Y = 0.228X + 15
 
 
 ////////////////////////////////////
@@ -168,6 +169,12 @@ unsigned long int clocktimers[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 unsigned long int targettime[10] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 unsigned long int currenttimer = 0;
 unsigned long int startseconds = 0;
+
+// EXTRUDER ELEMENTS FOR DELAYS AND MORE ACCURATE TEMPERATURE MEASUREMENTS
+unsigned long int extruderlastalerttime = 0;
+unsigned long int extrudertargeton = 0;
+unsigned long int extrudertargetdelay = 0;
+
 
 
 

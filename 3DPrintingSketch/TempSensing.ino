@@ -110,42 +110,7 @@ void tempchange() {
       startextrudertimeout = millis();
 
       // RUN THROUGH VARIOUS USE CASES FOR EXTRUDER
-      {
-        // EXTRUDER IS WITHIN 10 OF TARGET TEMP IN CELSIUS
-        if (currente0temp + 10 > targete0temp) {
-          Serial.println(F("within 10 - pin high for 5 seconds"));
-          digitalWrite(HEATER_0_PIN, HIGH);
-          e0on = true;
-          e0ontime = 5;
-          return (1);
-        }
-
-        // EXTRUDER IS WITHIN 30 OF TARGET TEMP IN CELSIUS
-        if (currente0temp + 30 > targete0temp) {
-          Serial.println(F("within 30 - pin high for 9 seconds"));
-          digitalWrite(HEATER_0_PIN, HIGH);
-          e0ontime = 9;
-          e0on = true;
-          return (1);
-        }
-
-        // EXTRUDER IS WITHIN 50 OF TARGET TEMP IN CELSIUS
-        if (currente0temp + 50 > targete0temp) {
-          Serial.println(F("within 50 - pin high for 12 seconds"));
-          digitalWrite(HEATER_0_PIN, HIGH);
-          e0ontime = 12;
-          e0on = true;
-          return (1);
-        }
-
-        // EXTRUDER IS BEYOND THIS POINT
-        Serial.println(F("beyond 50 - settings to reach -30"));
-        digitalWrite(HEATER_0_PIN, HIGH);
-        e0ontime = 300;
-        e0max = true;
-        e0on = true;
-        return (1);
-      }
+      
     }
 
 

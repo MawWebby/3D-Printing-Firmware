@@ -155,7 +155,6 @@ int interpretation(String commanding) {
 
           // IF IT IS "", FINISH LOOP AND HEAD BACK TO MAIN LOOP
           if (firstletter == "") {
-            Serial.println(F("ok"));
             gcodecomplete = true;
           }
 
@@ -460,7 +459,6 @@ int interpretation(String commanding) {
 
           // IF IT IS "", FINISH LOOP AND HEAD BACK TO MAIN LOOP
           if (firstletter == "") {
-            Serial.println(F("ok"));
             gcodecomplete = true;
           }
 
