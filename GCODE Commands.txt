@@ -40,12 +40,12 @@ ________________________________________________________________________________
 | Z204    | Supported			 | Home All Axis                                                    | N/A                                 |
 | Z500*   | Supported			 | Quick System-On Check	                                    | N/A                                 |
 | Z501    | Supported			 | Print Full System-On Check	                                    | N/A                                 |
-
 | Z700    | Supported			 | Set Watchdog to True (Lockout)                                   | N/A                                 |
 | Z701    | Supported			 | Set Watchdog to False (Lockout)                                  | N/A                                 |
 | Z702    | Supported			 | Clear All Errors in Controller                                   | N/A                                 |
 | Z800	  | Not Supported		 | Allow Older Versions of the Firmware to be Ran		    | N/A				  |
 | Z900**  | BETA			 | Run Full System Test                                             | N/A                                 |
+| Z998    | Supported			 | Print EEPROM to Serial	                                    | N/A                                 |
 | Z999    | Supported			 | Print Cached Database to Serial                                  | N/A                                 |
 | Z999.1  | Supported			 | Clean Database and Restart Printer                               | N/A                                 |
 |_________|______________________________|__________________________________________________________________|_____________________________________|
