@@ -2826,6 +2826,18 @@ int zShell(String commanding) {
         // DETERMINE THE FOURTH LETTER OF THE STRING
         firstletter = commanding.substring(3, 4);
 
+        // Z998 - PRINT EEPROM DATA TO SERIAL BUS
+        if (firstletter == "8") {
+          int timingeeprom = 0;
+          while (timingeeprom <= 22) {
+            Serial.print(EEPROM.read(timingeeprom));
+            Serial.print(F(" "));
+            timingeeprom = timingeeprom + 1;
+          }
+          Serial.println(F(""));
+          Serial.println(F("ok"));
+        }
+
         // Z999 - PRINT ENTIRE DATABASE TO SERIAL BUS/OTHER DATABASE OPERATIONS
         if (firstletter == "9") {
 

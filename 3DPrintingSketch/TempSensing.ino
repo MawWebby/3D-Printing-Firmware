@@ -37,7 +37,7 @@ void tempsensing() {
 
   int testaway = 0;
 
-  while (testaway <= 10) {
+  while (testaway <= 9) {
     testaway = testaway + 1;
     rawsensore0 = rawsensore0 + analogRead(TEMP_0_PIN);
     rawsensore1 = rawsensore1 + analogRead(TEMP_1_PIN);
@@ -105,14 +105,48 @@ void tempchange() {
       startextrudertimeout = millis();
 
       // RUN THROUGH VARIOUS USE CASES FOR EXTRUDER
+      if (currente0temp + 90 < targete0temp) {
+        digitalWrite(TEMP_0_PIN, HIGH);
+        e0on = true;
+        e0ontime = 10;
+        return;
+      }
+      if (currente0temp + 90 > targete0temp) {
+        digitalWrite(TEMP_0_PIN, HIGH);
+        e0on = true;
+        e0ontime = 7;
+        return;
+      }
+      if (currente0temp + 70 > targete0temp) {
+        digitalWrite(TEMP_0_PIN, HIGH);
+        e0on = true;
+        e0ontime = 5;
+        return;
+      }
+      if (currente0temp + 50 > targete0temp) {
+        digitalWrite(TEMP_0_PIN, HIGH);
+        e0on = true;
+        e0ontime = 4;
+        return;
+      }
+      if (currente0temp + 30 > targete0temp) {
+        digitalWrite(TEMP_0_PIN, HIGH);
+        e0on = true;
+        e0ontime = 2;
+        return;
+      }
       if (currente0temp + 10 > targete0temp) {
-
+        digitalWrite(TEMP_0_PIN, HIGH);
+        e0on = true;
+        e0ontime = 1;
+        return;
       }
     }
 
 
   } else {
     if (e0on == true) {
+
       unsigned long long int currentextrudertimeout2 = micros();
       unsigned long long int differenceintime = currentextrudertimeout2 - startextrudertimeout;
       currentextrudertimer = differenceintime / 1000;
@@ -125,15 +159,15 @@ void tempchange() {
           Serial.println(F("REACHED SUFFICIENT TEMPERATURE!"));
           e0on = false;
           cooldown = true;
+          startextrudertimeout = millis();
           e0delaytime = 6;
           return (0);
         }
       }
 
       // IF E0ONTIME IS GREATER THAN CURRENT EXTRUDER TIMER
-      if (e0ontime > currentextrudertimer || currente0temp + 30 >= targete0temp) {
+      if (e0ontime > currentextrudertimer) {
         digitalWrite(HEATER_0_PIN, LOW);
-        Serial.println(F("PIN OFF"));
         e0ontime = 0;
         e0on = false;
         currentextrudertimer = 0;
@@ -164,7 +198,19 @@ void tempchange() {
       }
     } else {
       if (cooldown == true) {
+        unsigned long long int currentextrudertimeout2 = micros();
+        unsigned long long int differenceintime = currentextrudertimeout2 - startextrudertimeout;
+        currentextrudertimer = differenceintime / 1000;
 
+        if (currentextrudertimer >= e0delaytime) {
+          cooldown = false;
+          e0ontime = 0;
+          e0on = false;
+          currentextrudertimer = 0;
+          currentextrudertimeout2 = 0;
+          differenceintime = 0;
+          currentextrudertimer = 0;
+        }
       } else {
         Serial.println(F("TEMP CIRCUIT FAILED ALL CONDITIONS!"));
         digitalWrite(HEATER_0_PIN, LOW);
@@ -177,7 +223,6 @@ void tempchange() {
   // CHANGE HOTEND PINS IF THE TEMPERATURE IS HIGHER THAN TARGET
   if (targete0temp < currente0temp) {
     digitalWrite(HEATER_0_PIN, LOW);
-    Serial.println(F("PIN LOW"));
     e0on = false;
     cooldown = true;
     e0delaytime = 10;
