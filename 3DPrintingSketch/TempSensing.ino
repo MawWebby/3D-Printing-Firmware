@@ -144,7 +144,7 @@ void tempchange() {
     }
 
   } else {
-    if (e0on == true) {
+    if (e0on == true && cooldown == false) {
 
       unsigned long long int currentextrudertimeout2 = micros();
       unsigned long long int differenceintime = currentextrudertimeout2 - startextrudertimeout;
