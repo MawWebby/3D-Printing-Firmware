@@ -645,7 +645,7 @@ void loop() {
     if (printingactive == true && currentlylocked != true) {
       movement();  // STEPPER MOTOR MICROSTEP LOOP
     } else {
-      delay(1);
+      tempsensing();
     }
 
     // TEMP SENSING EVERY ONE-HUNDRED LOOPS
