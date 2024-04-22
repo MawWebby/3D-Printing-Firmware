@@ -75,15 +75,10 @@ void tempchange() {
     return;
   }
 
-  if (targethbtemp == 0 || currenthbtemp <= 0) {
-    digitalWrite(HEATER_HB_PIN, LOW);
-    hbon = false;
-    return;
-  }
 
 
   // E0 ACTIVATION LOOP
-  if (e0on == false) {
+  if (e0on == false && cooldown == false) {
 
     if (currente0temp == 0) {
       digitalWrite(HEATER_0_PIN, LOW);
@@ -105,87 +100,87 @@ void tempchange() {
     }
 
     // CURRENT E0 TEMP IS LESS THAN TARGET TEMPERATURE
-    if (currente0temp < targete0temp && currente0temp > 0) {
+    if (currente0temp < targete0temp && currente0temp > 0 && targete0temp != 0) {
       // SET EXTRUDER TIMEOUT START VARIABLE
       startextrudertimeout = millis();
 
       // RUN THROUGH VARIOUS USE CASES FOR EXTRUDER
-      
+      if (currente0temp + 10 > targete0temp) {
+
+      }
     }
 
 
   } else {
-    unsigned long long int currentextrudertimeout2 = micros();
-    unsigned long long int differenceintime = currentextrudertimeout2 - startextrudertimeout;
-    currentextrudertimer = differenceintime / 1000;
+    if (e0on == true) {
+      unsigned long long int currentextrudertimeout2 = micros();
+      unsigned long long int differenceintime = currentextrudertimeout2 - startextrudertimeout;
+      currentextrudertimer = differenceintime / 1000;
 
-    // IF E0ONTIME = 300, THEN WAIT TILL THE XTRUDER IS WITHIN 30 AND THEN SET TO LOW
-    if (e0ontime == 300) {
-      if (currente0temp + 30 >= targete0temp) {
-        e0max = true;
+      // IF E0ONTIME = 300, THEN WAIT TILL THE XTRUDER IS WITHIN 30 AND THEN SET TO LOW
+      if (e0ontime == 300) {
+        if (currente0temp + 50 >= targete0temp) {
+          e0max = true;
+          digitalWrite(HEATER_0_PIN, LOW);
+          Serial.println(F("REACHED SUFFICIENT TEMPERATURE!"));
+          e0on = false;
+          cooldown = true;
+          e0delaytime = 6;
+          return (0);
+        }
+      }
+
+      // IF E0ONTIME IS GREATER THAN CURRENT EXTRUDER TIMER
+      if (e0ontime > currentextrudertimer || currente0temp + 30 >= targete0temp) {
         digitalWrite(HEATER_0_PIN, LOW);
-        Serial.println(F("REACHED SUFFICIENT TEMPERATURE!"));
+        Serial.println(F("PIN OFF"));
+        e0ontime = 0;
         e0on = false;
+        currentextrudertimer = 0;
+        currentextrudertimeout2 = 0;
+        differenceintime = 0;
+        currentextrudertimer = 0;
+        startextrudertimeout = millis();
+        cooldown = true;
+        e0delaytime = 6;
+        return (1);
+      }
+
+      // IF E0ONTIME IS LESS THAN CURRENT EXTRUDER TIMER
+      if (e0ontime <= currentextrudertimer) {
+        digitalWrite(HEATER_0_PIN, HIGH);
+        e0on = true;
         return (0);
       }
-    }
 
-    // IF E0ONTIME IS LESS THAN CURRENT EXTRUDER TIMER, PROCEED WITH EXTRUDER PIN HIGH
-    if (e0ontime > currentextrudertimer) {
-      digitalWrite(HEATER_0_PIN, HIGH);
-      Serial.println(F("PIN ON"));
-      e0on = true;
-      return (1);
-    }
+      // CURRENT EXTRUDER TIMEOUT (TEMP WATCHDOG)(THERMAL PROTECTION)
+      if (currentextrudertimer >= extrudertimeout) {
+        Serial.println(F("ERROR! - EXTRUDER HAS BEEN ON FOR WAY TOO LONG!"));
+        Serial.println(F("TURNING OFF PRINTER!"));
+        watchdogactivated = true;
+        e0on = false;
+        digitalWrite(HEATER_0_PIN, LOW);
+        return (3);
+      }
+    } else {
+      if (cooldown == true) {
 
-    // IF E0ONTIME IS GREATER THAN CURRENT EXTRUDER TIMER, THEN TURN OFF EXTRUDER AND REMOVE VARIABLES TO PREVENT WATCHDOG ACTIVATION
-    if (e0ontime <= currentextrudertimer) {
-      digitalWrite(HEATER_0_PIN, LOW);
-      Serial.println(F("PIN OFF"));
-      e0ontime = 0;
-      e0on = false;
-      currentextrudertimer = 0;
-      currentextrudertimeout2 = 0;
-      differenceintime = 0;
-      currentextrudertimer = 0;
-      startextrudertimeout = 0;
-      return (0);
-    }
-
-    // CURRENT EXTRUDER TIMEOUT (TEMP WATCHDOG)(THERMAL PROTECTION)
-    if (currentextrudertimer >= extrudertimeout) {
-      Serial.println(F("ERROR! - EXTRUDER HAS BEEN ON FOR WAY TOO LONG!"));
-      Serial.println(F("TURNING OFF PRINTER!"));
-      watchdogactivated = true;
-      e0on = false;
-      return (3);
+      } else {
+        Serial.println(F("TEMP CIRCUIT FAILED ALL CONDITIONS!"));
+        digitalWrite(HEATER_0_PIN, LOW);
+        watchdogactivated = true;
+        return;
+      }
     }
   }
-  //  digitalWrite(HEATER_0_PIN, HIGH);
-  //  Serial.println(F("PIN HIGH"));
 
-  if (targete1temp > currente1temp) {
-    i2csend("E1 NOT SUPPORTED", "", "", 0);
-  }
-  if (targethbtemp > currenthbtemp) {
-    digitalWrite(HEATER_HB_PIN, HIGH);
-    hbon = false;
-  }
-
-  // CHANGE HOTEND PINS IF THE TEMPERATURE IS HIGHER THATN TARGET
+  // CHANGE HOTEND PINS IF THE TEMPERATURE IS HIGHER THAN TARGET
   if (targete0temp < currente0temp) {
     digitalWrite(HEATER_0_PIN, LOW);
     Serial.println(F("PIN LOW"));
     e0on = false;
-  }
-  if (targete1temp < currente1temp) {
-    if (targete1temp != 0) {
-      i2csend("E1 NOT SUPPORTED", "", "", 0);
-    }
-  }
-  if (targethbtemp < currenthbtemp) {
-    digitalWrite(HEATER_HB_PIN, LOW);
-    hbon = false;
+    cooldown = true;
+    e0delaytime = 10;
   }
 }
 
@@ -195,11 +190,13 @@ void hbtempchange() {
     digitalWrite(HEATER_HB_PIN, HIGH);
     digitalWrite(HEATER_1_PIN, HIGH);
     hbon = true;
+    return;
   }
   if (targethbtemp <= currenthbtemp) {
     digitalWrite(HEATER_HB_PIN, LOW);
     digitalWrite(HEATER_1_PIN, LOW);
     hbon = false;
+    return;
   }
 }
 
