@@ -143,7 +143,6 @@ void tempchange() {
       }
     }
 
-
   } else {
     if (e0on == true) {
 
@@ -270,6 +269,7 @@ void extruderemergencyretraction() {
 }
 
 void tempreporting() {
+  Serial.println(F(""));
   Serial.print(F("T:"));
   Serial.print(currente0temp);
   Serial.print(F(" /"));

@@ -199,7 +199,35 @@ void setup() {
     if (olderversion == true) {
       if (allowolderversions == true) {
         watchdogactivated = true;
-        Serial.println(F("OLDER VERSIONS ARE NOT SUPPORTED REMOTELY, IF THIS IS INTENTIONAL, PLEASE TYPE 'Z800'!"));
+        if (EEPROM.read(9) == 255 || EEPROM.read(10) == 255) {
+          Serial.println(F("OLDER VERSIONS ARE NOT SUPPORTED, RESETTING DATABASE AND RESTARTING"));
+
+          // PUT SPECIFIC INFORMATION HEAR
+          if (MAJORVERSION == 0) {
+            if (MINORVERSION == 1 || MINORVERSION == 2 || MINORVERSION == 3) {
+
+              int reseteeprom = 0;
+              while (reseteeprom <= 30) {
+                if (reseteeprom == 9) {
+                  EEPROM.update(9, MAJORVERSION);
+                } else {
+                  if (reseteeprom == 10) {
+                    EEPROM.update(10, MINORVERSION);
+                  } else {
+                    EEPROM.update(reseteeprom, 0);
+                  }
+                }
+                reseteeprom = reseteeprom + 1;
+                delay(2500);
+              }
+
+              delay(3000);
+              Serial.println(F("RESTARTING!"));
+              delay(1000);
+              setup();
+            }
+          }
+        }
       }
     }
 
@@ -400,27 +428,6 @@ void setup() {
   // SETUP EEPROM WITH VALUES //
   //////////////////////////////
   {
-    // EEPROM-0 - WATCHDOG CONTINUING THROUGH REBOOT
-    if (EEPROM.read(0) == 1) {
-
-      // IF WATCHDOG EEPROM EQUAL 1, THEN SET WATCHDOG ACTIVATED EQUAL TO TRUE
-      watchdogactivated = true;
-      Serial.println(F("error"));
-      Serial.println(F("WATCHDOG LOCK! (EEPROM-0)"));
-    } else {
-      if (EEPROM.read(0) != 0) {
-
-        // WATCHDOG VARIABLE NOT SET, SETTING AND RESTARTING
-        Serial.println(F("SETTING EEPROM-0"));
-        delay(3000);
-        EEPROM.update(0, 0);
-        delay(3000);
-        Serial.println(F("restart"));
-        delay(500);
-        setup();
-      }
-    }
-
     // EEPROM-1 - Debug Serial
     if (EEPROM.read(1) == 1) {
 
@@ -573,6 +580,31 @@ void setup() {
   delay(1);
   lcdEngine();
 
+  // EEPROM-0 - WATCHDOG CONTINUING THROUGH REBOOT
+  if (EEPROM.read(0) == 1) {
+
+    // IF WATCHDOG EEPROM EQUAL 1, THEN SET WATCHDOG ACTIVATED EQUAL TO TRUE
+    watchdogactivated = true;
+    Serial.println(F("error"));
+    Serial.println(F("WATCHDOG LOCK! (EEPROM-0)"));
+    EEPROM.update(0, 1);
+
+  } else {
+    if (EEPROM.read(0) != 0) {
+
+      // WATCHDOG VARIABLE NOT SET, SETTING AND RESTARTING
+      Serial.println(F("SETTING EEPROM-0"));
+      delay(3000);
+      EEPROM.update(0, 0);
+      delay(3000);
+      Serial.println(F("restart"));
+      delay(500);
+      setup();
+    } else {
+      watchdogactivated = false;
+    }
+  }
+
   watchdogactivated = false;
 }
 
@@ -588,6 +620,7 @@ void setup() {
 void loop() {
   // IF WATCHDOG ACTIVATED EQUALS TO TRUE, THEN DON'T FIRE REST OF LOOP
   if (watchdogactivated == true) {
+
     // SEND SERIAL WARNING OF CURRENT STATE
     Serial.println();
     Serial.println();
