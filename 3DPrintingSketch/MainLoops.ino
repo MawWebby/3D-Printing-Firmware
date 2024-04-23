@@ -679,6 +679,7 @@ void loop() {
       movement();  // STEPPER MOTOR MICROSTEP LOOP
     } else {
       tempsensing();
+      lcdEngine();
     }
 
     // TEMP SENSING EVERY ONE-HUNDRED LOOPS

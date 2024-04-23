@@ -242,7 +242,15 @@ int mShell(String commanding) {
           firstletter = commanding.substring(4, 5);
           if (firstletter == " ") {
             // CONTINUE ON SETTING TEMPERATURE
-            String extemp = commanding.substring(5, 100);
+
+            String extemp = "000";
+            firstletter = commanding.substring(5, 6);
+            if (firstletter == "S") {
+              extemp = commanding.substring(6, 10);
+            } else {
+              extemp = commanding.substring(5, 9);
+            }
+            
             if (currentactiveextruder == 0) {
               if (simulationmode == false) {
                 if (currenttempunits == 0) {

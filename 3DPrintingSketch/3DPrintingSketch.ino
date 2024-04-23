@@ -164,6 +164,7 @@ int tempsensingruntime = 0;
 int e0ontime = 0;
 int e0delaytime = 0;
 bool cooldown = false;
+bool maintaintemp = false;
 bool e0on = false;
 bool e0max = false;
 bool hbon = false;
