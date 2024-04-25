@@ -11,7 +11,7 @@
 int sendtoarray(int commandtoanalyze, float valuetoinsert, int positiontoinsert) {
   switch (commandtoanalyze) {
     case 0:
-      if (analyzedgcodestack0[10] == 0 || analyzedgcodestack0[10] == 2) {
+      if ((analyzedgcodestack0[10] == 0 || analyzedgcodestack0[10] == 2) && analyzedgcodestack0[positiontoinsert] == 0) {
         analyzedgcodestack0[positiontoinsert] = valuetoinsert;
         return(0);
       } else {
@@ -21,7 +21,7 @@ int sendtoarray(int commandtoanalyze, float valuetoinsert, int positiontoinsert)
       }
       break;
     case 1:
-      if (analyzedgcodestack1[10] == 0 || analyzedgcodestack1[10] == 2) {
+      if ((analyzedgcodestack1[10] == 0 || analyzedgcodestack1[10] == 2) && analyzedgcodestack1[positiontoinsert] == 0) {
         analyzedgcodestack1[positiontoinsert] = valuetoinsert;
         return(0);
       } else {
@@ -32,7 +32,7 @@ int sendtoarray(int commandtoanalyze, float valuetoinsert, int positiontoinsert)
       }
       break;
     case 2:
-      if (analyzedgcodestack2[10] == 0 || analyzedgcodestack2[10] == 2) {
+      if ((analyzedgcodestack2[10] == 0 || analyzedgcodestack2[10] == 2) && analyzedgcodestack2[positiontoinsert] == 0) {
         analyzedgcodestack2[positiontoinsert] = valuetoinsert;
         return(0);
       } else {
@@ -42,7 +42,7 @@ int sendtoarray(int commandtoanalyze, float valuetoinsert, int positiontoinsert)
       }
       break;
     case 3:
-      if (analyzedgcodestack3[10] == 0 || analyzedgcodestack3[10] == 2) {
+      if ((analyzedgcodestack3[10] == 0 || analyzedgcodestack3[10] == 2) && analyzedgcodestack3[positiontoinsert] == 0) {
         analyzedgcodestack3[positiontoinsert] = valuetoinsert;
         return(0);
       } else {
@@ -52,7 +52,7 @@ int sendtoarray(int commandtoanalyze, float valuetoinsert, int positiontoinsert)
       }
       break;
     case 4:
-      if (analyzedgcodestack4[10] == 0 || analyzedgcodestack4[10] == 2) {
+      if ((analyzedgcodestack4[10] == 0 || analyzedgcodestack4[10] == 2) && analyzedgcodestack4[positiontoinsert] == 0) {
         analyzedgcodestack4[positiontoinsert] = valuetoinsert;
         return(0);
       } else {
@@ -62,7 +62,7 @@ int sendtoarray(int commandtoanalyze, float valuetoinsert, int positiontoinsert)
       }
       break;
     case 5:
-      if (analyzedgcodestack5[10] == 0 || analyzedgcodestack5[10] == 2) {
+      if ((analyzedgcodestack5[10] == 0 || analyzedgcodestack5[10] == 2) && analyzedgcodestack5[positiontoinsert] == 0) {
         analyzedgcodestack5[positiontoinsert] = valuetoinsert;
         return(0);
       } else {
@@ -72,7 +72,7 @@ int sendtoarray(int commandtoanalyze, float valuetoinsert, int positiontoinsert)
       }
       break;
     case 6:
-      if (analyzedgcodestack6[10] == 0 || analyzedgcodestack6[10] == 2) {
+      if ((analyzedgcodestack6[10] == 0 || analyzedgcodestack6[10] == 2) && analyzedgcodestack6[positiontoinsert] == 0) {
         analyzedgcodestack6[positiontoinsert] = valuetoinsert;
         return(0);
       } else {
@@ -82,7 +82,7 @@ int sendtoarray(int commandtoanalyze, float valuetoinsert, int positiontoinsert)
       }
       break;
     case 7:
-      if (analyzedgcodestack7[10] == 0 || analyzedgcodestack7[10] == 2) {
+      if ((analyzedgcodestack7[10] == 0 || analyzedgcodestack7[10] == 2) && analyzedgcodestack7[positiontoinsert] == 0) {
         analyzedgcodestack7[positiontoinsert] = valuetoinsert;
         return(0);
       } else {
@@ -92,7 +92,7 @@ int sendtoarray(int commandtoanalyze, float valuetoinsert, int positiontoinsert)
       }
       break;
     case 8:
-      if (analyzedgcodestack8[10] == 0 || analyzedgcodestack8[10] == 2) {
+      if ((analyzedgcodestack8[10] == 0 || analyzedgcodestack8[10] == 2) && analyzedgcodestack8[positiontoinsert] == 0) {
         analyzedgcodestack8[positiontoinsert] = valuetoinsert;
         return(0);
       } else {
@@ -102,7 +102,7 @@ int sendtoarray(int commandtoanalyze, float valuetoinsert, int positiontoinsert)
       }
       break;
     case 9:
-      if (analyzedgcodestack9[10] == 0 || analyzedgcodestack9[10] == 2) {
+      if ((analyzedgcodestack9[10] == 0 || analyzedgcodestack9[10] == 2) && analyzedgcodestack9[positiontoinsert] == 0) {
         analyzedgcodestack9[positiontoinsert] = valuetoinsert;
         return(0);
       } else {
@@ -112,7 +112,7 @@ int sendtoarray(int commandtoanalyze, float valuetoinsert, int positiontoinsert)
       }
       break;
     case 10:
-      if (analyzedgcodestack10[10] == 0 || analyzedgcodestack10[10] == 2) {
+      if ((analyzedgcodestack10[10] == 0 || analyzedgcodestack10[10] == 2) && analyzedgcodestack10[positiontoinsert] == 0) {
         analyzedgcodestack10[positiontoinsert] = valuetoinsert;
         return(0);
       } else {

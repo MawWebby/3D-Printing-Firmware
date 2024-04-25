@@ -246,45 +246,41 @@ int mShell(String commanding) {
             String extemp = "000";
             firstletter = commanding.substring(5, 6);
             if (firstletter == "S") {
-              extemp = commanding.substring(6, 10);
+              extemp = commanding.substring(6, 9);
             } else {
-              extemp = commanding.substring(5, 9);
+              extemp = commanding.substring(5, 8);
             }
-            
-            if (currentactiveextruder == 0) {
-              if (simulationmode == false) {
-                if (currenttempunits == 0) {
-                  targete0temp = extemp.toFloat();
-                } else {
-                  if (currenttempunits == 1) {
+
+            if (extemp != "000") {
+              if (currentactiveextruder == 0) {
+                if (simulationmode == false) {
+                  if (currenttempunits == 0) {
                     targete0temp = extemp.toFloat();
-                    targete0temp = targete0temp - 32;
-                    targete0temp = targete0temp * 5 / 9;
                   } else {
-                    if (currenttempunits == 2) {
-                      targete0temp = targete0temp - 273;
+                    if (currenttempunits == 1) {
+                      targete0temp = extemp.toFloat();
+                      targete0temp = targete0temp - 32;
+                      targete0temp = targete0temp * 5 / 9;
+                    } else {
+                      if (currenttempunits == 2) {
+                        targete0temp = targete0temp - 273;
+                      }
                     }
                   }
+                } else {
+                  Serial.println(F("SKIPPING"));
                 }
-              } else {
-                Serial.println(F("SKIPPING"));
+                Serial.println(F("ok"));
+                return;
+                return;
+                return;
               }
-              Serial.println(F("ok"));
+            } else {
+              Serial.println(F("INVALID EXTRUDER ACTIVE!"));
               return;
               return;
               return;
             }
-            if (currentactiveextruder == 1) {
-              targete1temp = extemp.toFloat();
-              Serial.println(F("ok"));
-              return;
-              return;
-              return;
-            }
-            Serial.println(F("INVALID EXTRUDER ACTIVE!"));
-            return;
-            return;
-            return;
           } else {
             Serial.println(F("NO ARGS PASSED! - TYPE EXTRUDER HEAT"));
             return;

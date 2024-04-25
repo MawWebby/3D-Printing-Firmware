@@ -4,6 +4,9 @@
 
 // INTERPRETATION LOOP
 int interpretation(String commanding) {
+
+  Serial.print(F("RECEIVED: "));
+  Serial.println(commanding);
   bool interpretedcompleted = false;
   String firstletter = commanding.substring(0, 1);
 
@@ -773,21 +776,37 @@ int interpretation(String commanding) {
 
           // DETERMINE THE FIFTH LETTER OF THE STRING
           firstletter = commanding.substring(4, 5);
+          bool g28complete = false;
 
           if (firstletter == "X") {
             xhome();
+            g28complete = true;
           }
           if (firstletter == "Y") {
             yhome();
+            g28complete = true;
           }
           if (firstletter == "Z") {
             zhome();
+            g28complete = true;
           }
+
+          if (firstletter == "" || firstletter == " " || g28complete == false) {
+            Serial.println(F("MET CONDITION"));
+            xhome();
+            yhome();
+            zhome();
+            
+          }
+
           Serial.println(F("ok"));
           interpretedcompleted = true;
           return (0);
+
         } else {
-          homeall();
+          xhome();
+          yhome();
+          zhome();
           Serial.println(F("ok"));
           interpretedcompleted = true;
           return (0);
@@ -873,8 +892,11 @@ int interpretation(String commanding) {
               completionx92 = true;
               timingy92 = inittimingx92 + timingx92 + 1;
             }
+
+            timinge92 = timinge92 + 1;
           }
           firstletter = commanding.substring(timingy92, timingy92 + 1);
+          
         }
 
         // SET Y POSITION
@@ -889,8 +911,11 @@ int interpretation(String commanding) {
               completiony92 = true;
               timingz92 = inittimingy92 + timingy92 + 1;
             }
+
+            timinge92 = timinge92 + 1;
           }
           firstletter = commanding.substring(timingz92, timingz92 + 1);
+
         }
 
         // SET Z POSITION
@@ -905,8 +930,11 @@ int interpretation(String commanding) {
               completionz92 = true;
               timinge92 = inittimingz92 + timingz92 + 1;
             }
+
+            timinge92 = timinge92 + 1;
           }
           firstletter = commanding.substring(timinge92, timinge92 + 1);
+          
         }
 
         // SET E POSITION
@@ -920,6 +948,8 @@ int interpretation(String commanding) {
               currente0motordimension = currente.toFloat();
               completione92 = true;
             }
+
+            timinge92 = timinge92 + 1;
           }
         }
 

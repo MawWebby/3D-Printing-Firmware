@@ -7,6 +7,9 @@
 // STEPPER MOTOR CONTROLS
 void movement() {
 
+
+  Serial.println(F("move"));
+
   // VERIFY ENDSTOP POSITION
   endstops();
 
@@ -249,9 +252,6 @@ void movement() {
   }
 
 
-
-
-
   if (debugserial == true) {
     Serial.print(" X: ");
     Serial.print(xstepstaken);
@@ -318,7 +318,7 @@ void movetonewgcodeformovement() {
 
 
 
-
+  // DIRECTIONAL MOVING VERIFICATION CODE
   {
     // X MOVING VERIFICATION CODE
     {
@@ -651,35 +651,18 @@ void movetonewgcodeformovement() {
   else {
     if (checklockstatus(currentgcodecommand) != 1) {
       printingactive = false;
-    } else {
-      if (printingactive == true) {
-        Serial.println(F("NEW GCODE COMMAND CALLED BUT CONDITIONS NOT MET!"));
-        if (conditionsmetX != true) {
-          Serial.println(F("X CONDITION NOT MET; traceback..."));
-          Serial.println(currentxdimension);
-          Serial.println(targetxdimension);
-        }
-        if (conditionsmetY != true) {
-          Serial.println(F("Y CONDITION NOT MET; traceback..."));
-          Serial.println(currentydimension);
-          Serial.println(targetydimension);
-        }
-        if (conditionsmetZ != true) {
-          Serial.println(F("Z CONDITION NOT MET; traceback..."));
-          Serial.println(currentzdimension);
-          Serial.println(targetzdimension);
-        }
-        if (conditionsmetE != true) {
-          Serial.println(F("E MOTOR CONDITION NOT MET; traceback..."));
-          Serial.println(currente0motordimension);
-          Serial.println(targete0motordimension);
-        }
-        if (printingactive != true) {
-          Serial.println(F("printer not active"));
-          Serial.println(printingactive);
-        }
-        writeerrorsstackloop("E-M101: CONDITIONS NOT MET, ACCORDING TO XYZE0WATCH", 2, false, 0, false, false);
-      }
+    } 
+    if (conditionsmetX == false) {
+      xstepsrequired = xstepsrequired + 1;
+    }
+    if (conditionsmetY == false) {
+      ystepsrequired = ystepsrequired + 1;
+    }
+    if (conditionsmetZ == false) {
+      zstepsrequired = zstepsrequired + 1;
+    }
+    if (conditionsmetE == false) {
+      estepsrequired = estepsrequired + 1;
     }
   }
 
