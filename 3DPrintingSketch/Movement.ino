@@ -7,8 +7,7 @@
 // STEPPER MOTOR CONTROLS
 void movement() {
 
-
-  Serial.println(F("move"));
+  Serial.print(F("move"));
 
   // VERIFY ENDSTOP POSITION
   endstops();
