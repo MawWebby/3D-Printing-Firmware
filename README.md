@@ -24,6 +24,3 @@
 <p>10. In the upper left corner, click on the Arduino MEGA 2560 and press upload.</p>
 <p>11. Test with Serial Communication and Octoprint is able to connect with the machine controller.</p>
 <p>12. ENJOY!</p>
-</br>
-<h1>Steps to Configure:</h1>
-<p>More to come if time allows...</p>
