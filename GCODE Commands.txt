@@ -13,7 +13,7 @@ E - Emergency Commands
 ___________________________________________________________________________________________________________________________________________________
 | Command | Availability                 | Purpose                                                          | Supported Arguments                 |
 |_________|______________________________|__________________________________________________________________|_____________________________________|
-| E0      | Supported			 | Disable all Stepper Motors                                       | N/A                                 |
+| E0      | Supported			               | Disable all Stepper Motors                                       | N/A                                 |
 |_________|______________________________|__________________________________________________________________|_____________________________________|
 
 
@@ -24,32 +24,32 @@ Z - Debug Commands
 ___________________________________________________________________________________________________________________________________________________
 | Command | Availability                 | Purpose                                                          | Supported Arguments                 |
 |_________|______________________________|__________________________________________________________________|_____________________________________|
-| Z0      | Supported			 | Load/Unload Filament                                             | N/A                                 |
-| Z1      | Supported			 | Turn Printer Active/Inactive                                     | State: (0 / 1)                      |
-| Z3      | Supported			 | Turn Debugging over Serial On/Off                                | State: (0 / 1)                      |
-| Z6      | Supported			 | Read Information about Current Dimension Positions               | N/A                                 |
-| Z7      | Supported			 | Read Information about Endstop States                            | N/A                                 |
-| Z8      | Supported			 | Read Information about Extruder States                           | N/A                                 |
-| Z9      | Supported			 | Read Information about Current Modifiers                         | N/A                                 |
-| Z12     | Supported			 | Raw Sensor Readings and Perceived Real Temperature               | N/A				  |
-| Z13     | BETA			 | Change Modifier for Temperature Probe                            | Modifier: (INT)                     |
-| Z200    | Supported			 | Move X-Axis to Certain Position                                  | Position: (XXX.XX)                  |
-| Z201    | Supported			 | Move Y-Axis to Certain Position                                  | Position: (YYY.YY)                  |
-| Z202    | Supported			 | Move Z-Axis to Certain Position                                  | Position: (ZZZ.ZZ)                  |
-| Z203    | Supported			 | Move E-Axis to Certain Position                                  | Position: (EEE.EE)                  |
-| Z204    | Supported			 | Home All Axis                                                    | N/A                                 |
-| Z500*   | Supported			 | Quick System-On Check	                                    | N/A                                 |
-| Z501    | Supported			 | Print Full System-On Check	                                    | N/A                                 |
-| Z700    | Supported			 | Set Watchdog to True (Lockout)                                   | N/A                                 |
-| Z701    | Supported			 | Set Watchdog to False (Lockout)                                  | N/A                                 |
-| Z702    | Supported			 | Clear All Errors in Controller                                   | N/A                                 |
-| Z800	  | Not Supported		 | Allow Older Versions of the Firmware to be Ran		    | N/A				  |
-| Z900**  | BETA			 | Run Full System Test                                             | N/A                                 |
-| Z998    | Supported			 | Print EEPROM to Serial	                                    | N/A                                 |
-| Z999    | Supported			 | Print Cached Database to Serial                                  | N/A                                 |
-| Z999.1  | Supported			 | Clean Database and Restart Printer                               | N/A                                 |
+| Z0      | Supported			               | Load/Unload Filament                                             | N/A                                 |
+| Z1      | Supported			               | Turn Printer Active/Inactive                                     | State: (0 / 1)                      |
+| Z3      | Supported			               | Turn Debugging over Serial On/Off                                | State: (0 / 1)                      |
+| Z6      | Supported			               | Read Information about Current Dimension Positions               | N/A                                 |
+| Z7      | Supported			               | Read Information about Endstop States                            | N/A                                 |
+| Z8      | Supported			               | Read Information about Extruder States                           | N/A                                 |
+| Z9      | Supported			               | Read Information about Current Modifiers                         | N/A                                 |
+| Z12     | Supported			               | Raw Sensor Readings and Perceived Real Temperature               | N/A				                          |
+| Z13     | BETA			                   | Change Modifier for Temperature Probe                            | Modifier: (INT)                     |
+| Z200    | Supported			               | Move X-Axis to Certain Position                                  | Position: (XXX.XX)                  |
+| Z201    | Supported			               | Move Y-Axis to Certain Position                                  | Position: (YYY.YY)                  |
+| Z202    | Supported			               | Move Z-Axis to Certain Position                                  | Position: (ZZZ.ZZ)                  |
+| Z203    | Supported			               | Move E-Axis to Certain Position                                  | Position: (EEE.EE)                  |
+| Z204    | Supported			               | Home All Axis                                                    | N/A                                 |
+| Z500*   | Supported			               | Quick System-On Check	                                          | N/A                                 |
+| Z501    | Supported			               | Print Full System-On Check	                                      | N/A                                 |
+| Z700    | Supported			               | Set Watchdog to True (Lockout)                                   | N/A                                 |
+| Z701    | Supported		              	 | Set Watchdog to False (Lockout)                                  | N/A                                 |
+| Z702    | Supported			               | Clear All Errors in Controller                                   | N/A                                 |
+| Z800	  | Not Supported		             | Allow Older Versions of the Firmware to be Ran		                | N/A			                        	  |
+| Z900**  | BETA			                   | Run Full System Test                                             | N/A                                 |
+| Z998    | Supported			               | Print EEPROM to Serial	                                          | N/A                                 |
+| Z999    | Supported			               | Print Cached Database to Serial                                  | N/A                                 |
+| Z999.1  | Supported			               | Clean Database and Restart Printer                               | N/A                                 |
 |_________|______________________________|__________________________________________________________________|_____________________________________|
-| Z2      | Removed (Z999 Replaced)	 | Read Database to Serial Bus                                      | N/A                                 |
+| Z2      | Removed (Z999 Replaced)	 | Read Database to Serial Bus                                          | N/A                                 |
 | Z10     | Removed (M0 Replaced)        | Emergency Shutdown Mode                                          | N/A                                 |
 |_________|______________________________|__________________________________________________________________|_____________________________________|
 
@@ -61,28 +61,28 @@ ________________________________________________________________________________
 
 G - Standard Operation Commands
 _________________________________________________________________________________________________________________________________________________________
-| Command | Availability                 | Purpose                                                          | Supported Arguments                 	|
+| Command | Availability                 | Purpose                                                          | Supported Arguments                     	|
 |_________|______________________________|__________________________________________________________________|___________________________________________|
-| G0      | Supported			 | Move Dimensions (Non-Extrude)                                    | X(XXX.XX) Y(YYY.YY) Z(ZZZ.ZZ)       	|
-| G1      | Supported			 | Move Dimensions (Extrude)                                        | X(XXX.XX) Y(YYY.YY) Z(ZZZ.ZZ) E(EEE.EE)	|
-| G2	  | Not Supported		 | Controlled Arc Move Clockwise	                            | N/A                                 	|
-| G3	  | Not Supported		 | Controlled Arc Move Counter-Clockwise                            | N/A                                 	|
-| G10	  | Not Supported		 | Printer Controlled Retraction	                            | N/A                                 	|
-| G11	  | Not Supported		 | Printer Controlled Extrusion		                            | N/A                                 	|
-| G12	  | Not Supported		 | Clean Tool				                            | N/A                                 	|
-| G20	  | Supported			 | Set Units to Inches			                            | N/A                                 	|
-| G21	  | Supported			 | Set Units to Millimeters		                            | N/A                                 	|
-| G22	  | Not Supported		 | Retract Moves Automatically		                            | N/A                                 	|
-| G23	  | Not Supported		 | Recover Firmware			                            | N/A                                 	|
-| G27	  | Supported			 | Park Toolhead			                            | N/A                                 	|
-| G28	  | Supported			 | Home Axis				                            | (None / X / Y / Z)                  	|
-| G29	  | Not Supported		 | Manual Z-Axis Probing		                            | N/A		                  	|
-| G30	  | Not Supported		 | Single Z-Probe			                            | N/A		                  	|
-| G32	  | Not Supported		 | Probe and Calculate Z Plane		                            | N/A		                  	|
-| G82	  | Not Supported		 | Current Z-Probe at Current Location	                            | N/A		                  	|
-| G90	  | Supported			 | Set to Absolute Positioning		                            | N/A		                  	|
-| G91	  | Supported			 | Set to Relative Positioning		                            | N/A		                  	|
-| G92	  | Supported			 | Set Current Motor Positions		                            | X(XXX.XX) Y(YYY.YY) Z(ZZZ.ZZ) E(EEE.EE)	|
+| G0      | Supported			               | Move Dimensions (Non-Extrude)                                    | X(XXX.XX) Y(YYY.YY) Z(ZZZ.ZZ)           	|
+| G1      | Supported			               | Move Dimensions (Extrude)                                        | X(XXX.XX) Y(YYY.YY) Z(ZZZ.ZZ) E(EEE.EE)	  |
+| G2	    | Not Supported		             | Controlled Arc Move Clockwise	                                  | N/A                                 	    |
+| G3	    | Not Supported		             | Controlled Arc Move Counter-Clockwise                            | N/A                                     	|
+| G10	    | Not Supported		             | Printer Controlled Retraction	                                  | N/A                                      	|
+| G11	    | Not Supported		             | Printer Controlled Extrusion		                                  | N/A                                     	|
+| G12	    | Not Supported		             | Clean Tool				                                                | N/A                                     	|
+| G20	    | Supported			               | Set Units to Inches			                                        | N/A                                     	|
+| G21	    | Supported			               | Set Units to Millimeters		                                      | N/A                                     	|
+| G22	    | Not Supported	            	 | Retract Moves Automatically		                                  | N/A                                     	|
+| G23	    | Not Supported		             | Recover Firmware			                                            | N/A                                     	|
+| G27	    | Supported		              	 | Park Toolhead			                                              | N/A                                     	|
+| G28	    | Supported			               | Home Axis				                                                | (None / X / Y / Z)                      	|
+| G29	    | Not Supported		             | Manual Z-Axis Probing		                                        | N/A		                                   	|
+| G30	    | Not Supported		             | Single Z-Probe			                                              | N/A		                                   	|
+| G32	    | Not Supported		             | Probe and Calculate Z Plane		                                  | N/A		                                   	|
+| G82	    | Not Supported		             | Current Z-Probe at Current Location	                            | N/A		                  	                |
+| G90	    | Supported			               | Set to Absolute Positioning		                                  | N/A		                  	                |
+| G91	    | Supported		              	 | Set to Relative Positioning		                                  | N/A		                                   	|
+| G92	    | Supported		              	 | Set Current Motor Positions		                                  | X(XXX.XX) Y(YYY.YY) Z(ZZZ.ZZ) E(EEE.EE)	  |
 |_________|______________________________|__________________________________________________________________|___________________________________________|
 
 
@@ -98,115 +98,78 @@ M - Modifier Commands
 _________________________________________________________________________________________________________________________________________________________
 | Command | Availability                 | Purpose                                                          | Supported Arguments                 	|
 |_________|______________________________|__________________________________________________________________|___________________________________________|
-| M0      | Supported			 | Unconditional Stop		                                    | N/A				       	|
-| M1      | Supported			 | Conditional Stop		                                    | N/A				       	|
-| M2      | Supported			 | Program End			                                    | N/A				       	|
-| M16     | Supported			 | Verify Printer Connected by Hostname                             | "HOSTNAME_OF_PRINTER"		       	|
-| M17     | Supported			 | Disable/Enable Stepper Motors	                            | N/A				       	|
-| M18     | Supported			 | Disable Stepper Motors		                            | N/A				       	|
-| M37     | Supported			 | Simulation Mode (Extruder Off)	                            | S( 0 / 1 )			       	|
-| M43     | BETA			 | Pin Report and Debugging		                            | N/A				       	|
-| M70     | Supported			 | Display Message on LCD		                            | "STRING_TO_DISPLAY"		       	|
-| M73     | Not Supported		 | Set Print Percentage			                            | S(PERCENT)			       	|
-| M75     | Not Supported		 | Start Print Job Timer		                            | N/A				       	|
-| M76     | Not Supported		 | Pause Print Job Timer		                            | N/A				       	|
-| M77     | Not Supported		 | Stop Print Job Timer			                            | N/A				       	|
-| M78     | Not Supported		 | Show Information about Historic Print Jobs                       | N/A				       	|
-| M80     | Not Supported		 | ATX Power On					                    | N/A				       	|
-| M81     | Not Supported		 | ATX Power Off				                    | N/A				       	|
-| M82     | Not Supported		 | Set Extruder to Absolute Mode            			    | N/A				       	|
-| M83     | Not Supported		 | Set Extruder to Relative Mode		                    | N/A				       	|
-| M84     | Not Supported		 | Idle Stepper Motor Timeout			                    | N/A				       	|
-| M85     | Not Supported		 | Set Inactivity Shutdown Timer		                    | N/A				       	|
-| M86     | Not Supported		 | Set Safety Timer				                    | N/A				       	|
-| M87     | Not Supported		 | Cancel Safety Timer				                    | N/A				       	|
-| M92     | Not Supported		 | Set Axis_Steps_Per_Unit			                    | N/A				       	|
-| M93     | Not Supported		 | Send Axis_Steps_Per_Unit			                    | N/A				       	|
-| M98     | Not Supported		 | Call Macro / Subprogram			                    | N/A				       	|
-| M99     | Not Supported		 | Return Value from Macro / Subprogram		                    | N/A				       	|
-| M103    | Supported			 | Turn All Extruders Off / Extruder Retraction	                    | N/A				       	|
-| M104    | Supported			 | Set Extruder Temperature			                    | (TARGET_TEMPERATURE)		       	|
-| M105    | Supported			 | Get Extruder Temperature			                    | N/A				       	|
-| M106    | Supported			 | Turn Extruder Fan On				                    | N/A				       	|
-| M107    | Supported			 | Turn Extruder Fan Off			                    | N/A				       	|
-| M108    | Supported			 | Emergency Cancel Extruder Heating		                    | N/A				       	|
-| M109    | Not Supported		 | Idle Stepper Motor Timeout			                    | N/A				       	|
-| M110    | Supported			 | Set Current Line Number	                                    | N(NUMBER)				       	|
-| M111    | Not Supported		 | Set Debug Level		                                    | (P = DEBUG MODULE)(S = DEBUG ON/OFF)     	|
-| M112    | Supported			 | Full Emergency Stop		                                    | N/A				       	|
-| M113    | Supported			 | Host Keepalive		                                    | N/A				       	|
-| M114    | Supported			 | Get Current Motor Position	                                    | N/A				       	|
-| M115    | Supported			 | Get Firmware Versions	                                    | N/A				       	|
-| M116    | Supported			 | Wait Command			                                    | N/A				       	|
-| M117    | Supported			 | Display Message on LCD	                                    | "MESSAGE"				       	|
-| M118    | Supported			 | Echo Message on Host		                                    | "MESSAGE"				       	|
-| M119    | Supported			 | Get Endstop Status		                                    | N/A				       	|
-| M120    | Supported			 | Enable Endstop Detection	                                    | N/A				       	|
-| M121    | Supported			 | Disable Endstop Detection	                                    | N/A				       	|
-| M122    | Supported			 | Set Software Endstops	                                    | XXX.XXYYY.YYZZZ.ZZ		       	|
-| M124    | Supported			 | Immediate Motor Stop		                                    | N/A				       	|
-| M126    | Supported**			 | Set Fan Speed (Percentage)	                                    | S(SPEED)				       	|
-| M140    | Supported			 | Set Bed Temperature		                                    | (TEMPERATURE)			       	|
-| M143    | Supported***		 | Maximum Heater Temperature	                                    | 00000.0011111.11HHHHHH.HH		       	|
-| M144    | Supported			 | Bed Standby			                                    | N/A				       	|
-| M149    | Supported****		 | Set Temperature Units	                                    | (0 / 1 / 2)			       	|
-
-
-
-
-/////////////////////////////
-//// EEPROM NOTES/VALUES ////
-/////////////////////////////
-// 0 - Hard Watchdog Status
-// 1 - Debug Serial
-// 2 - Restart from Power Loss
-// 3 - watchdog errors
-// 4 - temperature errors
-// 5 - g-parser errors
-// 6 - m-parser errors
-// 7 - movement errors
-// 8 - success prints (256)
-// 9 - success prints (1)
-// 10 - bad prints (256)
-// 11 - bad prints (1)
-
-
-
-
-
-
-
-| M200    | Supported			 | Set Filament Diameter	                                    | FF.FFF				       	|
-
-
-| M302    | Supported			 | Allow Cold Extrusions	                                    | N/A				       	|
-
-
-| M404    | Supported			 | Set Filament Diameter	                                    | FF.FFF				       	|
-| M405    | Supported			 | Turn On Filament Sensor	                                    | N/A				       	|
-| M406    | Supported			 | Turn Off Filament Sensor	                                    | N/A				       	|
-| M407    | Supported			 | Show Filament Diameter	                                    | N/A				       	|
-
-
-| M510    | Supported			 | Lock Machine			                                    | "PASSWORD"			       	|
-| M511    | Supported			 | Unlock Machine with Password	                                    | "PASSWORD"			       	|
-| M512    | Supported			 | Set Password			                                    | "PASSWORD"			       	|
-| M513    | Supported			 | Remove Password		                                    | "PASSWORD"			   	|
-| M530    | Supported			 | Enable Printing Mode		                                    | N/A				   	|
-| M531    | Supported			 | Set Printer Hostname		                                    | "PRINTER_HOSTNAME"		   	|
-| M532    | Supported			 | Set Printer Percentage (Print Progress)                          | %%.%%%				   	|
-| M540    | Supported			 | Set MAC Address		                                    | N/A				   	|
-| M550    | Supported			 | Set Printer Hostname		                                    | "PRINTER_HOSTNAME"		   	|
-| M551    | Supported			 | Set Password			                                    | "PASSWORD"			   	|
-| M555    | Not Supported		 | Virtualization of Another Firmware                               | N/A				   	|
-
-
-
-
-
-| M575    | Supported			 | Set Serial Communications/Baudrate                               | B(BAUDRATE)			       	|
-| M701    | Not Supported		 | Load Filament		                                    | N/A				       	|
-| M702    | Not Supported		 | Unload Filament		                                    | N/A				       	|
+| M0      | Supported			               | Unconditional Stop		                                    | N/A				       	|
+| M1      | Supported		              	 | Conditional Stop		                                    | N/A				       	|
+| M2      | Supported		              	 | Program End			                                    | N/A				       	|
+| M16     | Supported		              	 | Verify Printer Connected by Hostname                             | "HOSTNAME_OF_PRINTER"		       	|
+| M17     | Supported			               | Disable/Enable Stepper Motors	                            | N/A				       	|
+| M18     | Supported			               | Disable Stepper Motors		                            | N/A				       	|
+| M37     | Supported			               | Simulation Mode (Extruder Off)	                            | S( 0 / 1 )			       	|
+| M43     | BETA			                   | Pin Report and Debugging		                            | N/A				       	|
+| M70     | Supported			               | Display Message on LCD		                            | "STRING_TO_DISPLAY"		       	|
+| M73     | Not Supported		             | Set Print Percentage			                            | S(PERCENT)			       	|
+| M75     | Not Supported		             | Start Print Job Timer		                            | N/A				       	|
+| M76     | Not Supported		             | Pause Print Job Timer		                            | N/A				       	|
+| M77     | Not Supported		             | Stop Print Job Timer			                            | N/A				       	|
+| M78     | Not Supported		             | Show Information about Historic Print Jobs                       | N/A				       	|
+| M80     | Not Supported		             | ATX Power On					                    | N/A				       	|
+| M81     | Not Supported		             | ATX Power Off				                    | N/A				       	|
+| M82     | Not Supported		             | Set Extruder to Absolute Mode            			    | N/A				       	|
+| M83     | Not Supported		             | Set Extruder to Relative Mode		                    | N/A				       	|
+| M84     | Not Supported		             | Idle Stepper Motor Timeout			                    | N/A				       	|
+| M85     | Not Supported		             | Set Inactivity Shutdown Timer		                    | N/A				       	|
+| M86     | Not Supported		             | Set Safety Timer				                    | N/A				       	|
+| M87     | Not Supported		             | Cancel Safety Timer				                    | N/A				       	|
+| M92     | Not Supported		             | Set Axis_Steps_Per_Unit			                    | N/A				       	|
+| M93     | Not Supported		             | Send Axis_Steps_Per_Unit			                    | N/A				       	|
+| M98     | Not Supported		             | Call Macro / Subprogram			                    | N/A				       	|
+| M99     | Not Supported		             | Return Value from Macro / Subprogram		                    | N/A				       	|
+| M103    | Supported			               | Turn All Extruders Off / Extruder Retraction	                    | N/A				       	|
+| M104    | Supported			               | Set Extruder Temperature			                    | (TARGET_TEMPERATURE)		       	|
+| M105    | Supported			               | Get Extruder Temperature			                    | N/A				       	|
+| M106    | Supported			               | Turn Extruder Fan On				                    | N/A				       	|
+| M107    | Supported			               | Turn Extruder Fan Off			                    | N/A				       	|
+| M108    | Supported		              	 | Emergency Cancel Extruder Heating		                    | N/A				       	|
+| M109    | Not Supported		             | Idle Stepper Motor Timeout			                    | N/A				       	|
+| M110    | Supported		              	 | Set Current Line Number	                                    | N(NUMBER)				       	|
+| M111    | Not Supported		             | Set Debug Level		                                    | (P = DEBUG MODULE)(S = DEBUG ON/OFF)     	|
+| M112    | Supported		              	 | Full Emergency Stop		                                    | N/A				       	|
+| M113    | Supported		              	 | Host Keepalive		                                    | N/A				       	|
+| M114    | Supported		              	 | Get Current Motor Position	                                    | N/A				       	|
+| M115    | Supported		              	 | Get Firmware Versions	                                    | N/A				       	|
+| M116    | Supported		              	 | Wait Command			                                    | N/A				       	|
+| M117    | Supported			               | Display Message on LCD	                                    | "MESSAGE"				       	|
+| M118    | Supported			               | Echo Message on Host		                                    | "MESSAGE"				       	|
+| M119    | Supported		              	 | Get Endstop Status		                                    | N/A				       	|
+| M120    | Supported		              	 | Enable Endstop Detection	                                    | N/A				       	|
+| M121    | Supported		              	 | Disable Endstop Detection	                                    | N/A				       	|
+| M122    | Supported		              	 | Set Software Endstops	                                    | XXX.XXYYY.YYZZZ.ZZ		       	|
+| M124    | Supported		              	 | Immediate Motor Stop		                                    | N/A				       	|
+| M126    | Supported**		            	 | Set Fan Speed (Percentage)	                                    | S(SPEED)				       	|
+| M140    | Supported			               | Set Bed Temperature		                                    | (TEMPERATURE)			       	|
+| M143    | Supported***	             	 | Maximum Heater Temperature	                                    | 00000.0011111.11HHHHHH.HH		       	|
+| M144    | Supported		              	 | Bed Standby			                                    | N/A				       	|
+| M149    | Supported****		             | Set Temperature Units	                                    | (0 / 1 / 2)			       	|
+| M200    | Supported			               | Set Filament Diameter	                                    | FF.FFF				       	|
+| M302    | Supported			               | Allow Cold Extrusions	                                    | N/A				       	|
+| M404    | Supported			               | Set Filament Diameter	                                    | FF.FFF				       	|
+| M405    | Supported		              	 | Turn On Filament Sensor	                                    | N/A				       	|
+| M406    | Supported		              	 | Turn Off Filament Sensor	                                    | N/A				       	|
+| M407    | Supported		              	 | Show Filament Diameter	                                    | N/A				       	|
+| M510    | Supported		              	 | Lock Machine			                                    | "PASSWORD"			       	|
+| M511    | Supported		              	 | Unlock Machine with Password	                                    | "PASSWORD"			       	|
+| M512    | Supported		              	 | Set Password			                                    | "PASSWORD"			       	|
+| M513    | Supported		              	 | Remove Password		                                    | "PASSWORD"			   	|
+| M530    | Supported		              	 | Enable Printing Mode		                                    | N/A				   	|
+| M531    | Supported			               | Set Printer Hostname		                                    | "PRINTER_HOSTNAME"		   	|
+| M532    | Supported			               | Set Printer Percentage (Print Progress)                          | %%.%%%				   	|
+| M540    | Supported			               | Set MAC Address		                                    | N/A				   	|
+| M550    | Supported			               | Set Printer Hostname		                                    | "PRINTER_HOSTNAME"		   	|
+| M551    | Supported			               | Set Password			                                    | "PASSWORD"			   	|
+| M555    | Not Supported		             | Virtualization of Another Firmware                               | N/A				   	|
+| M575    | Supported			               | Set Serial Communications/Baudrate                               | B(BAUDRATE)			       	|
+| M701    | Not Supported		             | Load Filament		                                    | N/A				       	|
+| M702    | Not Supported		             | Unload Filament		                                    | N/A				       	|
 |_________|______________________________|__________________________________________________________________|___________________________________________|
 
 
@@ -220,27 +183,27 @@ ________________________________________________________________________________
 
 M - SD Commands
 _________________________________________________________________________________________________________________________________________________________
-| Command | Availability                 | Purpose                                                          | Supported Arguments                 	|
+| Command | Availability                 | Purpose                                                          | Supported Arguments                     	|
 |_________|______________________________|__________________________________________________________________|___________________________________________|
-| M20     | Not Supported		 | List SD Card				                            | N/A				       	|
-| M21     | Not Supported		 | Initialize SD Card			                            | N/A				       	|
-| M22     | Not Supported		 | Release/Eject SD Card		                            | N/A				       	|
-| M23     | Not Supported		 | Select SD File			                            | N/A				       	|
-| M24     | Not Supported		 | Start/Resume SD Print		                            | N/A				       	|
-| M25     | Not Supported		 | Pause SD Print			                            | N/A				       	|
-| M26     | Not Supported		 | Set SD Position			                            | N/A				       	|
-| M27     | Not Supported		 | Report SD Print Status		                            | N/A				       	|
-| M28     | Not Supported		 | Begin Write to SD Card		                            | N/A				       	|
-| M29     | Not Supported		 | Stop Writing to SD Card		                            | N/A				       	|
-| M31     | Not Supported		 | Time Since SD Print Start		                            | N/A				       	|
-| M32     | Not Supported		 | Select File and Start SD Print	                            | N/A				       	|
-| M33     | Not Supported		 | Get Long File Name for SD Card File/Folder                       | N/A				       	|
-| M33.2   | Not Supported		 | Stop/Close File/Save Restart.GCODE	                            | N/A				       	|
-| M34     | Not Supported		 | Set SD File Sorting Options		                            | N/A				       	|
-| M38     | Not Supported		 | Compute SHA1 Hash of Target File	                            | N/A				       	|
-| M39     | Not Supported		 | Report SD Card Information		                            | N/A				       	|
-| M40     | Not Supported		 | Eject SD Card			                            | N/A				       	|
-| M524    | Not Supported		 | Abort SD Printing		                                    | N/A				       	|
+| M20     | Not Supported		             | List SD Card				                                              | N/A				                               	|
+| M21     | Not Supported		             | Initialize SD Card			                                          | N/A				       	                       	|
+| M22     | Not Supported		             | Release/Eject SD Card		                                        | N/A				       	                       	|
+| M23     | Not Supported		             | Select SD File			                                              | N/A				       	                       	|
+| M24     | Not Supported		             | Start/Resume SD Print		                                        | N/A				       	                       	|
+| M25     | Not Supported		             | Pause SD Print			                                              | N/A				       	                       	|
+| M26     | Not Supported		             | Set SD Position			                                            | N/A				       	                       	|
+| M27     | Not Supported		             | Report SD Print Status		                                        | N/A				       	                       	|
+| M28     | Not Supported		             | Begin Write to SD Card		                                        | N/A				       	                       	|
+| M29     | Not Supported		             | Stop Writing to SD Card		                                      | N/A				       	                       	|
+| M31     | Not Supported		             | Time Since SD Print Start		                                    | N/A				       	                       	|
+| M32     | Not Supported		             | Select File and Start SD Print	                                  | N/A				       	                       	|
+| M33     | Not Supported		             | Get Long File Name for SD Card File/Folder                       | N/A				       	                       	|
+| M33.2   | Not Supported		             | Stop/Close File/Save Restart.GCODE	                              | N/A				       	                       	|
+| M34     | Not Supported		             | Set SD File Sorting Options		                                  | N/A				       	                       	|
+| M38     | Not Supported		             | Compute SHA1 Hash of Target File	                                | N/A				       	                       	|
+| M39     | Not Supported		             | Report SD Card Information		                                    | N/A				       	                       	|
+| M40     | Not Supported		             | Eject SD Card			                                              | N/A				       	                       	|
+| M524    | Not Supported		             | Abort SD Printing		                                            | N/A				       	                       	|
 |_________|______________________________|__________________________________________________________________|___________________________________________|
 
 
@@ -249,7 +212,7 @@ ________________________________________________________________________________
 
 
 
-
+// OTHER COMMANDS NOT IN TABLES
   // M154 - AUTO REPORT POSITION
   // M155 - AUTO REPORT TEMPS
   // M190 - WAIT FOR BED TEMPT TO REACH TARGET TEMP
@@ -261,7 +224,6 @@ ________________________________________________________________________________
   // M207 - SET RETRACT LENGTH
   // M208 - SET UNRETRACT LENGTH
   // M211 - DIS/EN SOFTWARE ENDSTOPS
-
   // M226 - GCODE INITIATED PAUSE
   // M260 - SEND I2C DATA
   // M261 - REQUEST I2C DATA
@@ -272,10 +234,6 @@ ________________________________________________________________________________
   // M294 - BABYSTEP Z-
   // M360 - REPORT FIRMWARE CONFIGURATION
   // M400 - WAIT FOR CURRENT MOVES TO FINISH
-
-
- 
-
   // M413 - POWER LOSS RECOVERY
   // M415 - HOST RESCUE
   // M416 - POWER LOSS
@@ -294,10 +252,7 @@ ________________________________________________________________________________
   // M710 - CONTROLLER FAN SETTINGS
   // M905 - LOCAL TIME AND DATE
 
-  // M916
-  // M928
-  // M929
-  // M999
+
 
 
 
@@ -306,9 +261,9 @@ T - COMMANDS
 ___________________________________________________________________________________________________________________________________________________
 | Command | Availability                 | Purpose                                                          | Supported Arguments                 |
 |_________|______________________________|__________________________________________________________________|_____________________________________|
-| T0      | Supported			 | Change Active Extruder to Extruder 0                             | N/A                                 |
-| T1      | Not Supported		 | Change Active Extruder to Extruder 1                             | N/A                                 |
-| T2      | Not Supported		 | Change Active Extruder to Extruder 2                             | N/A                                 |
+| T0      | Supported			               | Change Active Extruder to Extruder 0                             | N/A                                 |
+| T1      | Not Supported		             | Change Active Extruder to Extruder 1                             | N/A                                 |
+| T2      | Not Supported		             | Change Active Extruder to Extruder 2                             | N/A                                 |
 |_________|______________________________|__________________________________________________________________|_____________________________________|
 
 
